@@ -15,6 +15,7 @@ app.use("/login", require("./route/login"));
 app.use("/register", require("./route/register"));
 app.use("/profile", require("./route/profile"));
 app.use("/jwt", require("./route/JWT"));
+app.use("/userDatabase", require("./route/userDatabase"));
 
 app.listen(process.env.SERVER_PORT, () => {
     displayLinks();

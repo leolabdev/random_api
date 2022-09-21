@@ -39,7 +39,7 @@ function UserTokens() {
     }
 
     return (
-        <div id={userTokens}>
+        <div id="userTokens">
             <h3>Your active tokens</h3>
             <Button variant="primary" onClick={createNewToken}>Create a new access token</Button>
             <ListGroup>

@@ -15,8 +15,11 @@ CREATE TABLE JWT(
 
 CREATE TABLE UserDatabase(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(30) NOT NULL,
     name VARCHAR(30) NOT NULL,
-    description VARCHAR(255) NOT NULL
+    description VARCHAR(255) NOT NULL,
+    FOREIGN KEY (username) REFERENCES User(username),
+    UNIQUE (name)
 );
 
 CREATE TABLE UserAllowed(
