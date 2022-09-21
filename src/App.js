@@ -1,24 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import { useCookies } from "react-cookie";
+import {BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom';
+
+import LoginRegisterForm from './components/LoginRegisterForm';
+import ProfilePage from './components/ProfilePage';
 
 function App() {
+  const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
+  const [loginAccess, setLoginAccess] = useState(false);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div id="container">
+        <Router>
+          <Routes>
+            <Route path="/" element={loginAccess || cookies.jwt != null ? <Navigate replace to="/profile" /> : <LoginRegisterForm setLoginAccess={setLoginAccess}/>} />
+            <Route path="/profile" element={<ProfilePage />} />
+          </Routes>
+        </Router>
+      </div>
   );
 }
 
