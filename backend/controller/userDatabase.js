@@ -56,7 +56,7 @@ exports.getTables = async (req, res, next) => {
         const username = req.username;
 
         if(username != null){
-            const selectTokenQ = `SELECT name FROM UserDatabase WHERE username = ?`;
+            const selectTokenQ = `SELECT * FROM UserDatabase WHERE username = ?`;
             const resp = await db.makeQuery(selectTokenQ, username);
 
             if(resp){
@@ -81,8 +81,33 @@ exports.getTables = async (req, res, next) => {
     next();
 }
 
-function getDatabaseJWT(id, tokenNum) {
-    return jwt.sign({ id: id, tokenNum: tokenNum }, process.env.JWT_DATABASE_SECRET, {
-        expiresIn: process.env.JWT_EXPIRES_IN
-    });
+exports.getTable = async (req, res, next) => {
+    try{
+        const owner = req.query.owner;
+        const tableName = req.path.replace(/\//, '');
+
+        if(owner != null){
+            const selectTokenQ = `SELECT * FROM UserDatabase WHERE username = ? AND name = ?`;
+            const resp = await db.makeQuery(selectTokenQ, [owner, tableName]);
+
+            if(resp){
+                res.status(200);
+                res.isSuccess = true;
+                if(resp.length > 0)
+                    res.result = resp[0];
+                else
+                    res.result = [];
+            }
+        } else {
+            res.status(500);
+            res.isSuccess = false;
+        }
+    } catch (e){
+        console.log("No connection to the DB or problems with query");
+        console.log(e);
+        res.status(500);
+        res.isSuccess = false;
+    }
+
+    next();
 }

@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 
-function Tables() {
+function Tables(props) {
     const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
 
     const [userTables, setUserTables] = useState([]);
@@ -12,6 +12,13 @@ function Tables() {
 
     const createNewTable = async () => {
         let path = `/newTable`;
+        navigate(path);
+    }
+
+    const showTableInfo = async (tableName, tableOwner) => {
+        props.setTableInfoName(tableName);
+        props.setTableInfoOwner(tableOwner);
+        let path = `/tableInfo`;
         navigate(path);
     }
 
@@ -40,7 +47,7 @@ function Tables() {
             <ListGroup>
                 {
                     userTables.map((item, i)=>{
-                        return <ListGroup.Item key={i}>{item.name}</ListGroup.Item>
+                        return <ListGroup.Item key={i} onClick={()=>{ showTableInfo(item.name, item.username)} }>{item.name}</ListGroup.Item>
                     })
                 }
             </ListGroup>

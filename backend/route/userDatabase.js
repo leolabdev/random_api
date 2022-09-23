@@ -7,5 +7,6 @@ const router = express.Router();
 
 router.post("/", loginController.isLoggedIn, loginController.getUsername, userDatabaseController.createTable, util.handlePostResp);
 router.get("/", loginController.isLoggedIn, loginController.getUsername, userDatabaseController.getTables, util.handleGetResp);
+router.get('/\\S+', loginController.isLoggedIn, loginController.getUsername, userDatabaseController.getTable, util.handleGetResp);
 
 module.exports = router;

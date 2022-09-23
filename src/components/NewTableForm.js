@@ -27,7 +27,6 @@ function NewTableForm() {
 
         const resp = await fetch(`${apiBasePath}/userDatabase`, reqOptions);
         const respJson = await resp.json();
-        console.log(respJson);
     }
 
     const convertStringToArr = (string) => {
