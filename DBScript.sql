@@ -18,6 +18,7 @@ CREATE TABLE UserDatabase(
     username VARCHAR(30) NOT NULL,
     name VARCHAR(30) NOT NULL,
     description VARCHAR(255) NOT NULL,
+    accessType SMALLINT NOT NULL DEFAULT 0,
     FOREIGN KEY (username) REFERENCES User(username),
     UNIQUE (name)
 );

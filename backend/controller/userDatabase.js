@@ -7,10 +7,11 @@ exports.createTable = async (req, res, next) => {
         if(username != null){
             const name = req.body.name;
             const description = req.body.description;
+            const accessType = req.body.accessType || 0;
             const elems = req.body.elements;
 
             const tableName = username + '_' + name;
-            let createNewTableQ = `CREATE TABLE ${tableName} (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, value VARCHAR(255) NOT NULL)`;
+            let createNewTableQ = `CREATE TABLE ${tableName} (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, value VARCHAR(100) NOT NULL)`;
             const createResp = await db.makeQuery(createNewTableQ);
             let insertElemResp = null;
             if(createResp){
@@ -24,8 +25,8 @@ exports.createTable = async (req, res, next) => {
             }
 
             if(insertElemResp){
-                const insertTokenQ = `INSERT INTO UserDatabase (username, name, description) VALUES (?, ?, ?)`;
-                const resp = await db.makeQuery(insertTokenQ, [username, name, description]);
+                const insertTokenQ = `INSERT INTO UserDatabase (username, name, description, accessType) VALUES (?, ?, ?, ?)`;
+                const resp = await db.makeQuery(insertTokenQ, [username, name, description, accessType]);
 
                 const tableId = resp.insertId;
                 const insertUserAllowedQ = `INSERT INTO UserAllowed (id, username) VALUES (?, ?)`;
@@ -86,8 +87,8 @@ exports.getTable = async (req, res, next) => {
         const tableName = req.path.replace(/\//, '');
 
         if(owner != null){
-            const selectTokenQ = `SELECT * FROM UserDatabase WHERE username = ? AND name = ?`;
-            const resp = await db.makeQuery(selectTokenQ, [owner, tableName]);
+            const selectQ = `SELECT * FROM UserDatabase WHERE username = ? AND name = ?`;
+            const resp = await db.makeQuery(selectQ, [owner, tableName]);
 
             if(resp){
                 const selectUserCountQ = `SELECT COUNT(id) FROM UserAllowed WHERE id = ?`;
