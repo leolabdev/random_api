@@ -1,5 +1,4 @@
 const db = require("../util/DB");
-const jwt = require("jsonwebtoken");
 
 exports.createTable = async (req, res, next) => {
     try{
@@ -27,6 +26,10 @@ exports.createTable = async (req, res, next) => {
             if(insertElemResp){
                 const insertTokenQ = `INSERT INTO UserDatabase (username, name, description) VALUES (?, ?, ?)`;
                 const resp = await db.makeQuery(insertTokenQ, [username, name, description]);
+
+                const tableId = resp.insertId;
+                const insertUserAllowedQ = `INSERT INTO UserAllowed (id, username) VALUES (?, ?)`;
+                await db.makeQuery(insertUserAllowedQ, [tableId, username]);
 
                 if(resp){
                     res.status(200);
@@ -91,6 +94,10 @@ exports.getTable = async (req, res, next) => {
             const resp = await db.makeQuery(selectTokenQ, [owner, tableName]);
 
             if(resp){
+                const selectUserCountQ = `SELECT COUNT(id) FROM UserAllowed WHERE id = ?`;
+                const count = await db.makeQuery(selectUserCountQ, resp[0].id);
+                resp[0].userCount = count[0]['COUNT(id)'];
+
                 res.status(200);
                 res.isSuccess = true;
                 if(resp.length > 0)
