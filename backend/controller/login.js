@@ -23,6 +23,7 @@ exports.login = async (req, res, next) => {
             } else{
                 const id = resp[0].username;
                 createAccessCookie(id, req);
+                createUsernameCookie(id, req);
                 res.status(200);
                 res.isSuccess = true;
             }
@@ -100,4 +101,13 @@ function createAccessCookie(id, req) {
     };
 
     req.universalCookies.set('jwt', token, cookieOptions);
+}
+
+function createUsernameCookie(id, req) {
+    const cookieOptions = {
+        expires: new Date( Date.now() + process.env.JWT_COOKIE_EXPIRES*24*60*60*1000 ),
+        path: '/'
+    };
+
+    req.universalCookies.set('username', id, cookieOptions);
 }

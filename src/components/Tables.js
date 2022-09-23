@@ -2,9 +2,12 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
+import {useCookies} from "react-cookie";
 
 function Tables(props) {
     const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
+
+    const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
 
     const [userTables, setUserTables] = useState([]);
 
@@ -35,7 +38,7 @@ function Tables(props) {
             credentials: 'include'
         }
 
-        const resp = await fetch(`${apiBasePath}/userDatabase`, reqOptions);
+        const resp = await fetch(`${apiBasePath}/userDatabase?username=${cookies.username}`, reqOptions);
         const respJson = await resp.json();
         setUserTables(respJson.result);
     }

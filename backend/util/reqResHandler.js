@@ -1,13 +1,13 @@
 exports.handleGetResp = (req, res) => {
     if(res.isSuccess){
         res.json({
-            hasAccess: true,
+            isSuccess: true,
             message: "Data has been found",
             result: res.result
         });
     } else{
         res.json({
-            hasAccess: false,
+            isSuccess: false,
             message: "No data found",
             result: {}
         });
@@ -19,13 +19,29 @@ exports.handleGetResp = (req, res) => {
 exports.handlePostResp = (req, res) => {
     if(res.isSuccess){
         res.json({
-            hasAccess: true,
+            isSuccess: true,
             message: "Data has been added"
         });
     } else{
         res.json({
-            hasAccess: false,
+            isSuccess: false,
             message: "Problems with adding data"
+        });
+    }
+
+    res.end();
+}
+
+exports.handleDeleteResp = (req, res) => {
+    if(res.isSuccess){
+        res.json({
+            isSuccess: true,
+            message: "Data has been deleted"
+        });
+    } else{
+        res.json({
+            isSuccess: false,
+            message: "Problems with deleting data"
         });
     }
 
