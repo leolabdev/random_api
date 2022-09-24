@@ -13,6 +13,12 @@ function LoginRegisterPage(props) {
 
     const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
 
+    let [authMode, setAuthMode] = useState("signin")
+
+    const changeAuthMode = () => {
+        setAuthMode(authMode === "signin" ? "signup" : "signin")
+    }
+
     const loginUser = async (event) => {
         event.preventDefault();
 
@@ -63,65 +69,90 @@ function LoginRegisterPage(props) {
     return (
         <div id="container">
             <br/>
-            <Form>
-                <Form.Text className="text-muted">
-                    Login to your account here
-                </Form.Text>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>username</Form.Label>
-                    <Form.Control type="text" placeholder="Enter username" onChange={(event)=>{
-                        event.preventDefault();
-                        setUsernameLogin(event.target.value);
-                    }}/>
-                </Form.Group>
+            {
+                authMode === "signin"
+                    ?
+                    <Form centered>
+                        {/*<Form.Text  className="text-muted">*/}
+                        {/*    Sign In*/}
+                        {/*</Form.Text>*/}
+                        <h3 className="text-center">Sign In</h3>
 
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" onChange={(event)=>{
-                        event.preventDefault();
-                        setPasswordLogin(event.target.value);
-                    }}/>
-                </Form.Group>
-                <Button variant="primary" type="submit" onClick={loginUser}>
-                    login
-                </Button>
-                <br/>
-                <Form.Text className="text-muted">
-                    {statusLogin}
-                </Form.Text>
-            </Form>
 
-            <br/>
-            <div>OR</div>
-            <br/>
+                        <div className="text-center">
+                            Not registered yet?{" "}
+                            <span className="link-primary" onClick={changeAuthMode} style={{cursor:'pointer'}}>
+                            Sign Up
+                             </span>
+                        </div>
 
-            <Form>
-                <Form.Text className="text-muted">
-                    Register here
-                </Form.Text>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>username</Form.Label>
-                    <Form.Control type="text" placeholder="Enter username" onChange={(event)=>{
-                        event.preventDefault();
-                        setUsernameRegister(event.target.value);
-                    }}/>
-                </Form.Group>
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control type="text" placeholder="Enter username" onChange={(event)=>{
+                                event.preventDefault();
+                                setUsernameLogin(event.target.value);
+                            }}/>
+                        </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" onChange={(event)=>{
-                        event.preventDefault();
-                        setPasswordRegister(event.target.value);
-                    }}/>
-                </Form.Group>
-                <Button id="registerButton" variant="primary" type="submit" onClick={registerUser}>
-                    register
-                </Button>
-                <br/>
-                <Form.Text className="text-muted">
-                    {statusRegister}
-                </Form.Text>
-            </Form>
+                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type="password" placeholder="Password" onChange={(event)=>{
+                                event.preventDefault();
+                                setPasswordLogin(event.target.value);
+                            }}/>
+                        </Form.Group>
+                        <div className='d-grid gap-2'>
+                            <Button variant="primary" type="submit"  onClick={loginUser}>
+                                Submit
+                            </Button>
+                        </div>
+                        <br/>
+                        <Form.Text className="text-muted">
+                            {statusLogin}
+                        </Form.Text>
+                    </Form>
+                    :
+                    <Form>
+
+                        <h3 className="text-center">Sign Up</h3>
+                        <div className="text-center">
+                            Already registered?{" "}
+                            <span className="link-primary" onClick={changeAuthMode} style={{cursor:'pointer'}}>
+                            Sign In
+                             </span>
+                        </div>
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control type="text" placeholder="Enter username" onChange={(event)=>{
+                                event.preventDefault();
+                                setUsernameRegister(event.target.value);
+                            }}/>
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type="password" placeholder="Password" onChange={(event)=>{
+                                event.preventDefault();
+                                setPasswordRegister(event.target.value);
+                            }}/>
+                        </Form.Group>
+
+                        <div className='d-grid gap-2'>
+                            <Button id="registerButton" variant="primary" type="submit" onClick={registerUser}>
+                                Submit
+                            </Button>
+                        </div>
+
+
+                        <br/>
+                        <Form.Text className="text-muted">
+                            {statusRegister}
+                        </Form.Text>
+                    </Form>
+            }
+            {/*<br/>*/}
+            {/*<div>OR</div>*/}
+            {/*<br/>*/}
         </div>
     );
 }
