@@ -43,7 +43,8 @@ function App() {
               <Container>
               <Routes>
                   <Route path="/" element={loginAccess || cookies.jwt != null ? <Navigate replace to="/profile" /> : <LoginRegisterPage setLoginAccess={setLoginAccess}/>} />
-                  <Route path="/profile" element={<ProfilePage setTableInfoName={setTableInfoName} setTableInfoOwner={setTableInfoOwner}/>} />
+
+                  <Route path="/profile" element={loginAccess || cookies.jwt != null ?   <ProfilePage setTableInfoName={setTableInfoName} setTableInfoOwner={setTableInfoOwner}/> :<Navigate replace to="/"/>} />
                   <Route path="/newTable" element={<NewTableForm/>} />
                   <Route path="/tableInfo" element={<TableInfo name={tableInfoName} owner={tableInfoOwner} />} />
 
