@@ -5,6 +5,7 @@ const util = require('../util/reqResHandler');
 
 const router = express.Router();
 
-router.get("/", loginController.isLoggedIn, loginController.getUsername, userAllowedController.getTables, util.handleGetResp);
+router.post("/", loginController.isLoggedIn, loginController.getUsername, userAllowedController.addUserAccess, util.handlePostResp);
+router.get("/", loginController.isLoggedIn, userAllowedController.getTables, util.handleGetResp);
 
 module.exports = router;
