@@ -1,5 +1,47 @@
 const db = require("../util/DB");
 
+exports.addUserAccess = async (req, res, next) => {
+    try{
+        const tableName = req.body.tableName;
+
+        if(tableName){
+            const selectTableQ = `SELECT * FROM UserDatabase WHERE name=?`;
+            const tableResp = await db.makeQuery(selectTableQ, tableName);
+
+            if(tableResp && tableResp.length > 0){
+                const userToAdd = req.body.username;
+                const owner = req.username; 
+                const tableAccessType = tableResp[0].accesstype;
+
+                let userAllowedResp;
+
+                if(tableAccessType === 0 || owner === tableResp.username){
+                    const userAllowedInsertQ = `INSERT INTO UserAllowed (id, username) VALUES (?, ?)`;
+                    userAllowedResp = await db.makeQuery(userAllowedInsertQ, [tableResp[0].id, userToAdd]);
+                }
+                
+                if(userAllowedResp){
+                    res.status(200);
+                    res.isSuccess = true;
+                } else{
+                    res.status(500);
+                    res.isSuccess = false;
+                }
+            }
+        }else {
+            res.status(500);
+            res.isSuccess = false;
+        }     
+    } catch (e){
+        console.log("No connection to the DB or problems with query");
+        console.log(e);
+        res.status(500);
+        res.isSuccess = false;
+    }
+
+    next();
+}
+
 exports.getTables = async (req, res, next) => {
     try{
         const username = req.query.username;
