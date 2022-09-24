@@ -32,6 +32,22 @@ exports.handlePostResp = (req, res) => {
     res.end();
 }
 
+exports.handlePutResp = (req, res) => {
+    if(res.isSuccess){
+        res.json({
+            isSuccess: true,
+            message: "Data has been updated"
+        });
+    } else{
+        res.json({
+            isSuccess: false,
+            message: "Problems with updating data"
+        });
+    }
+
+    res.end();
+}
+
 exports.handleDeleteResp = (req, res) => {
     if(res.isSuccess){
         res.json({

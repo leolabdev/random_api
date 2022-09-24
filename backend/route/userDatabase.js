@@ -5,9 +5,10 @@ const util = require('../util/reqResHandler');
 
 const router = express.Router();
 
-router.post("/", loginController.isLoggedIn, loginController.getUsername, userDatabaseController.createTable, util.handlePostResp);
+router.post('/', loginController.isLoggedIn, loginController.getUsername, userDatabaseController.createTable, util.handlePostResp);
 router.get("/", loginController.isLoggedIn, loginController.getUsername, userDatabaseController.getTables, util.handleGetResp);
 router.get('/\\S+', loginController.isLoggedIn, loginController.getUsername, userDatabaseController.getTable, util.handleGetResp);
+router.put('/', loginController.isLoggedIn, loginController.getUsername, userDatabaseController.updateTable, util.handlePutResp);
 router.delete('/', loginController.isLoggedIn, loginController.getUsername, userDatabaseController.deleteTable, util.handleDeleteResp);
 
 module.exports = router;

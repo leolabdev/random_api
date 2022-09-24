@@ -11,30 +11,49 @@ exports.login = async (req, res, next) => {
 
         const selectUsernameQ = `SELECT username FROM User WHERE username = ?`;
         const resp = await db.makeQuery(selectUsernameQ, username);
-        const isUserExist = resp.length !== 0;
+        if(resp){
+            const isUserExist = resp.length !== 0;
 
-        if(isUserExist){
-            const selectUserQ = `SELECT * FROM User WHERE username = ?`;
-            const resp = await db.makeQuery(selectUserQ, username);
+            if(isUserExist){
+                const selectUserQ = `SELECT * FROM User WHERE username = ?`;
+                const resp = await db.makeQuery(selectUserQ, username);
 
-            if(!resp || !(await bcrypt.compare(password, resp[0].password))){
+                if(!resp || !(await bcrypt.compare(password, resp[0].password))){
+                    res.status(500);
+                    res.isSuccess = false;
+                } else{
+                    const id = resp[0].username;
+                    createAccessCookie(id, req);
+                    createUsernameCookie(id, req);
+                    res.status(200);
+                    res.isSuccess = true;
+                }
+            } else {
                 res.status(500);
                 res.isSuccess = false;
-            } else{
-                const id = resp[0].username;
-                createAccessCookie(id, req);
-                createUsernameCookie(id, req);
-                res.status(200);
-                res.isSuccess = true;
             }
-        } else {
-            res.status(500);
-            res.isSuccess = false;
         }
     } catch (e){
         console.log("No connection to the DB or problems with query");
         console.log(e);
         res.status(500);
+        res.isSuccess = false;
+    }
+
+    next();
+}
+
+exports.logout = (req, res, next) => {
+    try{
+        res.cookie("jwt", "logout", {
+            expires: new Date(Date.now() + 2*1000),
+            httpOnly: true
+        });
+        
+        res.isSuccess = true;
+    }catch(e){
+        console.log('Problems with logging out');
+        console.log(e);
         res.isSuccess = false;
     }
 

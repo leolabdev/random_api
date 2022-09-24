@@ -116,6 +116,77 @@ exports.getTable = async (req, res, next) => {
     next();
 }
 
+exports.updateTable = async (req, res, next) => {
+    try{
+        const username = req.username;
+        const tableName = req.body.name;
+
+        if(username != null && tableName != null){
+            const [name, description, accessType] = req.body;
+            const tableInfoValues = {
+                name: name, 
+                description: description,
+                accessType: accessType
+            }
+
+            const tableOwnerQ = `SELECT username FROM UserDatabase WHERE username=? AND name=?`;
+            const tableOwnerResp = await db.makeQuery(tableOwnerQ, [username, name]);
+            if(tableOwnerResp != null && tableOwnerResp[0].username === username){
+                const elems = req.body.elements;
+
+                if(elems !== null){
+                    const tableName = username + '_' + name;
+                    let dropTableQ = `DROP TABLE IF EXISTS ${tableName}`;
+                    const dropTableResp = await db.makeQuery(dropTableQ);
+                    if(dropTableResp){
+                        let insertElementsQ = `INSERT INTO ${tableName} (value) VALUES`;
+
+                        for(let i=0; i<elems.length; i++)
+                            insertElementsQ += ' ("' + elems[i] + '"),'
+                        insertElementsQ = insertElementsQ.slice(0, -1);
+                        insertElementsQ += ';';
+                        await db.makeQuery(insertElementsQ);
+                    }
+                }
+
+                
+                let insertTokenQ = `UPDATE UserDatabase SET `;
+                for(const key in tableInfoValues){
+                    if(tableInfoValues[key] != null && tableInfoValues[key] !== ''){
+                        if(key !== 'accessType')
+                            insertTokenQ += key + '="' + tableInfoValues[key] + '", ';
+                        else
+                            insertTokenQ += key + '=' + tableInfoValues[key] + ', ';  
+                    }
+                }
+
+                insertTokenQ = insertTokenQ.slice(0, insertTokenQ.length-2);
+                insertTokenQ += ' WHERE username=? AND name=?';
+
+                const resp = await db.makeQuery(insertTokenQ, [username, name]);
+
+                if(resp){
+                    res.status(200);
+                    res.isSuccess = true;
+                } else{
+                    res.status(500);
+                    res.isSuccess = false;
+                }
+            }
+        } else {
+            res.status(500);
+            res.isSuccess = false;
+        }
+    } catch (e){
+        console.log("No connection to the DB or problems with query");
+        console.log(e);
+        res.status(500);
+        res.isSuccess = false;
+    }
+
+    next();
+}
+
 exports.deleteTable = async (req, res, next) => {
     try{
         const username = req.username;

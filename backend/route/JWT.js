@@ -7,5 +7,6 @@ const router = express.Router();
 
 router.post("/", loginController.isLoggedIn, loginController.getUsername, jwtController.createJWT, util.handlePostResp);
 router.get("/", loginController.isLoggedIn, loginController.getUsername, jwtController.getJWT, util.handleGetResp);
+router.delete("/", loginController.isLoggedIn, loginController.getUsername, jwtController.deleteJWT, util.handleDeleteResp);
 
 module.exports = router;
