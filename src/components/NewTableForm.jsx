@@ -65,6 +65,7 @@ function NewTableForm() {
 
     return (
         <div id="newTableForm">
+            <br/>
             <h3>Create new table</h3>
 
             <Form>

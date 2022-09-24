@@ -62,6 +62,7 @@ function LoginRegisterPage(props) {
 
     return (
         <div id="container">
+            <br/>
             <Form>
                 <Form.Text className="text-muted">
                     Login to your account here

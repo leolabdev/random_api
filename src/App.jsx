@@ -1,15 +1,26 @@
 import './App.css'
-
-
+import React, {useEffect} from 'react';
 import { useState } from 'react';
 import { useCookies } from "react-cookie";
-import {BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom';
+/*import {BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom';*/
+import { BrowserRouter, Route, Routes, Navigate} from 'react-router-dom';
 
-import ProfilePage from './components/ProfilePage';
+
 import NewTableForm from "./components/NewTableForm";
 import TableInfo from "./components/TableInfo";
 import LoginRegisterPage from "./pages/LoginRegisterPage";
 import Error from "./pages/Error";
+import NavbarComponent from "./components/Navbar/Navbar";
+import ProfilePage from "./pages/ProfilePage";
+import HubPage from "./pages/HubPage";
+
+import SettingsPage from "./pages/SettingsPage";
+
+
+import AboutPage from "./pages/AboutPage";
+import {Container} from "react-bootstrap";
+
+
 
 function App() {
   const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
@@ -18,21 +29,39 @@ function App() {
   const [tableInfoName, setTableInfoName] = useState('');
   const [tableInfoOwner, setTableInfoOwner] = useState('');
 
+    useEffect(() => {
+          if(cookies.jwt != null){
+              setLoginAccess(() => true);
+          }
+      }, [cookies]);
+
   return (
       <div className="App" id="container">
-          <Router>
+
+          <BrowserRouter>
+              <NavbarComponent loginAccess={loginAccess}/>
+              <Container>
               <Routes>
                   <Route path="/" element={loginAccess || cookies.jwt != null ? <Navigate replace to="/profile" /> : <LoginRegisterPage setLoginAccess={setLoginAccess}/>} />
                   <Route path="/profile" element={<ProfilePage setTableInfoName={setTableInfoName} setTableInfoOwner={setTableInfoOwner}/>} />
                   <Route path="/newTable" element={<NewTableForm/>} />
                   <Route path="/tableInfo" element={<TableInfo name={tableInfoName} owner={tableInfoOwner} />} />
+
+                  <Route path="/hub" element={<HubPage/>} />
+
+                  <Route path="/settings" element={<SettingsPage/>} />
+
+                  <Route path="/about" element={<AboutPage/>} />
+
                   <Route path="404"  element={<Error/>}/>
                   <Route
                       path="*"
                       element={<Navigate to="404" replace />}
                   />
               </Routes>
-          </Router>
+              </Container>
+          </BrowserRouter>
+
       </div>
   );
 }

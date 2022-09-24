@@ -30,6 +30,7 @@ function TableInfo(props) {
 
     return (
         <div id="tableInfo">
+            <br/>
             <h3>{tableName} table information</h3>
 
             <h4>Description</h4>

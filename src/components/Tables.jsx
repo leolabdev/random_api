@@ -44,13 +44,21 @@ function Tables(props) {
     }
 
     return (
+
         <div id="tables">
+
             <h3>Your tables</h3>
+
+
             <Button variant="primary" onClick={createNewTable}>Create a new table</Button>
-            <ListGroup>
+            <br/><br/>
+
+
+
+            <ListGroup as="ol" numbered className='gap-2 gap-lg-3 gap-xl-3  gap-sm-3 gap-md-3 gap-xxl-4'>
                 {
                     userTables.map((item, i)=>{
-                        return <ListGroup.Item key={i} onClick={()=>{ showTableInfo(item.name, item.username)} }>{item.name}</ListGroup.Item>
+                        return <ListGroup.Item  as='li' style={{cursor:'pointer' }} className=' w-50' key={i} onClick={()=>{ showTableInfo(item.name, item.username)} }>{item.name} </ListGroup.Item>
                     })
                 }
             </ListGroup>

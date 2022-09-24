@@ -42,10 +42,12 @@ function UserTokens() {
         <div id="userTokens">
             <h3>Your active tokens</h3>
             <Button variant="primary" onClick={createNewToken}>Create a new access token</Button>
-            <ListGroup>
+            <br/>
+            <br/>
+            <ListGroup as="ol"  className = 'gap-2 gap-lg-3 gap-xl-3  gap-sm-3 gap-md-3 gap-xxl-4' numbered >
                 {
                     userTokens.map((item, i)=>{
-                        return <ListGroup.Item key={i}>{item.token}</ListGroup.Item>
+                        return <ListGroup.Item   as="li" key={i}  className='mt-6 p-6 text-nowrap' style={{overflow: 'auto'}}>{item.token  }</ListGroup.Item>
                     })
                 }
             </ListGroup>
