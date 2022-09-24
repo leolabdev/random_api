@@ -4,6 +4,7 @@ const loginController = require("../controller/login");
 const router = express.Router();
 
 router.post("/", loginController.login, handleLoginResp);
+router.get("/logout", loginController.getUsername, loginController.logout, handleLogoutResp);
 
 function handleLoginResp(req, res){
     if(res.isSuccess){
@@ -15,6 +16,22 @@ function handleLoginResp(req, res){
         res.json({
             hasAccess: false,
             message: "Wrong username or password provided"
+        });
+    }
+
+    res.end();
+}
+
+function handleLogoutResp(req, res){
+    if(res.isSuccess){
+        res.json({
+            isSuccess: true,
+            message: "Logged out successfully"
+        });
+    } else{
+        res.json({
+            hasAccess: false,
+            message: "Could not log out"
         });
     }
 
