@@ -102,11 +102,18 @@ exports.getUsername = async (req, res, next) => {
     next();
 }
 
-exports.logout = (req, res) => {
-    res.cookie("jwt", "logout", {
+exports.logout = (req, res, next) => {
+    const cookieOptions = {
         expires: new Date(Date.now() + 2*1000),
+        path: '/',
         httpOnly: true
-    });
+    }
+
+    req.universalCookies.set('jwt', 'logout', cookieOptions);
+    req.universalCookies.set('username', 'bye', cookieOptions);
+
+    res.isSuccess = true;
+    next();
 }
 
 function createAccessCookie(id, req) {

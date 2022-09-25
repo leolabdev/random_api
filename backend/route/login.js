@@ -4,7 +4,7 @@ const loginController = require("../controller/login");
 const router = express.Router();
 
 router.post("/", loginController.login, handleLoginResp);
-router.get("/logout", loginController.getUsername, loginController.logout, handleLogoutResp);
+router.get("/logout", loginController.logout, handleLogoutResp);
 
 function handleLoginResp(req, res){
     if(res.isSuccess){

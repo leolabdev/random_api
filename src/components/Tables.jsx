@@ -38,7 +38,7 @@ function Tables(props) {
             credentials: 'include'
         }
 
-        const resp = await fetch(`${apiBasePath}/userDatabase?username=${cookies.username}`, reqOptions);
+        const resp = await fetch(`${apiBasePath}/userDatabase?own=true`, reqOptions);
         const respJson = await resp.json();
         setUserTables(respJson.result);
     }

@@ -57,15 +57,18 @@ exports.createTable = async (req, res, next) => {
 
 exports.getTables = async (req, res, next) => {
     try{
-        const username = req.query.username;
+        const currentUsername = req.username;
+        const isOwnTables = req.query.own;
 
-        let selectTokenQ;
-        if(username != null)
-            selectTokenQ = `SELECT * FROM UserDatabase WHERE username = ?`;
-        else
-            selectTokenQ = `SELECT * FROM UserDatabase`;
+        let resp;
+        if(isOwnTables === 'true'){
+            const selectTokenQ = `SELECT * FROM UserDatabase WHERE (username=?)`;
+            resp = await db.makeQuery(selectTokenQ, currentUsername);
+        }else{
+            const selectTokenQ = `SELECT * FROM UserDatabase WHERE (accessType=0 OR accessType=1)`;
+            resp = await db.makeQuery(selectTokenQ);
+        }
 
-        const resp = await db.makeQuery(selectTokenQ, username)
         if(resp){
             res.status(200);
             res.isSuccess = true;
@@ -122,11 +125,10 @@ exports.updateTable = async (req, res, next) => {
         const tableName = req.body.name;
 
         if(username != null && tableName != null){
-            const [name, description, accessType] = req.body;
+            const {name, description, accessType} = {...req.body};
             const tableInfoValues = {
-                name: name, 
-                description: description,
-                accessType: accessType
+                description: description || null,
+                accessType: accessType || null
             }
 
             const tableOwnerQ = `SELECT username FROM UserDatabase WHERE username=? AND name=?`;
@@ -134,7 +136,7 @@ exports.updateTable = async (req, res, next) => {
             if(tableOwnerResp != null && tableOwnerResp[0].username === username){
                 const elems = req.body.elements;
 
-                if(elems !== null){
+                if(elems != null){
                     const tableName = username + '_' + name;
                     let dropTableQ = `DROP TABLE IF EXISTS ${tableName}`;
                     const dropTableResp = await db.makeQuery(dropTableQ);
@@ -148,7 +150,6 @@ exports.updateTable = async (req, res, next) => {
                         await db.makeQuery(insertElementsQ);
                     }
                 }
-
                 
                 let insertTokenQ = `UPDATE UserDatabase SET `;
                 for(const key in tableInfoValues){

@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs");
+const axios = require('axios').default;
 
 const db = require("../util/DB");
 
@@ -46,16 +47,19 @@ exports.deleteUser = async (req, res, next) => {
                     const deleteUserAllowedQ = `DELETE FROM UserAllowed WHERE username=?`;
                     await db.makeQuery(deleteUserAllowedQ, username);
 
-                    const userTablesQ = `SELECT name FROM UserDatabase WHERE username=?`;
+                    const userTablesQ = `SELECT * FROM UserDatabase WHERE username=?`;
                     const userTablesResp = await db.makeQuery(userTablesQ, username);
                     if(userTablesResp != null && userTablesResp.length > 0){
-                        const tableDropQ = `DROP TABLE IF EXISTS ?`;
                         for(let i=0; i<userTablesResp.length; i++){
                             const name = userTablesResp[i].name;
                             const tableName = username + '_' + name;
 
+                            const tableDropQ = `DROP TABLE IF EXISTS ${tableName}`;
                             const tableDropResp = await db.makeQuery(tableDropQ, tableName);
                             if(tableDropResp){
+                                const deleteAllUserAllowedQ = `DELETE FROM UserAllowed WHERE id=?`;
+                                await db.makeQuery(deleteAllUserAllowedQ, userTablesResp[i].id);
+
                                 const deleteUserDatabaseQ = `DELETE FROM UserDatabase WHERE name=?`;
                                 await db.makeQuery(deleteUserDatabaseQ, name);
                             }
@@ -64,6 +68,8 @@ exports.deleteUser = async (req, res, next) => {
 
                     const deleteUserQ = `DELETE FROM User WHERE username=?`;
                     const resp = await db.makeQuery(deleteUserQ, username);
+
+                    await axios.get(`http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/login/logout`);
 
                     if(resp){
                         res.status(200);
