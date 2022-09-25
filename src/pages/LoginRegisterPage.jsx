@@ -1,7 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import {useState} from "react";
-import LoginRegisterModal from "../components/Navbar/LoginRegisterComponents/LoginRegisterModal";
+import LoginRegisterModal from "../components/LoginRegisterComponents/LoginRegisterModal";
 
 function LoginRegisterPage(props) {
     const [usernameLogin, setUsernameLogin] = useState('');
@@ -10,6 +10,8 @@ function LoginRegisterPage(props) {
 
     const [usernameRegister, setUsernameRegister] = useState('');
     const [passwordRegister, setPasswordRegister] = useState('');
+
+    const [passwordAgainRegister, setPasswordAgainRegister] = useState('');
     const [statusRegister, setStatusRegister] = useState('');
 
     const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
@@ -50,23 +52,36 @@ function LoginRegisterPage(props) {
     const registerUser = async (event) => {
         event.preventDefault();
 
-        const reqObj = {
-            username: usernameRegister,
-            password: passwordRegister
-        };
+        // console.log(passwordAgainRegister,passwordRegister)
+        //
+        // if(passwordAgainRegister === passwordRegister){
+        //     console.log("yes")
+        // }
 
-        const reqOptions = {
-            headers:{
-                'Content-Type': 'application/json'
-            },
-            method: "POST",
-            body: JSON.stringify(reqObj)
+        if(passwordAgainRegister === passwordRegister){
+
+            const reqObj = {
+                username: usernameRegister,
+                password: passwordRegister
+            };
+
+            const reqOptions = {
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                method: "POST",
+                body: JSON.stringify(reqObj)
+            }
+
+            const resp = await fetch(`${apiBasePath}/register`, reqOptions);
+            const respJson = await resp.json();
+            const respResult = respJson.result;
+            setStatusRegister(respResult);
+
         }
-
-        const resp = await fetch(`${apiBasePath}/register`, reqOptions);
-        const respJson = await resp.json();
-        const respResult = respJson.result;
-        setStatusRegister(respResult);
+        else{
+            setStatusRegister("Passwords are not same, please try again");
+        }
     }
 
     return (
@@ -80,6 +95,7 @@ function LoginRegisterPage(props) {
 
                     setUsernameRegister={setUsernameRegister}
                     setPasswordRegister={setPasswordRegister}
+                    setPasswordAgainRegister={setPasswordAgainRegister}
 
                     loginUser = {loginUser}
                     registerUser={registerUser}

@@ -99,7 +99,7 @@ const LoginRegisterModal = (props) => {
                         <Modal.Body>
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Label>Username</Form.Label>
-                                <Form.Control type="text" placeholder="Enter username" onChange={(event)=>{
+                                <Form.Control type="text" placeholder="Enter username " onChange={(event)=>{
                                     event.preventDefault();
                                     props.setUsernameRegister(event.target.value);
                                 }}/>
@@ -107,9 +107,16 @@ const LoginRegisterModal = (props) => {
 
                             <Form.Group className="mb-3" controlId="formBasicPassword">
                                 <Form.Label>Password</Form.Label>
-                                <Form.Control type="password" placeholder="Password" onChange={(event)=>{
+                                <Form.Control type="password" placeholder="Password " onChange={(event)=>{
                                     event.preventDefault();
                                     props.setPasswordRegister(event.target.value);
+                                }}/>
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Form.Label>Password again</Form.Label>
+                                <Form.Control type="password" placeholder="Password again" onChange={(event)=>{
+                                    event.preventDefault();
+                                    props.setPasswordAgainRegister(event.target.value);
                                 }}/>
                             </Form.Group>
                             <Form.Text className="text-muted">
