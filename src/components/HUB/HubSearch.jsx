@@ -1,20 +1,20 @@
-import {useState} from 'react';
+import React, {useState} from 'react';
 import {Card, Container} from "react-bootstrap";
 
 function HubSearch(props) {
 
     const {hubTables} = props
-    // const [tableSearchValue, setTableSearchValue] = useState();
-    let [table, setTable] = useState({});
+    const [tableSearchValue, setTableSearchValue] = useState('');
+    const [matchedtables, setMatchedtables] = useState([{}]);
 
     function tableSearch(value) {
 
+        setTableSearchValue(value)
         let result = hubTables.filter(t => t.name.includes(value));
-        console.log(result)
         if(result[0] !== undefined && value.length !== 0){
-            setTable(result[0]);
+            setMatchedtables(result);
         }
-        else{setTable({})}
+        else{setMatchedtables([])}
     }
 
     return (
@@ -22,45 +22,36 @@ function HubSearch(props) {
             <br />
             <input
                 placeholder="Enter table name"
-                // onChange={e => setTableSearchValue(e.target.value)}
                 onChange={e => tableSearch(e.target.value)}
             />{" "}
-            {/*<button onClick={tableSearch}>Search</button>*/}
-
-            <Container
-                style={{
-                    margin: "0 auto",
-                    padding: "3rem 7.5%",
-                    display: "flex",
-                    flexWrap: "wrap",
-                    justifyContent: "space-evenly"
-                }}
-            >
-                {Object.keys(table).length !== 0  ? (
+            {(matchedtables.length != 0 && tableSearchValue) && <><br/> <br/><h4>Matched Values:</h4></> }
+            <div className="container d-flex flex-wrap justify-content-center">
+                {(matchedtables.length != 0 && tableSearchValue)
+                    ?
+                    matchedtables.map((hubT) => (
                     <Card
-                        key={table.id}
-                        style={{ width: "25rem", margin: "1rem", textAlign: "center" ,cursor: 'pointer'}}
+                        key={hubT.id}
+                        style={{ width: "25rem", margin: "2rem", textAlign: "center",cursor:'pointer' }}
                     >
                         <Card.Body>
                             <Card.Title>
-                                {/*{" "}*/}
-                                <span style={{ fontWeight: "bold" }}>Table:</span>{" "}
-                                {table.name}
+                                {" "}
+                                <span style={{ fontWeight: "bold" }}>Table:</span> {hubT.name}
                             </Card.Title>
                             <Card.Text>
                                 <span style={{ fontWeight: "bold" }}>Description:</span>{" "}
-                                {table.description}
+                                {hubT.description}
                             </Card.Text>
                             <Card.Text>
-                                <span style={{ fontWeight: "bold" }}>Owner:</span>{" "}
-                                {table.owner}
+                                <span style={{ fontWeight: "bold" }}>Owner:</span> {hubT.owner}
                             </Card.Text>
                         </Card.Body>
                     </Card>
-                ) : (
-                    ""
-                )}
-            </Container>
+                ))
+                    :
+                        <span></span>
+                }
+            </div>
         </div>
     );
 }
