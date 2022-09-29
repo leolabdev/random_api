@@ -10,6 +10,8 @@ function NewTableForm() {
     const [tableElements, setTableElements] = useState([]);
     const [accessType , setAccessType] = useState("0");
 
+    const [postResult , setPostResult] = useState('');
+
     const createNewTable = async (e) => {
         e.preventDefault();
         const reqData = {
@@ -29,6 +31,9 @@ function NewTableForm() {
 
         const resp = await fetch(`${apiBasePath}/userDatabase`, reqOptions);
         const respJson = await resp.json();
+
+        setPostResult(respJson.message)
+
     }
 
     const convertStringToArr = (string) => {
@@ -101,6 +106,8 @@ function NewTableForm() {
                 <Button variant="primary" type="submit" onClick={createNewTable}>
                     Create table
                 </Button>
+                <br/>
+                <Form.Text>{postResult}</Form.Text>
             </Form>
         </div>
     );
