@@ -1,20 +1,21 @@
 import React, {useState} from 'react';
 import {Card, Container} from "react-bootstrap";
+import HubTables from "./HubTables";
 
 function HubSearch(props) {
 
     const {hubTables} = props
     const [tableSearchValue, setTableSearchValue] = useState('');
-    const [matchedtables, setMatchedtables] = useState([{}]);
+    const [matchedTables, setMatchedTables] = useState([{}]);
 
     function tableSearch(value) {
 
         setTableSearchValue(value)
         let result = hubTables.filter(t => t.name.includes(value));
         if(result[0] !== undefined && value.length !== 0){
-            setMatchedtables(result);
+            setMatchedTables(result);
         }
-        else{setMatchedtables([])}
+        else{setMatchedTables([])}
     }
 
     return (
@@ -25,29 +26,11 @@ function HubSearch(props) {
                 placeholder="Enter table name"
                 onChange={e => tableSearch(e.target.value)}
             />{" "}
-            {(matchedtables.length != 0 && tableSearchValue) && <><br/> <br/><h4>Matched Values:</h4></> }
+            {(matchedTables.length != 0 && tableSearchValue) && <><br/> <br/><h4>Matched Values:</h4></> }
             <div className="container d-flex flex-wrap justify-content-center">
-                {(matchedtables.length != 0 && tableSearchValue)
+                {(matchedTables.length != 0 && tableSearchValue)
                     ?
-                    matchedtables.map((hubT) => (
-                    <Card
-                        key={hubT.id}
-                        style={{ width: "25rem", margin: "2rem", textAlign: "center",cursor:'pointer' }}
-                    >
-                        <Card.Body style = {hubT.accessType == "0" ?  {backgroundColor: '#ADD8E6'} : hubT.accessType == "1" ? {backgroundColor: '#FFE898' } : {backgroundColor: '#90EE90'}}>
-                            <Card.Title>
-                                {" "}
-                                <span style={{ fontWeight: "bold" }}>Table:</span> {hubT.name}
-                            </Card.Title>
-                            <Card.Text>
-                               <span className='d-inline-block text-truncate' style={{maxWidth : '250px' ,fontWeight :'bold'}}>Description: {hubT.description}</span>
-                            </Card.Text>
-                            <Card.Text>
-                                <span style={{ fontWeight: "bold" }}>Owner:</span> {hubT.username}
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                ))
+                    <div><HubTables hubTables={matchedTables} /> </div>
                     :
                         <span></span>
                 }
