@@ -8,12 +8,14 @@ function NewTableForm() {
     const [tableName, setTableName] = useState('');
     const [tableDescription, setTableDescription] = useState('');
     const [tableElements, setTableElements] = useState([]);
+    const [accessType , setAccessType] = useState("0");
 
     const createNewTable = async (e) => {
         e.preventDefault();
         const reqData = {
             name: tableName,
             description: tableDescription,
+            accessType: accessType,
             elements: convertStringToArr(tableElements)
         }
         const reqOptions = {
@@ -85,6 +87,15 @@ function NewTableForm() {
                     <Form.Text className="text-muted">
                         Type elements separated by comma. Example: cat, dog, turtle
                     </Form.Text>
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="tableElements">
+                    <Form.Label>Access type </Form.Label>
+                <Form.Select tclassName="mb-3" aria-label="Default select example" value={accessType} onChange={(e)=> setAccessType(e.target.value)}>
+                    <option value="0">Private</option>
+                    <option value="1">Access required</option>
+                    <option value="2">Public</option>
+                </Form.Select>
                 </Form.Group>
 
                 <Button variant="primary" type="submit" onClick={createNewTable}>
