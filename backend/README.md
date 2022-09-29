@@ -57,9 +57,11 @@
  | userDatabase                                   | DELETE | {<br/> "name": "cars" <br/>}                                                                                                                      | {<br/> "isSuccess": true,<br/> "message": "Data has been deleted" <br/>}                                                                                                                                                                                                                                                                      |
  
  ### Access types explanation
- 0 - public, everybody can see and use the table
- 1 - by request, everybody can see, but can use only by table owner promission
- 2 - private, nobody can access and see the table
+ 1. 0 - public, everybody can see and use the table
+ 2. 
+ 3. 1 - by request, everybody can see, but can use only by table owner promission
+ 4. 
+ 5. 2 - private, nobody can access and see the table
 
 
 
