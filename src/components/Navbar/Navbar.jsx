@@ -6,6 +6,7 @@ import './Navbar.css'
 
 
 import { ReactComponent as ProfileSvg } from '../../img/profile.svg';
+import {useState} from "react";
 
 function NavbarComponent(props) {
 
@@ -13,6 +14,8 @@ function NavbarComponent(props) {
     const navigate = useNavigate();
 
     const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
+
+    const [hover, setHover] = useState(false);
 
     const  logMeOut = async () => {
 
@@ -48,7 +51,13 @@ function NavbarComponent(props) {
                             props.loginAccess !== false
 
                             ?
-                                <NavDropdown title={<ProfileSvg style={{width : '33px'}} fill = 'white' stroke='white' />}>
+                                <NavDropdown title={<ProfileSvg
+                                    onMouseEnter={()=>{
+                                        setHover(true);}}
+                                    onMouseLeave={()=>{
+                                        setHover(false);}}
+                                    style={{width : '33px' }}
+                                    fill = {hover ? '#E0E0E0' : 'white'} stroke={hover ? '#E0E0E0' : 'white'}  />}>
                                     <NavDropdown.Item onClick={()=>navigate('/profile')}>Profile</NavDropdown.Item>
 
                                     <NavDropdown.Item onClick={()=>navigate('/controlAccess')}>Access Control</NavDropdown.Item>
