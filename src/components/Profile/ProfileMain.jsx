@@ -12,6 +12,7 @@ const ProfileMain = (props) => {
             <Tables setTableInfoName={props.setTableInfoName} setTableInfoOwner={props.setTableInfoOwner}></Tables>
 
             <UserHasAccessTables/>
+            <br/>
         </div>
     );
 };
