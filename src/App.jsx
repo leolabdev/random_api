@@ -19,6 +19,7 @@ import SettingsPage from "./pages/SettingsPage";
 
 import AboutPage from "./pages/AboutPage";
 import {Container} from "react-bootstrap";
+import ControlAccessPage from "./pages/ControlAccessPage";
 
 
 
@@ -49,6 +50,8 @@ function App() {
                   <Route path="/tableInfo" element={<TableInfo name={tableInfoName} owner={tableInfoOwner} />} />
 
                   <Route path="/hub" element={<HubPage/>} />
+
+                  <Route path="/controlAccess" element={<ControlAccessPage/>} />
 
                   <Route path="/settings" element={<SettingsPage/>} />
 
