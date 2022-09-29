@@ -6,7 +6,7 @@ const UserHasAccessTables = () => {
 
     const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
 
-    const [userHasAccessTables, setUserHasAccessTables] = useState([]);
+    const [userHasAccessTables, setUserHasAccessTables] = useState([{}]);
 
     useEffect(() => {
         fetchUserHasAccessTables();
@@ -37,9 +37,12 @@ const UserHasAccessTables = () => {
 
             <ListGroup as="ol" numbered className='gap-2 gap-lg-3 gap-xl-3  gap-sm-3 gap-md-3 gap-xxl-4'>
                 {
+                    (userHasAccessTables[0] != null)  ?
                     userHasAccessTables.map((item, i)=>{
-                        return <ListGroup.Item  as='li' style={{cursor:'pointer' }} className=' w-50' key={i} onClick={()=>{ ""} }>{item.name} </ListGroup.Item>
+                        return <ListGroup.Item  as='li' style={{cursor:'pointer' }} className=' w-50' key={item.id} onClick={()=>{ alert("hello")} }>{item.name} </ListGroup.Item>
                     })
+                        :
+                        <span></span>
                 }
             </ListGroup>
         </div>
