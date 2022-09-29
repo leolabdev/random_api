@@ -55,7 +55,11 @@
  | userDatabase/cars?owner=mike                   | GET    | no need                                                                                                                                           | {<br/> "isSuccess": true,<br/> "message": "Data has been found",<br/> "result": {<br/> "id": 9, "username": "mike", "name": "cars", "description": "Description bla bla bla", "accessType": 0, "userCount": 1 <br/>} }                                                                                                                        |
  | userDatabase                                   | PUT    | {<br/> "name": "cars",<br/> "description": "Changed description",<br/> "accessType": "1" <br/>}                                                   | {<br/> "isSuccess": true,<br/> "message": "Data has been updated" <br/>}                                                                                                                                                                                                                                                                      |
  | userDatabase                                   | DELETE | {<br/> "name": "cars" <br/>}                                                                                                                      | {<br/> "isSuccess": true,<br/> "message": "Data has been deleted" <br/>}                                                                                                                                                                                                                                                                      |
-
+ 
+ ### Access types explanation
+ 0 - public, everybody can see and use the table
+ 1 - by request, everybody can see, but can use only by table owner promission
+ 2 - private, nobody can access and see the table
 
 
 
