@@ -1,5 +1,6 @@
 import UserTokens from "./UserTokens";
 import Tables from "./Tables";
+import UserHasAccessTables from "./UserHasAccessTables";
 
 const ProfileMain = (props) => {
     return (
@@ -9,6 +10,8 @@ const ProfileMain = (props) => {
             <br/>
 
             <Tables setTableInfoName={props.setTableInfoName} setTableInfoOwner={props.setTableInfoOwner}></Tables>
+
+            <UserHasAccessTables/>
         </div>
     );
 };
