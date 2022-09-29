@@ -1,10 +1,41 @@
 import {Container, Image, Nav, Navbar, NavDropdown} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 
+import './Navbar.css'
+
+import  profile from './profile.svg';
+
+
+import { ReactComponent as ProfileSvg } from './profile.svg';
+
 function NavbarComponent(props) {
 
 
     const navigate = useNavigate();
+
+    const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
+
+    const  logMeOut = async () => {
+
+        // console.log("suka0")
+
+        const reqOptions = {
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            method: 'GET',
+        }
+
+        const resp = await fetch(`http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}/login/logout`,reqOptions);
+        // const resp = await fetch(`https://jsonplaceholder.typicode.com/todos/`);
+        const respJson = await resp.json();
+        const result = respJson.result;
+
+        // await console.log(result)
+
+
+        // navigate('/')
+    }
 
     // const UserMenu = (
     //     <Image
@@ -42,21 +73,19 @@ function NavbarComponent(props) {
 
                     <Nav>
 
-                    {/*    <Nav.Link href="#features"></Nav.Link>*/}
-
                         {
                             props.loginAccess !== false
 
                             ?
-                                <NavDropdown title="Profile Img Here">
-
+                                // <NavDropdown title={<Image style={{width: '35px' ,fill : 'white'}} src={profile}/>}>
+                                <NavDropdown title={<ProfileSvg style={{width : '33px'}} fill = 'white' stroke='white' />}>
                                     <NavDropdown.Item onClick={()=>navigate('/profile')}>Profile</NavDropdown.Item>
 
                                     <NavDropdown.Item onClick={()=>navigate('/settings')}>Settings</NavDropdown.Item>
 
                                     <NavDropdown.Divider />
 
-                                    <NavDropdown.Item href="#action/1.3" style={{color: 'red'}}>
+                                    <NavDropdown.Item onClick={() => logMeOut()} style={{color: 'red'}}>
                                         Log out
                                     </NavDropdown.Item>
 
@@ -65,10 +94,6 @@ function NavbarComponent(props) {
                                     <Nav.Link onClick={()=>navigate('/')}>Log in</Nav.Link>
                         }
 
-
-                        {/*<Nav.Link eventKey={2} href="#memes">
-                            Profile
-                        </Nav.Link>*/}
                     </Nav>
                 </Navbar.Collapse>
             </Container>
