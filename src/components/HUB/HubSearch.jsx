@@ -20,6 +20,7 @@ function HubSearch(props) {
     return (
         <div>
             <br />
+
             <input
                 placeholder="Enter table name"
                 onChange={e => tableSearch(e.target.value)}
@@ -33,7 +34,7 @@ function HubSearch(props) {
                         key={hubT.id}
                         style={{ width: "25rem", margin: "2rem", textAlign: "center",cursor:'pointer' }}
                     >
-                        <Card.Body>
+                        <Card.Body style = {hubT.accessType == "0" ?  {backgroundColor: '#ADD8E6'} : hubT.accessType == "1" ? {backgroundColor: '#FFE898' } : {backgroundColor: '#90EE90'}}>
                             <Card.Title>
                                 {" "}
                                 <span style={{ fontWeight: "bold" }}>Table:</span> {hubT.name}
@@ -43,7 +44,7 @@ function HubSearch(props) {
                                 {hubT.description}
                             </Card.Text>
                             <Card.Text>
-                                <span style={{ fontWeight: "bold" }}>Owner:</span> {hubT.owner}
+                                <span style={{ fontWeight: "bold" }}>Owner:</span> {hubT.username}
                             </Card.Text>
                         </Card.Body>
                     </Card>
