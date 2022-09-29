@@ -1,5 +1,6 @@
 const db = require("../util/DB");
 const jwt = require("jsonwebtoken");
+const {promisify} = require("util");
 
 exports.createJWT = async (req, res, next) => {
     try{
@@ -93,6 +94,16 @@ exports.deleteJWT = async (req, res, next) => {
     }
 
     next();
+}
+
+exports.decodeJWT = async (token) => {
+    try{
+        return await promisify(jwt.verify)(token, process.env.JWT_DATABASE_SECRET);
+    }catch(e){
+        console.log("Problems with decoding");
+        console.log(e);
+        return null;
+    }
 }
 
 function getDatabaseJWT(id, tokenNum) {

@@ -30,28 +30,3 @@ CREATE TABLE UserAllowed(
     FOREIGN KEY (username) REFERENCES User(username),
     FOREIGN KEY (id) REFERENCES UserDatabase(id)
 );
-
-CREATE TABLE Firstname(
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    value VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE Lastname(
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    value VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE Phone(
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    value SMALLINT NOT NULL
-);
-
-CREATE TABLE Email(
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    value VARCHAR(20) NOT NULL
-);
-
-INSERT INTO Firstname (value) VALUES ('John'), ('George'), ('Olivia'), ('Emma');
-INSERT INTO Lastname (value) VALUES ('Smith'), ('Brown'), ('Williams'), ('Johnson');
-INSERT INTO Phone (value) VALUES (358), (43), (1), (46);
-INSERT INTO Email (value) VALUES ('gmail.com'), ('outlook.com'), ('yahoo.com'), ('metropolia.fi');

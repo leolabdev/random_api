@@ -1,26 +1,49 @@
-const db = require('./DB');
-const MersenneTwister19937 = require('random-js/dist/engine/MersenneTwister19937');
-const sample = require('random-js/dist/distribution/sample');
+const Random = require("random-js").Random;
+const {MersenneTwister19937} = require("random-js");
 
-// create a Mersenne Twister-19937 that is auto-seeded based on time and other random values
-const engine = MersenneTwister19937.autoSeed();
+const random = new Random(MersenneTwister19937.autoSeed());
 
-// create a distribution that will consistently produce integers within inclusive range [0, 99].
+exports.getRandomSQLQuery = (tableName, columnName, isColumnString, columnValues) => {
+  if(columnValues != null && columnValues.length > 0){
+    let query = `SELECT * FROM ${tableName} WHERE `;
+    for(let i=0; i<columnValues.length; i++){
+      if(isColumnString)
+        query += `${columnName}="${columnValues[i]}" OR `;
+       else
+        query += `${columnName}=${columnValues[i]} OR `;
+    }
 
+    query = query.slice(0, -4);
+    return query;
+  }
 
-exports.makeRandomQuery = async () => {
-
+  return null;
 }
 
-function getRandomSQLQuery(tableName, elemCount, minValue, maxValue){
-  const randValArr = generateRandIntArr(minValue, maxValue, elemCount);
-}
+exports.generateRandIntArr = (min, max, elemCount) => {
+  if(min != null && max != null && min >= 0 && max >= 0 && min < max && elemCount > 0 && elemCount <= 100000000){
+    const range = max-min+1;
+    const sameArrCount = Math.floor(elemCount/range);
 
-function generateRandIntArr(min, max, elemCount){
-  const populationArr = [];
-  for(let i=min; i<max; i++)
-    populationArr.push(i);
+    const populationArr = [];
+    let result = [];
+    for(let i=min; i<=max; i++)
+      populationArr.push(i);
 
-  const distribution = sample(engine, populationArr, elemCount);
-  return distribution(engine);
+    if(sameArrCount >= 1){
+      for(let i=0; i<sameArrCount; i++)
+        result.push(...random.sample(populationArr, range));
+
+      const itemsLeft = elemCount-result.length;
+      if(itemsLeft > 0){
+        for(let i=0; i<itemsLeft; i++)
+          result.push(random.integer(min, max));
+      }
+    }else
+      result.push(...random.sample(populationArr, elemCount));
+
+    return result;
+  }
+
+  return null;
 }
