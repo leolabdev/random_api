@@ -3,10 +3,9 @@ import {useNavigate} from "react-router-dom";
 
 import './Navbar.css'
 
-import  profile from './profile.svg';
 
 
-import { ReactComponent as ProfileSvg } from './profile.svg';
+import { ReactComponent as ProfileSvg } from '../../img/profile.svg';
 
 function NavbarComponent(props) {
 
