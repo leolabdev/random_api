@@ -67,7 +67,7 @@ const HubMain = () => {
             <div  className='d-flex justify-content-center gap-3'
                    style={{textAlign : 'left'}}
             >
-                    <div style={{color: "#ADD8E6", fontWeight: '700'}}>&#9632; <span>Private</span></div>
+                    <div style={{color: "#ADD8E6", fontWeight: '700'}}>&#9632; <span>Private(Yours)</span></div>
                     <div style={{color: "#FFE898",fontWeight: '700'}}>&#9632; <span>Access required</span></div>
                     <div style={{color: "#90EE90",fontWeight: '700'}}>&#9632; <span>Public</span></div>
             </div>
@@ -90,8 +90,7 @@ const HubMain = () => {
                                 <span style={{ fontWeight: "bold" }}>Table:</span> {hubT.name}
                             </Card.Title>
                             <Card.Text>
-                                <span style={{ fontWeight: "bold" }}>Description:</span>{" "}
-                                {hubT.description}
+                                <span className='d-inline-block text-truncate' style={{maxWidth : '250px' ,fontWeight :'bold'}}>Description: {hubT.description}</span>
                             </Card.Text>
                             <Card.Text>
                                 <span style={{ fontWeight: "bold" }}>Owner:</span> {hubT.username}
