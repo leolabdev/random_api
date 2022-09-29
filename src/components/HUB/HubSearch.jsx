@@ -40,8 +40,7 @@ function HubSearch(props) {
                                 <span style={{ fontWeight: "bold" }}>Table:</span> {hubT.name}
                             </Card.Title>
                             <Card.Text>
-                                <span style={{ fontWeight: "bold" }}>Description:</span>{" "}
-                                {hubT.description}
+                               <span className='d-inline-block text-truncate' style={{maxWidth : '250px' ,fontWeight :'bold'}}>Description: {hubT.description}</span>
                             </Card.Text>
                             <Card.Text>
                                 <span style={{ fontWeight: "bold" }}>Owner:</span> {hubT.username}
