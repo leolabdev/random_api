@@ -27,6 +27,7 @@ function Tables(props) {
 
     useEffect(() => {
         fetchUserTables();
+        console.log(userTables)
     }, []);
 
     const fetchUserTables = async () => {
