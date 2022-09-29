@@ -59,12 +59,12 @@ const DeleteAccount = () => {
     return (
         <div>
 
-            <ListGroup className='list-group-flush'>
-                <ListGroupItem>
+            <div className='list-group-flush'>
+                <div>
                     <h3>Delete Account</h3>
                     <Button variant="danger" onClick={handleShow}>Confirm</Button>
-                </ListGroupItem>
-            </ListGroup>
+                </div>
+            </div>
 
 
             <Modal show={show} onHide={handleClose}  size="lg"
