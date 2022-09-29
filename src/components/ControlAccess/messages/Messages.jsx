@@ -1,3 +1,6 @@
+import {ListGroup, ListGroupItem} from "react-bootstrap";
+import Button from "react-bootstrap/Button";
+
 const Messages = () => {
 
     const messages = [
@@ -9,16 +12,22 @@ const Messages = () => {
     ]
 
     return (
+
         <div>
             {
                 messages.map((m)=> (
 
-                    <div>
-                        <div>{m.id}</div>
-                        <div>{m.username}</div>
-                        <div>{m.message}</div>
-                    </div>
-
+                    <ListGroup>
+                       <ListGroupItem>
+                           id : {m.id} , username: {m.username}, message: {m.message}
+                           <br/><br/>
+                           <div className="mb-2">
+                               <Button variant="success">Confirm</Button>{' '}
+                               <Button variant="danger">Decline</Button>
+                           </div>
+                       </ListGroupItem>
+                        <br/>
+                    </ListGroup>
                 ))
             }
         </div>
