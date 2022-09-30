@@ -25,6 +25,16 @@ function NavbarComponent(props) {
 
         const resp = await fetch(`${apiBasePath}/login/logout`,reqOptions);
         const respJson = await resp.json();
+        const respResult = respJson.isSuccess;
+        const respMessage = respJson.message;
+
+        if(respResult == true){
+
+            window.location.reload(false);
+            navigate('/');
+
+
+        }
     }
 
 
