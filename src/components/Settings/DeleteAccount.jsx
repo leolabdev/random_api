@@ -44,7 +44,7 @@ const DeleteAccount = () => {
         const respResult = respJson.hasAccess;
         const respMessage = respJson.message;
 
-        if(respResult === 'true'){
+        if(respResult === true){
             navigate('/');
             alert(respMessage)
         }
