@@ -41,12 +41,16 @@ const DeleteAccount = () => {
 
         const resp = await fetch(`${apiBasePath}/register`, reqOptions);
         const respJson = await resp.json();
-        const respResult = respJson.hasAccess;
+        const respResult = respJson.isSuccess;
         const respMessage = respJson.message;
 
-        if(respResult === true){
+        if(respResult == true){
+
+            // navigate('/');
+            window.location.reload(false);
             navigate('/');
             alert(respMessage)
+
         }
         else {
             respMessage ? setErrorMessage(respMessage) : setErrorMessage("server not available , try later")

@@ -53,7 +53,7 @@ function App() {
 
                   <Route path="/controlAccess" element={<ControlAccessPage/>} />
 
-                  <Route path="/settings" element={<SettingsPage/>} />
+                  <Route path="/settings" element={ loginAccess || cookies.jwt != null ? <SettingsPage/> : <Navigate replace to="/" />} />
 
                   <Route path="/about" element={<AboutPage/>} />
 
