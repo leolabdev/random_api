@@ -1,9 +1,9 @@
+require("dotenv").config({path: '../.env'});
+
 const express = require('express');
-const dotenv = require("dotenv");
 const cors = require('cors');
 const cookiesMiddleware = require('universal-cookie-express');
-
-dotenv.config({path: '../.env'});
+const util = require('./util/util');
 
 const app = express();
 
@@ -20,6 +20,13 @@ app.use("/rand", require("./route/random"));
 
 app.listen(process.env.SERVER_PORT, () => {
     displayLinks();
+
+    util.nullJWTRequestCount();
+
+    //null all jwt tokens requests count once a day = 86400000ms
+    setInterval(() => {
+        util.nullJWTRequestCount();
+    } , 86400000);
 });
 
 function displayLinks(){

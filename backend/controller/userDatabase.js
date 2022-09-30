@@ -10,37 +10,36 @@ exports.createTable = async (req, res, next) => {
             const accessType = req.body.accessType || 0;
             const elems = req.body.elements;
 
-            const tableName = username + '_' + name;
-            let createNewTableQ = `CREATE TABLE ${tableName} (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, value VARCHAR(100) NOT NULL)`;
-            const createResp = await db.makeQuery(createNewTableQ);
-            let insertElemResp = null;
-            if(createResp){
-                let insertElementsQ = `INSERT INTO ${tableName} (value) VALUES`;
+            const selectTableNameQ = `SELECT name FROM UserDatabase WHERE username=? && name=?`;
+            const selectTableResp = await db.makeQuery(selectTableNameQ, [username, name]);
+            if(selectTableResp == null || selectTableResp.length === 0){
+                const tableName = username + '_' + name;
+                let createNewTableQ = `CREATE TABLE ${tableName} (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, value VARCHAR(100) NOT NULL)`;
+                const createResp = await db.makeQuery(createNewTableQ);
+                let insertElemResp = null;
+                if(createResp){
+                    let insertElementsQ = `INSERT INTO ${tableName} (value) VALUES`;
 
-                for(let i=0; i<elems.length; i++)
-                    insertElementsQ += ' ("' + elems[i] + '"),'
-                insertElementsQ = insertElementsQ.slice(0, -1);
-                insertElementsQ += ';';
-                insertElemResp = await db.makeQuery(insertElementsQ);
-            }
+                    for(let i=0; i<elems.length; i++)
+                        insertElementsQ += ' ("' + elems[i] + '"),'
+                    insertElementsQ = insertElementsQ.slice(0, -1);
+                    insertElementsQ += ';';
+                    insertElemResp = await db.makeQuery(insertElementsQ);
+                }
 
-            if(insertElemResp){
-                const insertTokenQ = `INSERT INTO UserDatabase (username, name, description, accessType) VALUES (?, ?, ?, ?)`;
-                const resp = await db.makeQuery(insertTokenQ, [username, name, description, accessType]);
+                if(insertElemResp){
+                    const insertTokenQ = `INSERT INTO UserDatabase (username, name, description, accessType) VALUES (?, ?, ?, ?)`;
+                    const resp = await db.makeQuery(insertTokenQ, [username, name, description, accessType]);
 
-                const tableId = resp.insertId;
-                const insertUserAllowedQ = `INSERT INTO UserAllowed (id, username) VALUES (?, ?)`;
-                await db.makeQuery(insertUserAllowedQ, [tableId, username]);
-
-                if(resp){
-                    res.status(200);
-                    res.isSuccess = true;
-                } else{
-                    res.status(500);
-                    res.isSuccess = false;
+                    if(resp){
+                        res.status(200);
+                        res.isSuccess = true;
+                    } else{
+                        res.status(500);
+                        res.isSuccess = false;
+                    }
                 }
             }
-
         } else {
             res.status(500);
             res.isSuccess = false;
@@ -136,35 +135,44 @@ exports.updateTable = async (req, res, next) => {
             if(tableOwnerResp != null && tableOwnerResp[0].username === username){
                 const elems = req.body.elements;
 
-                if(elems != null){
+                if(elems != null && elems.length > 0){
                     const tableName = username + '_' + name;
                     let dropTableQ = `DROP TABLE IF EXISTS ${tableName}`;
-                    const dropTableResp = await db.makeQuery(dropTableQ);
-                    if(dropTableResp){
-                        let insertElementsQ = `INSERT INTO ${tableName} (value) VALUES`;
+                    await db.makeQuery(dropTableQ);
 
+                    const createTableQ = `CREATE TABLE ${tableName} (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, value VARCHAR(100) NOT NULL)`;
+                    const createTableResp = await db.makeQuery(createTableQ);
+                    if(createTableResp != null){
+                        let insertElementsQ = `INSERT INTO ${tableName} (value) VALUES`;
                         for(let i=0; i<elems.length; i++)
-                            insertElementsQ += ' ("' + elems[i] + '"),'
+                            insertElementsQ += ' ("' + elems[i] + '"),';
                         insertElementsQ = insertElementsQ.slice(0, -1);
                         insertElementsQ += ';';
                         await db.makeQuery(insertElementsQ);
                     }
                 }
-                
+
+                let isQueryNeeded = false;
                 let insertTokenQ = `UPDATE UserDatabase SET `;
                 for(const key in tableInfoValues){
-                    if(tableInfoValues[key] != null && tableInfoValues[key] !== ''){
-                        if(key !== 'accessType')
+                    if(tableInfoValues[key] !== null && tableInfoValues[key] !== undefined && tableInfoValues[key] !== ''){
+                        if(key !== 'accessType'){
                             insertTokenQ += key + '="' + tableInfoValues[key] + '", ';
-                        else
-                            insertTokenQ += key + '=' + tableInfoValues[key] + ', ';  
+                            isQueryNeeded = true;
+                        } else {
+                            insertTokenQ += key + '=' + tableInfoValues[key] + ', ';
+                            isQueryNeeded = true;
+                        }
                     }
                 }
 
-                insertTokenQ = insertTokenQ.slice(0, insertTokenQ.length-2);
-                insertTokenQ += ' WHERE username=? AND name=?';
+                let resp;
+                if(isQueryNeeded){
+                    insertTokenQ = insertTokenQ.slice(0, insertTokenQ.length-2);
+                    insertTokenQ += ' WHERE username=? AND name=?';
 
-                const resp = await db.makeQuery(insertTokenQ, [username, name]);
+                    resp = await db.makeQuery(insertTokenQ, [username, name]);
+                }
 
                 if(resp){
                     res.status(200);
