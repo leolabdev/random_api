@@ -16,6 +16,7 @@ app.use("/register", require("./route/register"));
 app.use("/jwt", require("./route/JWT"));
 app.use("/userDatabase", require("./route/userDatabase"));
 app.use("/userAllowed", require("./route/userAllowed"));
+app.use("/accessRequest", require("./route/accessRequest"));
 app.use("/rand", require("./route/random"));
 
 app.listen(process.env.SERVER_PORT, () => {
