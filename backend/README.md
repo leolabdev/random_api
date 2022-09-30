@@ -25,6 +25,11 @@
 | Get concrete user table data***            | userDatabase/{tableName}?owner={ownerUsername} | GET    |
 | Update user table data or its items        | userDatabase                                   | PUT    |
 | Delete user table*                         | userDatabase                                   | DELETE |
+| .                                          | .                                              | .      |
+| Create table access request                | accessRequest                                  | POST   |
+| Get all table access requests              | accessRequest                                  | GET    |
+| Delete a table access request              | accessRequest                                  | DELETE |
+
 
 *Can be done only by the table owner
 
@@ -55,7 +60,12 @@
  | userDatabase/cars?owner=mike                   | GET    | no need                                                                                                                                           | {<br/> "isSuccess": true,<br/> "message": "Data has been found",<br/> "result": {<br/> "id": 9, "username": "mike", "name": "cars", "description": "Description bla bla bla", "accessType": 0, "userCount": 1 <br/>} }                                                                                                                        |
  | userDatabase                                   | PUT    | {<br/> "name": "cars",<br/> "description": "Changed description",<br/> "accessType": "1" <br/>}                                                   | {<br/> "isSuccess": true,<br/> "message": "Data has been updated" <br/>}                                                                                                                                                                                                                                                                      |
  | userDatabase                                   | DELETE | {<br/> "name": "cars" <br/>}                                                                                                                      | {<br/> "isSuccess": true,<br/> "message": "Data has been deleted" <br/>}                                                                                                                                                                                                                                                                      |
- 
+ | .                                              | .      | .                                                                                                                                                 | .                                                                                                                                                                                                                                                                                                                                             |
+ | accessRequest                                  | POST   | {<br/>"receiver": "mike",<br/> "tableName": "myTable",<br/> "message": "Give me access please"<br/>}                                              | {<br/> "isSuccess": true,<br/> "message": "Data has been added" <br/>}                                                                                                                                                                                                                                                                        |
+ | accessRequest                                  | GET    | no need                                                                                                                                           | {<br/> "isSuccess": true,<br/> "message": "Data has been found",<br/> "result": [<br/> { "id": 6, "sender": "test", "receiver": "mike", "tableName": "animals", "message": "please let me access" },<br/> { "id": 7, "sender": "test", "receiver": "mike", "tableName": "cars", "message": null }<br/> ] }                                    |
+ | accessRequest                                  | DELETE | { <br/>"id": 4 <br/>}                                                                                                                             | {<br/> "isSuccess": true,<br/> "message": "Data has been deleted" <br/>}                                                                                                                                                                                                                                                                      |
+
+
  ### Access types explanation
  0 - public, everybody can see and use the table
   
