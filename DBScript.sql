@@ -30,3 +30,12 @@ CREATE TABLE UserAllowed(
     FOREIGN KEY (username) REFERENCES User(username),
     FOREIGN KEY (id) REFERENCES UserDatabase(id)
 );
+
+CREATE TABLE AccessRequest(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    sender VARCHAR(30) NOT NULL,
+    receiver VARCHAR(30) NOT NULL,
+    message VARCHAR(255),
+    FOREIGN KEY (sender) REFERENCES User(username),
+    FOREIGN KEY (receiver) REFERENCES User(username)
+);

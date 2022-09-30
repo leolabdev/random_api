@@ -18,18 +18,13 @@ function NavbarComponent(props) {
     const [hover, setHover] = useState(false);
 
     const  logMeOut = async () => {
-
-
         const reqOptions = {
-            headers:{
-                'Content-Type': 'application/json'
-            },
             method: 'GET',
+            credentials: 'include'
         }
 
-        const resp = await fetch(`http://${apiBasePath}/login/logout`,reqOptions);
+        const resp = await fetch(`${apiBasePath}/login/logout`,reqOptions);
         const respJson = await resp.json();
-        const result = respJson.result;
     }
 
 
