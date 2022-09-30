@@ -20,7 +20,7 @@ CREATE TABLE UserDatabase(
     description VARCHAR(255) NOT NULL,
     accessType SMALLINT NOT NULL DEFAULT 0,
     FOREIGN KEY (username) REFERENCES User(username),
-    UNIQUE (name)
+    UNIQUE (username, name)
 );
 
 CREATE TABLE UserAllowed(
