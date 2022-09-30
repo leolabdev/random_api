@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const axios = require('axios').default;
 
 const db = require("../util/DB");
+const loginController = require("../controller/login");
 
 exports.register = async (req, res, next) => {
     try{
@@ -67,17 +68,9 @@ exports.deleteUser = async (req, res, next) => {
                     }
 
                     const deleteUserQ = `DELETE FROM User WHERE username=?`;
-                    const resp = await db.makeQuery(deleteUserQ, username);
+                    await db.makeQuery(deleteUserQ, username);
 
-                    await axios.get(`http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/login/logout`);
-
-                    if(resp){
-                        res.status(200);
-                        res.isSuccess = true;
-                    }else{
-                        res.status(500);
-                        res.isSuccess = false;
-                    }      
+                    await loginController.logout(req, res, next);
                 }
             } else {
                 res.status(500);
