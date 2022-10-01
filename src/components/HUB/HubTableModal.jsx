@@ -23,9 +23,10 @@ const HubTableModal = ({table ,show , handleClose}) => {
                     <Button variant="primary" onClick={handleClose}>
                         Cancel
                     </Button>
+
                     {
-                        table.accessType == 1 ? <Button onClick={()=> alert ("implement me")} variant="success">Send Access Request</Button>
-                            : <Button onClick={()=> alert ("implement me")} variant="success">Add to own collection</Button>
+                        table.accessType == 1 ? <Button className='accessButton' onClick={()=> alert ("implement me")} variant="success">Send Access Request</Button>
+                            : <Button className='addToOwnButton' onClick={()=> alert ("implement me")} variant="success">Add to own collection</Button>
                     }
                     {/*<Button variant="success" onClick={()=> alert ("implement me")}>*/}
                     {/*    Yes*/}
