@@ -8,7 +8,7 @@ const Messages = () => {
 
 
     let [messages,setMessages] = useState([
-        { id: 7, sender: "test", receiver: "mike", tableName: "cars", message: null },
+        // { id: 7, sender: "test", receiver: "mike", tableName: "cars", message: null },
         // {id : 1, username : "petya" , message : "hello i am petya" },
         // {id : 2, username : "vasya" , message : "hello i am vasya" },
         // {id : 3, username : "misha" , message : "hello i am misha" },
