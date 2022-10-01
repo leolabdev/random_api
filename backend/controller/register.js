@@ -48,6 +48,9 @@ exports.deleteUser = async (req, res, next) => {
                     const deleteUserAllowedQ = `DELETE FROM UserAllowed WHERE username=?`;
                     await db.makeQuery(deleteUserAllowedQ, username);
 
+                    const deleteAccessRequestQ = `DELETE FROM AccessRequest WHERE sender=? OR receiver=?`;
+                    await db.makeQuery(deleteAccessRequestQ, [username, username]);
+
                     const userTablesQ = `SELECT * FROM UserDatabase WHERE username=?`;
                     const userTablesResp = await db.makeQuery(userTablesQ, username);
                     if(userTablesResp != null && userTablesResp.length > 0){
