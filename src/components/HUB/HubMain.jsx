@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import HubSearch from "./HubSearch";
+import  './Hub.css';
 import {Card, ListGroup, ListGroupItem, Pagination} from "react-bootstrap";
 import HubTables from "./HubTables";
 
