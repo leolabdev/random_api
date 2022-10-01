@@ -2,6 +2,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import TableAccessDescription from "./TableAccessDescription";
 
 const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
 
@@ -77,6 +78,10 @@ function NewTableForm() {
     return (
         <div id="newTableForm">
             <br/>
+
+            <TableAccessDescription/>
+            <br/>
+
             <button onClick={() => navigate(-1)}>Go back</button>
             <br/><br/>
             <h3>Create new table</h3>
