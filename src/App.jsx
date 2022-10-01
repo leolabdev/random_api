@@ -6,8 +6,8 @@ import { useCookies } from "react-cookie";
 import { BrowserRouter, Route, Routes, Navigate} from 'react-router-dom';
 
 
-import NewTableForm from "./components/NewTableForm";
-import TableInfo from "./components/TableInfo";
+import NewTableForm from "./components/Profile/NewTableForm";
+import TableInfo from "./components/Profile/TableInfo";
 import LoginRegisterPage from "./pages/LoginRegisterPage";
 import Error from "./pages/Error";
 import NavbarComponent from "./components/Navbar/Navbar";
