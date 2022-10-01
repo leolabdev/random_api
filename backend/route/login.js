@@ -5,7 +5,7 @@ const loginController = require("../controller/login");
 const router = express.Router();
 
 router.post("/", [
-    body("login", "Wrong login").isAlphanumeric().isLength({min: 3}),
+    body("username", "Wrong username").isAlphanumeric().isLength({min: 3}),
     body("password", "Wrong password").blacklist(" ").notEmpty({ignore_whitespace: true})
 ], loginController.login, handleLoginResp);
 

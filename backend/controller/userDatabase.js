@@ -1,54 +1,66 @@
 const db = require("../util/DB");
+const {validationResult} = require("express-validator");
 
 exports.createTable = async (req, res, next) => {
-    try{
-        const username = req.username;
+    const errors = validationResult(req);
+    if(errors.isEmpty()) {
+        try {
+            const username = req.username;
 
-        if(username != null){
-            const name = req.body.name;
-            const description = req.body.description;
-            const accessType = req.body.accessType || 0;
-            const elems = req.body.elements;
+            if (username != null) {
+                const name = req.body.name;
+                const description = req.body.description;
+                const accessType = req.body.accessType || 0;
+                const elems = req.body.elements;
 
-            const selectTableNameQ = `SELECT name FROM UserDatabase WHERE username=? && name=?`;
-            const selectTableResp = await db.makeQuery(selectTableNameQ, [username, name]);
-            if(selectTableResp == null || selectTableResp.length === 0){
-                const tableName = username + '_' + name;
-                let createNewTableQ = `CREATE TABLE ${tableName} (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, value VARCHAR(100) NOT NULL)`;
-                const createResp = await db.makeQuery(createNewTableQ);
-                let insertElemResp = null;
-                if(createResp){
-                    let insertElementsQ = `INSERT INTO ${tableName} (value) VALUES`;
+                const selectTableNameQ = `SELECT name
+                                          FROM UserDatabase
+                                          WHERE username = ? && name = ?`;
+                const selectTableResp = await db.makeQuery(selectTableNameQ, [username, name]);
+                if (selectTableResp == null || selectTableResp.length === 0) {
+                    const tableName = username + '_' + name;
+                    let createNewTableQ = `CREATE TABLE ${tableName}
+                                           (
+                                               id    INT          NOT NULL PRIMARY KEY AUTO_INCREMENT,
+                                               value VARCHAR(100) NOT NULL
+                                           )`;
+                    const createResp = await db.makeQuery(createNewTableQ);
+                    let insertElemResp = null;
+                    if (createResp) {
+                        let insertElementsQ = `INSERT INTO ${tableName} (value)
+                                               VALUES`;
 
-                    for(let i=0; i<elems.length; i++)
-                        insertElementsQ += ' ("' + elems[i] + '"),'
-                    insertElementsQ = insertElementsQ.slice(0, -1);
-                    insertElementsQ += ';';
-                    insertElemResp = await db.makeQuery(insertElementsQ);
-                }
+                        for (let i = 0; i < elems.length; i++)
+                            insertElementsQ += ' ("' + elems[i] + '"),'
+                        insertElementsQ = insertElementsQ.slice(0, -1);
+                        insertElementsQ += ';';
+                        insertElemResp = await db.makeQuery(insertElementsQ);
+                    }
 
-                if(insertElemResp){
-                    const insertTokenQ = `INSERT INTO UserDatabase (username, name, description, accessType) VALUES (?, ?, ?, ?)`;
-                    const resp = await db.makeQuery(insertTokenQ, [username, name, description, accessType]);
+                    if (insertElemResp) {
+                        const insertTokenQ = `INSERT INTO UserDatabase (username, name, description, accessType)
+                                              VALUES (?, ?, ?, ?)`;
+                        const resp = await db.makeQuery(insertTokenQ, [username, name, description, accessType]);
 
-                    if(resp){
-                        res.status(200);
-                        res.isSuccess = true;
-                    } else{
-                        res.status(500);
-                        res.isSuccess = false;
+                        if (resp) {
+                            res.status(200);
+                            res.isSuccess = true;
+                        } else {
+                            res.status(500);
+                            res.isSuccess = false;
+                        }
                     }
                 }
+            } else {
+                res.status(500);
+                res.isSuccess = false;
             }
-        } else {
+        } catch (e) {
+            console.log("No connection to the DB or problems with query");
+            console.log(e);
             res.status(500);
             res.isSuccess = false;
         }
-    } catch (e){
-        console.log("No connection to the DB or problems with query");
-        console.log(e);
-        res.status(500);
-        res.isSuccess = false;
     }
 
     next();
@@ -119,128 +131,151 @@ exports.getTable = async (req, res, next) => {
 }
 
 exports.updateTable = async (req, res, next) => {
-    try{
-        const username = req.username;
-        const tableName = req.body.name;
+    const errors = validationResult(req);
+    if(errors.isEmpty()) {
+        try {
+            const username = req.username;
+            const tableName = req.body.name;
 
-        if(username != null && tableName != null){
-            const {name, description, accessType} = {...req.body};
-            const tableInfoValues = {
-                description: description || null,
-                accessType: accessType || null
-            }
-
-            const tableOwnerQ = `SELECT username FROM UserDatabase WHERE username=? AND name=?`;
-            const tableOwnerResp = await db.makeQuery(tableOwnerQ, [username, name]);
-            if(tableOwnerResp != null && tableOwnerResp[0].username === username){
-                const elems = req.body.elements;
-
-                if(elems != null && elems.length > 0){
-                    const tableName = username + '_' + name;
-                    let dropTableQ = `DROP TABLE IF EXISTS ${tableName}`;
-                    await db.makeQuery(dropTableQ);
-
-                    const createTableQ = `CREATE TABLE ${tableName} (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, value VARCHAR(100) NOT NULL)`;
-                    const createTableResp = await db.makeQuery(createTableQ);
-                    if(createTableResp != null){
-                        let insertElementsQ = `INSERT INTO ${tableName} (value) VALUES`;
-                        for(let i=0; i<elems.length; i++)
-                            insertElementsQ += ' ("' + elems[i] + '"),';
-                        insertElementsQ = insertElementsQ.slice(0, -1);
-                        insertElementsQ += ';';
-                        await db.makeQuery(insertElementsQ);
-                    }
+            if (username != null && tableName != null) {
+                const {name, description, accessType} = {...req.body};
+                const tableInfoValues = {
+                    description: description || null,
+                    accessType: accessType || null
                 }
 
-                let isQueryNeeded = false;
-                let insertTokenQ = `UPDATE UserDatabase SET `;
-                for(const key in tableInfoValues){
-                    if(tableInfoValues[key] !== null && tableInfoValues[key] !== undefined && tableInfoValues[key] !== ''){
-                        if(key !== 'accessType'){
-                            insertTokenQ += key + '="' + tableInfoValues[key] + '", ';
-                            isQueryNeeded = true;
-                        } else {
-                            insertTokenQ += key + '=' + tableInfoValues[key] + ', ';
-                            isQueryNeeded = true;
+                const tableOwnerQ = `SELECT username
+                                     FROM UserDatabase
+                                     WHERE username = ?
+                                       AND name = ?`;
+                const tableOwnerResp = await db.makeQuery(tableOwnerQ, [username, name]);
+                if (tableOwnerResp != null && tableOwnerResp[0].username === username) {
+                    const elems = req.body.elements;
+
+                    if (elems != null && elems.length > 0) {
+                        const tableName = username + '_' + name;
+                        let dropTableQ = `DROP TABLE IF EXISTS ${tableName}`;
+                        await db.makeQuery(dropTableQ);
+
+                        const createTableQ = `CREATE TABLE ${tableName}
+                                              (
+                                                  id    INT          NOT NULL PRIMARY KEY AUTO_INCREMENT,
+                                                  value VARCHAR(100) NOT NULL
+                                              )`;
+                        const createTableResp = await db.makeQuery(createTableQ);
+                        if (createTableResp != null) {
+                            let insertElementsQ = `INSERT INTO ${tableName} (value)
+                                                   VALUES`;
+                            for (let i = 0; i < elems.length; i++)
+                                insertElementsQ += ' ("' + elems[i] + '"),';
+                            insertElementsQ = insertElementsQ.slice(0, -1);
+                            insertElementsQ += ';';
+                            await db.makeQuery(insertElementsQ);
                         }
                     }
-                }
 
-                let resp;
-                if(isQueryNeeded){
-                    insertTokenQ = insertTokenQ.slice(0, insertTokenQ.length-2);
-                    insertTokenQ += ' WHERE username=? AND name=?';
+                    let isQueryNeeded = false;
+                    let insertTokenQ = `UPDATE UserDatabase
+                                        SET `;
+                    for (const key in tableInfoValues) {
+                        if (tableInfoValues[key] !== null && tableInfoValues[key] !== undefined && tableInfoValues[key] !== '') {
+                            if (key !== 'accessType') {
+                                insertTokenQ += key + '="' + tableInfoValues[key] + '", ';
+                                isQueryNeeded = true;
+                            } else {
+                                insertTokenQ += key + '=' + tableInfoValues[key] + ', ';
+                                isQueryNeeded = true;
+                            }
+                        }
+                    }
 
-                    resp = await db.makeQuery(insertTokenQ, [username, name]);
-                }
+                    let resp;
+                    if (isQueryNeeded) {
+                        insertTokenQ = insertTokenQ.slice(0, insertTokenQ.length - 2);
+                        insertTokenQ += ' WHERE username=? AND name=?';
 
-                if(resp){
-                    res.status(200);
-                    res.isSuccess = true;
-                } else{
-                    res.status(500);
-                    res.isSuccess = false;
+                        resp = await db.makeQuery(insertTokenQ, [username, name]);
+                    }
+
+                    if (resp) {
+                        res.status(200);
+                        res.isSuccess = true;
+                    } else {
+                        res.status(500);
+                        res.isSuccess = false;
+                    }
                 }
+            } else {
+                res.status(500);
+                res.isSuccess = false;
             }
-        } else {
+        } catch (e) {
+            console.log("No connection to the DB or problems with query");
+            console.log(e);
             res.status(500);
             res.isSuccess = false;
         }
-    } catch (e){
-        console.log("No connection to the DB or problems with query");
-        console.log(e);
-        res.status(500);
-        res.isSuccess = false;
     }
 
     next();
 }
 
 exports.deleteTable = async (req, res, next) => {
-    try{
-        const username = req.username;
+    const errors = validationResult(req);
+    if(errors.isEmpty()) {
+        try {
+            const username = req.username;
 
-        if(username != null){
-            const name = req.body.name;
+            if (username != null) {
+                const name = req.body.name;
 
-            const tableName = username + '_' + name;
+                const tableName = username + '_' + name;
 
-            let deleteTableQ = `DROP TABLE ${tableName}`;
-            const deleteResp = await db.makeQuery(deleteTableQ);
+                let deleteTableQ = `DROP TABLE ${tableName}`;
+                const deleteResp = await db.makeQuery(deleteTableQ);
 
-            if(deleteResp){
-                const selectTableQ = `SELECT id FROM UserDatabase WHERE name=?`;
-                const selectTableResp = await db.makeQuery(selectTableQ, name);
-                if(selectTableResp && selectTableResp.length > 0){
-                    const tableId = selectTableResp[0].id;
-                    const deleteUserAllowedQ = `DELETE FROM UserAllowed WHERE id=?`;
-                    const deleteUserAllowedResp = await db.makeQuery(deleteUserAllowedQ, tableId);
+                if (deleteResp) {
+                    const selectTableQ = `SELECT id
+                                          FROM UserDatabase
+                                          WHERE name = ?`;
+                    const selectTableResp = await db.makeQuery(selectTableQ, name);
+                    if (selectTableResp && selectTableResp.length > 0) {
+                        const tableId = selectTableResp[0].id;
+                        const deleteUserAllowedQ = `DELETE
+                                                    FROM UserAllowed
+                                                    WHERE id = ?`;
+                        const deleteUserAllowedResp = await db.makeQuery(deleteUserAllowedQ, tableId);
 
-                    const deleteAccessRequestQ = `DELETE FROM AccessRequest WHERE tableName=?`;
-                    const deleteAccessRequestResp = await db.makeQuery(deleteAccessRequestQ, name);
+                        const deleteAccessRequestQ = `DELETE
+                                                      FROM AccessRequest
+                                                      WHERE tableName = ?`;
+                        const deleteAccessRequestResp = await db.makeQuery(deleteAccessRequestQ, name);
 
-                    if(deleteUserAllowedResp && deleteAccessRequestResp){
-                        const deleteUserAllowedQ = `DELETE FROM UserDatabase WHERE name=?`;
-                        const deleteUserDatabaseResp = await db.makeQuery(deleteUserAllowedQ, name);
-                        if(deleteUserDatabaseResp){
-                            res.status(200);
-                            res.isSuccess = true;
-                        } else{
-                            res.status(500);
-                            res.isSuccess = false;
+                        if (deleteUserAllowedResp && deleteAccessRequestResp) {
+                            const deleteUserAllowedQ = `DELETE
+                                                        FROM UserDatabase
+                                                        WHERE name = ?`;
+                            const deleteUserDatabaseResp = await db.makeQuery(deleteUserAllowedQ, name);
+                            if (deleteUserDatabaseResp) {
+                                res.status(200);
+                                res.isSuccess = true;
+                            } else {
+                                res.status(500);
+                                res.isSuccess = false;
+                            }
                         }
                     }
                 }
+            } else {
+                res.status(500);
+                res.isSuccess = false;
             }
-        } else {
+        } catch (e) {
+            console.log("No connection to the DB or problems with query");
+            console.log(e);
             res.status(500);
             res.isSuccess = false;
         }
-    } catch (e){
-        console.log("No connection to the DB or problems with query");
-        console.log(e);
-        res.status(500);
-        res.isSuccess = false;
     }
 
     next();

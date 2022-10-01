@@ -1,36 +1,41 @@
 const db = require("../util/DB");
 const jwt = require("jsonwebtoken");
 const {promisify} = require("util");
+const {validationResult} = require("express-validator");
 
 exports.createJWT = async (req, res, next) => {
-    try{
-        const username = req.username;
+    const errors = validationResult(req);
+    if(errors.isEmpty()) {
+        try {
+            const username = req.username;
 
-        if(username != null){
-            const selectUserTokens = 'SELECT * FROM JWT WHERE username = ?';
-            const tokenResp = await db.makeQuery(selectUserTokens, username);
-            const tokenNum = tokenResp.length + 1;
-            const token = getDatabaseJWT(username, tokenNum);
+            if (username != null) {
+                const selectUserTokens = 'SELECT * FROM JWT WHERE username = ?';
+                const tokenResp = await db.makeQuery(selectUserTokens, username);
+                const tokenNum = tokenResp.length + 1;
+                const token = getDatabaseJWT(username, tokenNum);
 
-            const insertTokenQ = `INSERT INTO JWT (token, username) VALUES (?, ?)`;
-            const resp = await db.makeQuery(insertTokenQ, [token, username]);
+                const insertTokenQ = `INSERT INTO JWT (token, username)
+                                      VALUES (?, ?)`;
+                const resp = await db.makeQuery(insertTokenQ, [token, username]);
 
-            if(resp){
-                res.status(200);
-                res.isSuccess = true;
-            } else{
+                if (resp) {
+                    res.status(200);
+                    res.isSuccess = true;
+                } else {
+                    res.status(500);
+                    res.isSuccess = false;
+                }
+            } else {
                 res.status(500);
                 res.isSuccess = false;
             }
-        } else {
+        } catch (e) {
+            console.log("No connection to the DB or problems with query");
+            console.log(e);
             res.status(500);
             res.isSuccess = false;
         }
-    } catch (e){
-        console.log("No connection to the DB or problems with query");
-        console.log(e);
-        res.status(500);
-        res.isSuccess = false;
     }
 
     next();
@@ -67,30 +72,33 @@ exports.getJWT = async (req, res, next) => {
 }
 
 exports.deleteJWT = async (req, res, next) => {
-    try{
-        const username = req.username;
-        const token = req.body.token;
+    const errors = validationResult(req);
+    if(errors.isEmpty()) {
+        try {
+            const username = req.username;
+            const token = req.body.token;
 
-        if(username != null && token != null){
-            const deleteTokenQ = 'DELETE FROM JWT WHERE username=? AND token=?';
-            const resp = await db.makeQuery(deleteTokenQ, [username, token]);
+            if (username != null && token != null) {
+                const deleteTokenQ = 'DELETE FROM JWT WHERE username=? AND token=?';
+                const resp = await db.makeQuery(deleteTokenQ, [username, token]);
 
-            if(resp){
-                res.status(200);
-                res.isSuccess = true;
-            } else{
+                if (resp) {
+                    res.status(200);
+                    res.isSuccess = true;
+                } else {
+                    res.status(500);
+                    res.isSuccess = false;
+                }
+            } else {
                 res.status(500);
                 res.isSuccess = false;
             }
-        } else {
+        } catch (e) {
+            console.log("No connection to the DB or problems with query");
+            console.log(e);
             res.status(500);
             res.isSuccess = false;
         }
-    } catch (e){
-        console.log("No connection to the DB or problems with query");
-        console.log(e);
-        res.status(500);
-        res.isSuccess = false;
     }
 
     next();
