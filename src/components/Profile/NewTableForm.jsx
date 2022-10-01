@@ -1,10 +1,16 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
+import TableAccessDescription from "./TableAccessDescription";
+import {convertStringToArr} from "../../utils/convertStringToArr";
 
 const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
 
 function NewTableForm() {
+
+    const navigate = useNavigate();
+
     const [tableName, setTableName] = useState('');
     const [tableDescription, setTableDescription] = useState('');
     const [tableElements, setTableElements] = useState([]);
@@ -36,43 +42,17 @@ function NewTableForm() {
 
     }
 
-    const convertStringToArr = (string) => {
-        if(string != null){
-            let stringArrRaw = [...string];
-            let stringStart = 0, stringEnd = stringArrRaw.length-1;
-            while(stringArrRaw[stringStart] === ' ')
-                stringStart++;
-            while(stringArrRaw[stringEnd] === ' ')
-                stringEnd--;
-            let stringArr = stringArrRaw.slice(stringStart, stringEnd+1);
 
-            const result = [];
-            let elemStartIndex = 0;
-            for(let i=0; i<stringArr.length; i++){
-                if(stringArr[i] === ','){
-                    const elem = stringArr.slice(elemStartIndex, i).join('');
-                    result.push(elem);
-                    elemStartIndex = i+1;
-                }
-
-                if(stringArr[i] === ',' && stringArr[i+1] === ' ')
-                    elemStartIndex++;
-
-                if(i === stringArr.length-1){
-                    const elem = stringArr.slice(elemStartIndex, i+1).join('');
-                    result.push(elem);
-                }
-            }
-
-            return result;
-        }
-
-        return null;
-    }
 
     return (
         <div id="newTableForm">
             <br/>
+
+            <TableAccessDescription/>
+            <br/>
+
+            <button onClick={() => navigate(-1)}>Go back</button>
+            <br/><br/>
             <h3>Create new table</h3>
 
             <Form>

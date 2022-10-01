@@ -2,14 +2,17 @@ import {Container, Image, Nav, Navbar, NavDropdown} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 
 import './Navbar.css'
-
-
-
 import { ReactComponent as ProfileSvg } from '../../img/profile.svg';
 import {useState} from "react";
+import useWindowDimensions from "../../hooks/useWindowDimensions";
+
 
 function NavbarComponent(props) {
 
+
+    const {width} = useWindowDimensions();
+
+    console.log(width)
 
     const navigate = useNavigate();
 
@@ -56,13 +59,21 @@ function NavbarComponent(props) {
                             props.loginAccess !== false
 
                             ?
-                                <NavDropdown title={<ProfileSvg
+                                <NavDropdown title={
+                                    (width > 991)
+                                        ?
+                                    <ProfileSvg
                                     onMouseEnter={()=>{
                                         setHover(true);}}
                                     onMouseLeave={()=>{
-                                        setHover(false);}}
+                                        setHover(false);
+                                    }}
                                     style={{width : '33px' }}
-                                    fill = {hover ? '#E0E0E0' : 'white'} stroke={hover ? '#E0E0E0' : 'white'}  />}>
+                                    fill = {hover ? '#E0E0E0' : 'white'} stroke={hover ? '#E0E0E0' : 'white'}  />
+                                :
+                                        <span className='menu_text' style={{fontWeight : '700'}}>Menu  </span>
+                                }>
+
                                     <NavDropdown.Item onClick={()=>navigate('/profile')}>Profile</NavDropdown.Item>
 
                                     <NavDropdown.Item onClick={()=>navigate('/controlAccess')}>Access Control</NavDropdown.Item>
