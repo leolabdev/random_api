@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import TableAccessDescription from "./TableAccessDescription";
+import DeleteTable from "./deleteTable";
 
 const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
 
@@ -58,6 +59,9 @@ function TableInfo(props) {
 
             <h4>Owner</h4>
             <p>{tableOwner}</p>
+
+            <DeleteTable tableName={tableName}/>
+
         </div>
     );
 }
