@@ -1,8 +1,12 @@
 import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
 
 function TableInfo(props) {
+
+    const navigate = useNavigate();
+
     const [tableName, setTableName] = useState('');
     const [tableDescription, setTableDescription] = useState('');
     const [tableOwner, setTableOwner] = useState('');
@@ -31,6 +35,8 @@ function TableInfo(props) {
     return (
         <div id="tableInfo">
             <br/>
+            <button onClick={() => navigate(-1)}>Go back</button>
+            <br/><br/>
             <h3>{tableName} table information</h3>
 
             <h4>Description</h4>
