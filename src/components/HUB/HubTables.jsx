@@ -25,7 +25,7 @@ const HubTables = ({hubTables}) => {
                         key={hubT.id}
                         style={{ width: "25rem", margin: "2rem", textAlign: "center",cursor:'pointer' }}
                     >
-                        <Card.Body style = {hubT.accessType == "0" ?  {backgroundColor: '#90EE90'} : hubT.accessType == "1" ? {backgroundColor: '#FFE898' } : {backgroundColor: '#ADD8E6'}}>
+                        <Card.Body style = {hubT.accessType == "0" ?  {backgroundColor: '#90EE90'} : hubT.accessType == "1" ? {backgroundColor: '#FFD580' } : {backgroundColor: '#ADD8E6'}}>
                             <Card.Title>
                                 {" "}
                                 <span style={{ fontWeight: "bold" }}>Table:</span> {hubT.name}

@@ -35,7 +35,8 @@ const HubMain = () => {
                    style={{textAlign : 'left'}}
             >
                     {/*<div style={{color: "#ADD8E6", fontWeight: '700'}}>&#9632; <span>Private(Yours)</span></div>*/}
-                    <div style={{color: "#FFE898",fontWeight: '700'}}>&#9632; <span>Access required</span></div>
+                    {/*<div style={{color: "#FFE898",fontWeight: '700'}}>&#9632; <span>Access required</span></div>*/}
+                    <div style={{color: "#FFD580",fontWeight: '700'}}>&#9632; <span>Access required</span></div>
                     <div style={{color: "#90EE90",fontWeight: '700'}}>&#9632; <span>Public</span></div>
             </div>
 
