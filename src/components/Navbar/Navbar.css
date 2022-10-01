@@ -2,4 +2,7 @@
     display: none !important;
 }
 
+.menu_text::after{
+    content: "\25be ";
+}
 
