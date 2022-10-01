@@ -1,9 +1,14 @@
 const express = require("express");
+const { body } = require("express-validator");
 const loginController = require("../controller/login");
 
 const router = express.Router();
 
-router.post("/", loginController.login, handleLoginResp);
+router.post("/", [
+    body("login", "Wrong login").isAlphanumeric().isLength({min: 3}),
+    body("password", "Wrong password").blacklist(" ").notEmpty({ignore_whitespace: true})
+], loginController.login, handleLoginResp);
+
 router.get("/logout", loginController.logout, handleLogoutResp);
 
 function handleLoginResp(req, res){
