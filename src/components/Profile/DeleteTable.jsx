@@ -55,7 +55,7 @@ const DeleteTable = ({tableName}) => {
             <div className='list-group-flush'>
                 <div>
                     <h3>Delete Table</h3>
-                    <Button variant="danger" onClick={handleShow}>Confirm</Button>
+                    <Button variant="danger" onClick={handleShow}>Delete</Button>
                 </div>
             </div>
 
