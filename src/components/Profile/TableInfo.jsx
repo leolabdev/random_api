@@ -1,7 +1,10 @@
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import TableAccessDescription from "./TableAccessDescription";
-import DeleteTable from "./deleteTable";
+import DeleteTable from "./DeleteTable";
+import UpdateTable from "./UpdateTable";
+import {Button} from "react-bootstrap";
+// import DeleteTable from "./deleteTable";
 
 const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
 
@@ -14,6 +17,8 @@ function TableInfo(props) {
     const [tableOwner, setTableOwner] = useState('');
     const [tableAccessType, setTableAccessType] = useState('');
     const [tableId, setTableId] = useState('');
+
+    const [updateMode,setUpdateMode] = useState(false);
 
     useEffect(() => {
         fetchTableData();
@@ -46,21 +51,42 @@ function TableInfo(props) {
             <br/>
             <button onClick={() => navigate(-1)}>Go back</button>
             <br/><br/>
-            <h3   style={tableAccessType == "0"
-                ?
-                    {backgroundColor: '#90EE90'}
+
+            {updateMode !== true ?
+                <div>
+                    <h3   style={tableAccessType == "0"
+                        ?
+                        {backgroundColor: '#90EE90'}
+                        :
+                        tableAccessType == "1"
+                            ? {backgroundColor: '#FFD580' }
+                            : {backgroundColor: '#ADD8E6'}}>{tableName} table information</h3>
+
+                    <h4>Description</h4>
+                    <p>{tableDescription}</p>
+
+                    <h4>Owner</h4>
+                    <p>{tableOwner}</p>
+
+                    <h3>Update Table</h3>
+                    <Button onClick={()=>setUpdateMode(!updateMode)}>Update</Button>
+                    <br/>
+                    <br/>
+
+                    <DeleteTable tableName={tableName}/>
+                </div>
                 :
-                    tableAccessType == "1"
-                        ? {backgroundColor: '#FFD580' }
-                        : {backgroundColor: '#ADD8E6'}}>{tableName} table information</h3>
+                <div>
+                    <UpdateTable
+                        updateMode={updateMode}
+                        setUpdateMode={setUpdateMode}
+                    />
+                </div>
+            }
 
-            <h4>Description</h4>
-            <p>{tableDescription}</p>
+            <br/>
 
-            <h4>Owner</h4>
-            <p>{tableOwner}</p>
 
-            <DeleteTable tableName={tableName}/>
 
         </div>
     );
