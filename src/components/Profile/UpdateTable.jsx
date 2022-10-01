@@ -1,6 +1,7 @@
 import Button from "react-bootstrap/Button";
 import {useEffect, useState} from "react";
 import Form from "react-bootstrap/Form";
+import {convertStringToArr} from "../../utils/convertStringToArr";
 
 const UpdateTable = ({tableName,tableOwner,updateMode,setUpdateMode}) => {
 
@@ -9,6 +10,8 @@ const UpdateTable = ({tableName,tableOwner,updateMode,setUpdateMode}) => {
     const [updatableTable,setUpdatableTable] = useState({});
 
     const [requestResult, setRequestResult] = useState('');
+
+    const [updateRequestResult,setUpdateRequestResult] = useState('')
 
     const fetchUpdatableTable = async () => {
         const reqOptions = {
@@ -24,6 +27,29 @@ const UpdateTable = ({tableName,tableOwner,updateMode,setUpdateMode}) => {
         setUpdatableTable(respJson.result);
         console.log(respJson.result);
 
+    }
+
+
+    const updateTable = async (e) => {
+        e.preventDefault();
+        const reqData = {
+            // name: updatableTable.tableName,
+            description: updatableTable.description,
+            accessType: updatableTable.accessType,
+            // elements: convertStringToArr(tableElements)
+        }
+        const reqOptions = {
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            method: 'PUT',
+            credentials: 'include',
+            body: JSON.stringify({...reqData})
+        }
+
+        const resp = await fetch(`${apiBasePath}/userDatabase`, reqOptions);
+        const respJson = await resp.json();
+        setUpdateRequestResult(respJson.message)
     }
 
 
@@ -82,7 +108,7 @@ const UpdateTable = ({tableName,tableOwner,updateMode,setUpdateMode}) => {
                 </div>
 
                 <br/>
-                <Form.Text>{requestResult}</Form.Text>
+                <Form.Text>{updateRequestResult}</Form.Text>
             </Form>
 
 
