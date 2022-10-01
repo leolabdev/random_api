@@ -97,9 +97,9 @@ function NewTableForm() {
                 <Form.Group className="mb-3" controlId="tableElements">
                     <Form.Label>Access type </Form.Label>
                 <Form.Select tclassName="mb-3" aria-label="Default select example" value={accessType} onChange={(e)=> setAccessType(e.target.value)}>
-                    <option value="0">Private</option>
+                    <option value="0">Public</option>
                     <option value="1">Access required</option>
-                    <option value="2">Public</option>
+                    <option value="2">Private</option>
                 </Form.Select>
                 </Form.Group>
 
