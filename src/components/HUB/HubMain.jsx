@@ -3,10 +3,38 @@ import HubSearch from "./HubSearch";
 import  './Hub.css';
 import {Card, ListGroup, ListGroupItem, Pagination} from "react-bootstrap";
 import HubTables from "./HubTables";
+import {convertStringToArr} from "../../utils/convertStringToArr";
 
 const HubMain = () => {
     const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
     const [hubTables,setHubTables] = useState([{}])
+
+    const [accessRequestResult,setAccessRequestResult] = useState('')
+
+    const sendAccessRequest = async (e,reqData) => {
+
+        e.preventDefault();
+        const postReqData = {
+
+            tableName: reqData.tableName,
+            receiver: reqData.receiver,
+            message: reqData.message,
+            // elements: convertStringToArr(tableElements)
+        }
+        const reqOptions = {
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify({...postReqData})
+        }
+
+        const resp = await fetch(`${apiBasePath}/userDatabase`, reqOptions);
+        const respJson = await resp.json();
+
+        setAccessRequestResult(respJson.message)
+    }
 
 
     const fetchHubTables = async () => {

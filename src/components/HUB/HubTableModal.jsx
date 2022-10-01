@@ -6,6 +6,10 @@ import React from "react";
 import ModalContext from "react-bootstrap/ModalContext";
 
 const HubTableModal = ({table ,show , handleClose}) => {
+
+
+
+
     return (
         <div>
             <Modal show={show} onHide={handleClose}  size="lg"
