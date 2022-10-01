@@ -58,8 +58,14 @@ function Tables(props) {
             <ListGroup as="ol" numbered className='gap-2 gap-lg-3 gap-xl-3  gap-sm-3 gap-md-3 gap-xxl-4'>
                 {
                     (userTables[0] != null ) &&
-                    userTables.map((item, i)=>{
-                        return <ListGroup.Item  as='li' style={{cursor:'pointer' }} className=' w-50' key={i} onClick={()=>{ showTableInfo(item.name, item.username)} }>{item.name} </ListGroup.Item>
+                    userTables.map((item)=>{
+                        return <ListGroup.Item  as='li'
+                                                // style={{cursor:'pointer' }}
+                                                style={item.accessType == "0" ?  {backgroundColor: '#90EE90',cursor:'pointer'} : item.accessType == "1" ? {backgroundColor: '#FFD580',cursor:'pointer' } : {backgroundColor: '#ADD8E6',cursor:'pointer'}  }
+                                                className='w-50'
+                                                key={item.id}
+                                                onClick={()=>{ showTableInfo(item.name, item.username)} }>{item.name}
+                        </ListGroup.Item>
                     })
                 }
             </ListGroup>
