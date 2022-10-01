@@ -7,14 +7,10 @@ import TableAccessDescription from "./TableAccessDescription";
 const ProfileMain = (props) => {
     return (
         <div id="container">
-
             <br/>
-            {/*<UserTokens></UserTokens>*/}
            <TableAccessDescription/>
             <br/>
-
             <Tables setTableInfoName={props.setTableInfoName} setTableInfoOwner={props.setTableInfoOwner}></Tables>
-
             <UserHasAccessTables/>
             <br/>
         </div>
