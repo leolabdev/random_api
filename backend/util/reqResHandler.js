@@ -1,3 +1,8 @@
+/**
+ * The function sends default response for the GET request
+ * @param req {object} request object
+ * @param res {object} response object
+ */
 exports.handleGetResp = (req, res) => {
     if(res.isSuccess){
         res.json({
@@ -16,6 +21,11 @@ exports.handleGetResp = (req, res) => {
     res.end();
 }
 
+/**
+ * The function sends default response for the POST request
+ * @param req {object} request object
+ * @param res {object} response object
+ */
 exports.handlePostResp = (req, res) => {
     if(res.isSuccess){
         res.json({
@@ -32,6 +42,11 @@ exports.handlePostResp = (req, res) => {
     res.end();
 }
 
+/**
+ * The function sends default response for the PUT request
+ * @param req {object} request object
+ * @param res {object} response object
+ */
 exports.handlePutResp = (req, res) => {
     if(res.isSuccess){
         res.json({
@@ -48,6 +63,11 @@ exports.handlePutResp = (req, res) => {
     res.end();
 }
 
+/**
+ * The function sends default response for the DELETE request
+ * @param req {object} request object
+ * @param res {object} response object
+ */
 exports.handleDeleteResp = (req, res) => {
     if(res.isSuccess){
         res.json({

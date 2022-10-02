@@ -1,0 +1,652 @@
+openapi: 3.0.0
+info:
+  title: Random API
+  description: A description of random API
+  version: 1.0.0
+servers:
+  - url: 'https://localhost:8080'
+    description: You may want to change local host port
+
+
+paths:
+  /jwt:
+    post:
+      summary: Create a new API access token for the logged-in user
+      responses:
+        200:
+          description: Token creation succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+              example:
+                isSuccess: true
+                message: Data has been added
+        500:
+          description: Token creation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+              example:
+                isSuccess: false
+                message: Problems with adding data
+    get:
+      summary: Get all logged-in user's API access tokens
+      responses:
+        200:
+          description: Tokens were found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultGetResponse'
+              example:
+                isSuccess: true
+                message: Data has been found
+                result:
+                  -  token: tokenNumber1
+                  -  token: tokenNumber2
+        500:
+          description: Tokens were not found or problems with DB connection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultGetResponse'
+              example:
+                hasAccess: false
+                message: No data found
+                result: []
+    delete:
+      summary: Delete the specified API access token
+      responses:
+        200:
+          description: Token removing succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+              example:
+                isSuccess: true
+                message: Data has been deleted
+        500:
+          description: Token removing failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+              example:
+                isSuccess: false
+                message: Problems with deleting data
+
+  /login:
+    post:
+      summary: Log in user
+      requestBody:
+        $ref: '#/components/requestBodies/UserAuthBody'
+      responses:
+        200:
+          description: User logged in successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+              example:
+                hasAccess: true
+                message: Logged in successfully
+        500:
+          description: User logging in failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+              example:
+                hasAccess: false
+                message: Wrong username or password provided
+
+  /login/logout:
+    get:
+      summary: Logging out user
+      responses:
+        200:
+          description: User logged out
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+              example:
+                isSuccess: true
+                message: Logged out successfully
+        500:
+          description: Problems with logging out user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+              example:
+                isSuccess: false
+                message: Could not log out
+
+  /register:
+    post:
+      summary: Register a new user
+      requestBody:
+        $ref: '#/components/requestBodies/UserAuthBody'
+      responses:
+        200:
+          description: Username registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+              example:
+                result: Username was registered
+        500:
+          description: Username registration failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+              example:
+                hasAccess: false
+                message: Registration failed, try again
+    delete:
+      summary: Delete the user profile
+      responses:
+        200:
+          description: Removing user profile with all data and tables related to it
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+              example:
+                isSuccess: true
+                message: User has been deleted
+        500:
+          description: Removing user profile failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+              example:
+                isSuccess: false
+                message: User has not been deleted, try again later
+
+  /userAllowed:
+    post:
+      summary: Add table access to the specified username
+      requestBody:
+        $ref: '#/components/requestBodies/UserAllowedBody'
+      responses:
+        200:
+          description: Table access adding succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+              example:
+                isSuccess: true
+                message: Data has been added
+        500:
+          description: Table access adding failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+              example:
+                isSuccess: false
+                message: Problems with adding data
+    get:
+      summary: Get all logged-in user's accesses to tables
+      responses:
+        200:
+          description: Tables accesses were found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultGetResponse'
+              example:
+                isSuccess: true
+                message: Data has been found
+                result:
+                  - username: mike
+                    name: animals
+        500:
+          description: Tables accesses were not found or problems with DB connection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultGetResponse'
+              example:
+                hasAccess: false
+                message: No data found
+                result: []
+    delete:
+      summary: Delete the specified table access
+      requestBody:
+        $ref: '#/components/requestBodies/UserAllowedBody'
+      responses:
+        200:
+          description: Table access removing succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+              example:
+                isSuccess: true
+                message: Data has been deleted
+        500:
+          description: Table access removing failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+              example:
+                isSuccess: false
+                message: Problems with deleting data
+
+  /userDatabase:
+   post:
+     summary: Create a new table with provided values
+     requestBody:
+       $ref: '#/components/requestBodies/UserDatabaseBody'
+     responses:
+       200:
+         description: Table data has been added
+         content:
+           application/json:
+             schema:
+               $ref: '#/components/schemas/DefaultResponse'
+             example:
+               isSuccess: true
+               message: Data has been added
+       500:
+         description: Table data adding failed
+         content:
+           application/json:
+             schema:
+               $ref: '#/components/schemas/DefaultResponse'
+             example:
+               isSuccess: false
+               message: Problems with adding data
+   put:
+     summary: Update existing table data or values
+     requestBody:
+       $ref: '#/components/requestBodies/UserDatabaseBody'
+     responses:
+       200:
+         description: Table data has been updated
+         content:
+           application/json:
+             schema:
+               $ref: '#/components/schemas/DefaultResponse'
+             example:
+               isSuccess: true
+               message: Data has been updated
+       500:
+         description: Table data updating failed
+         content:
+           application/json:
+             schema:
+               $ref: '#/components/schemas/DefaultResponse'
+             example:
+               isSuccess: false
+               message: Problems with updating data
+   delete:
+     summary: Delete the specified table
+     requestBody:
+       content:
+         application/json:
+           schema:
+             description: Object with the name of table to be deleted
+             type: object
+             properties:
+               name:
+                 type: string
+                 required: true
+             example:
+               name: cars
+     responses:
+       200:
+         description: Table removing succeeded
+         content:
+           application/json:
+             schema:
+               $ref: '#/components/schemas/DefaultResponse'
+             example:
+               isSuccess: true
+               message: Data has been deleted
+       500:
+         description: Table removing failed
+         content:
+           application/json:
+             schema:
+               $ref: '#/components/schemas/DefaultResponse'
+             example:
+               isSuccess: false
+               message: Problems with deleting data
+
+  /userDatabase?own=true:
+    get:
+      summary: Get all users created tables
+      parameters:
+        - in: query
+          name: own
+          schema:
+            type: boolean
+          description: Flag for defining are only logged-in user accessible tables included (=true) or just all visible tables (without flag)
+      responses:
+        200:
+          description: Tables were found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultGetResponse'
+              example:
+                isSuccess: true
+                message: Data has been found
+                result:
+                  - id: 9
+                    username: mike
+                    name: cars
+                    description: Description bla bla bla
+                    accessType: 0
+                    userCount: 1
+        500:
+          description: Tables were not found or problems with DB connection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultGetResponse'
+              example:
+                hasAccess: false
+                message: No data found
+                result: []
+  /userDatabase/{tableName}?includingElements=true:
+    get:
+      summary: Get specified table data
+      parameters:
+        - in: path
+          name: tableName
+          schema:
+            type: boolean
+          description: Flag for defining are table elements needed in the response (=true) or not without flag
+      responses:
+        200:
+          description: Tables were found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultGetResponse'
+              example:
+                isSuccess: true
+                message: Data has been found
+                result:
+                    id: 9
+                    username: mike
+                    name: cars
+                    description: Description bla bla bla
+                    accessType: 0
+                    userCount: 1
+        500:
+          description: Tables were not found or problems with DB connection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultGetResponse'
+              example:
+                hasAccess: false
+                message: No data found
+                result: [ ]
+
+  /accessRequest:
+    post:
+      summary: Create a new access request to the specified table
+      requestBody:
+        $ref: '#/components/requestBodies/AccessRequestBody'
+      responses:
+        200:
+          description: Access request has been added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+              example:
+                isSuccess: true
+                message: Data has been added
+        500:
+          description: Access request adding failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+              example:
+                isSuccess: false
+                message: Problems with adding data
+    get:
+      summary: Get all access requests sent to logged user
+      responses:
+        200:
+          description: Requests were found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultGetResponse'
+              example:
+                isSuccess: true
+                message: Data has been found
+                result:
+                  - id: 6
+                    sender: test
+                    receiver: mike
+                    tableName: animals
+                    message: please let me access
+        500:
+          description: Requests were not found or problems with DB connection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultGetResponse'
+              example:
+                hasAccess: false
+                message: No data found
+                result: []
+    delete:
+      summary: Delete the specified access request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Object with the id of request to be deleted
+              type: object
+              properties:
+                id:
+                  type: integer
+                  required: true
+              example:
+                id: 1
+      responses:
+        200:
+          description: Access request removing succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+              example:
+                isSuccess: true
+                message: Data has been deleted
+        500:
+          description: Access request removing failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+              example:
+                isSuccess: false
+                message: Problems with deleting data
+
+components:
+  schemas:
+    DefaultResponse:
+      description: Default response for POST, PUT and DELETE requests
+      type: object
+      properties:
+        isSuccess:
+          type: boolean
+          required: true
+        message:
+          type: string
+          required: true
+
+    DefaultGetResponse:
+      description: Default response for GET requests
+      type: object
+      properties:
+        isSuccess:
+          type: boolean
+          required: true
+        message:
+          type: string
+          required: true
+        result:
+          type: array
+          required: true
+          items:
+            type: object
+
+    LoginResponse:
+      description: Response for user login request
+      type: object
+      properties:
+        hasAccess:
+          type: boolean
+          required: true
+        message:
+          type: string
+          required: true
+
+    RegisterResponse:
+      description: Response for a new user registration
+      type: object
+      properties:
+        result:
+          type: string
+          required: true
+
+    UserAllowed:
+      description: Object for /userAllowed paths requests
+      type: object
+      properties:
+        name:
+          type: string
+          required: true
+        username:
+          type: string
+          required: true
+      example:
+        name: animals
+        username: test
+
+    UserDatabase:
+      description: Object with user table metadata and if requested its elements
+      type: object
+      properties:
+        name:
+          type: string
+          required: true
+        description:
+          type: string
+        accessType:
+          type: integer
+        elements:
+          type: array
+          items:
+            type: string
+      example:
+        name: cars
+        description: Description bla bla bla
+        accessType: 0
+        elements:
+          - Volvo
+          - BMW
+          - VW
+
+    AccessRequest:
+      description: Object with access request data
+      type: object
+      properties:
+        receiver:
+          type: string
+          required: true
+        tableName:
+          type: string
+          required: true
+        message:
+          type: string
+
+
+  requestBodies:
+    UserAuthBody:
+      description: Object with user profile credentials
+      required: true
+      content:
+        application/json:
+          schema:
+            description: User credentials for authorization
+            type: object
+            properties:
+              username:
+                type: string
+                required: true
+              password:
+                type: string
+                required: true
+            example:
+              username: testUsername
+              password: strongPassword
+
+    UserAllowedBody:
+      description: Object with name and username pair for adding/removing table access to username
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserAllowed'
+
+    UserDatabaseBody:
+      description: Object with table metadata and its values (required only with POST requests)
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserDatabase'
+
+    AccessRequestBody:
+      description: Object with access request data
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccessRequest'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

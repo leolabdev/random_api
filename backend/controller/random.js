@@ -2,6 +2,17 @@ const db = require("../util/DB");
 const random = require("../util/random");
 const jwtController = require("../controller/JWT");
 
+/**
+ * The function fetches count of random elements specified in the query params from the specified table and adds it to the response json object.
+ * If no elements count specified, it will be equal to the total amount of elements in the table.
+ * The following requirements must be met in order to function fetches the data:
+ * A valid API access token must be provided and its day requests limit must not be exceeded
+ * The user must have access to the table or be owner of the table
+ * @param req {object} request object
+ * @param res {object} response object
+ * @param next {function} next function
+ * @returns {Promise<void>}
+ */
 exports.makeRandomQuery = async (req, res, next) => {
     try{
         const path = req.path;

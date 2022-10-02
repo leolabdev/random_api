@@ -5,6 +5,16 @@ const { promisify } = require("util");
 const db = require("../util/DB");
 const {validationResult} = require("express-validator");
 
+/**
+ * The function logs in user by creating jwt token and saving it to cookies.
+ * It requires username and password fields, which must be sent in request's body as object: {username: "user login", password: "user password"}.
+ * All data must be string-type.
+ * Function also prints helpful hints to server console in case of problems.
+ * @param req {object} request object
+ * @param res {object} response object
+ * @param next {function} next function
+ * @return {Promise<void>}
+ */
 exports.login = async (req, res, next) => {
     const errors = validationResult(req);
     if(errors.isEmpty()) {
@@ -12,17 +22,13 @@ exports.login = async (req, res, next) => {
             const username = req.body.username;
             const password = req.body.password;
 
-            const selectUsernameQ = `SELECT username
-                                     FROM User
-                                     WHERE username = ?`;
+            const selectUsernameQ = `SELECT username FROM User WHERE username = ?`;
             const resp = await db.makeQuery(selectUsernameQ, username);
             if (resp) {
                 const isUserExist = resp.length !== 0;
 
                 if (isUserExist) {
-                    const selectUserQ = `SELECT *
-                                         FROM User
-                                         WHERE username = ?`;
+                    const selectUserQ = `SELECT * FROM User WHERE username = ?`;
                     const resp = await db.makeQuery(selectUserQ, username);
 
                     if (!resp || !(await bcrypt.compare(password, resp[0].password))) {
@@ -51,6 +57,15 @@ exports.login = async (req, res, next) => {
     next();
 }
 
+/**
+ * The Function checks is user logged in by examining jwt cookie.
+ * In case then user wiped all cookies, this function will return error.
+ * Function also prints helpful hints to server console in case of problems.
+ * @param req {object} request object
+ * @param res {object} response object
+ * @param next {function} next function
+ * @return {Promise<void>}
+ */
 exports.isLoggedIn = async (req, res, next) => {
     const jwtCookie = req.universalCookies.get('jwt');
     if(jwtCookie){
@@ -78,6 +93,15 @@ exports.isLoggedIn = async (req, res, next) => {
     next();
 }
 
+/**
+ * The function adds username to the request object(username field) in case if he is logged in.
+ * In case then user wiped all cookies, this function will return error.
+ * The function also prints helpful hints to server console in case of problems.
+ * @param req {object} request object
+ * @param res {object} response object
+ * @param next {function} next function
+ * @returns {Promise}
+ */
 exports.getUsername = async (req, res, next) => {
     const jwtCookie = req.universalCookies.get('jwt');
     if(jwtCookie){
@@ -93,6 +117,11 @@ exports.getUsername = async (req, res, next) => {
     next();
 }
 
+/**
+ * The function logs out user by removing the jwt and username cookies.
+ * @param req {object} request object
+ * @param res {object} response object
+ */
 exports.logout = (req, res, next) => {
     const cookieOptions = {
         expires: new Date(Date.now() + 2*1000),
@@ -107,6 +136,11 @@ exports.logout = (req, res, next) => {
     next();
 }
 
+/**
+ * The function creates a jwt token with username as a payload and save it to jwt cookie
+ * @param id {string} username for the payload
+ * @param req {object} request object
+ */
 function createAccessCookie(id, req) {
     const token = jwt.sign({ id: id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_IN
@@ -120,6 +154,11 @@ function createAccessCookie(id, req) {
     req.universalCookies.set('jwt', token, cookieOptions);
 }
 
+/**
+ * The function creates a username cookie with provided id value
+ * @param id {string} username to be saved to cookie
+ * @param req {object} request object
+ */
 function createUsernameCookie(id, req) {
     const cookieOptions = {
         expires: new Date( Date.now() + process.env.JWT_COOKIE_EXPIRES*24*60*60*1000 ),
