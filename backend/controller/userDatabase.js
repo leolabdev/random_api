@@ -129,8 +129,8 @@ exports.getTable = async (req, res, next) => {
 
                 if(includingElements === 'true'){
                     const tableFullName = owner + '_' + tableName;
-                    const selectElementsQ = `SELECT * FROM ?`;
-                    resp[0].elements = await db.makeQuery(selectElementsQ, tableFullName);
+                    const selectElementsQ = `SELECT * FROM ${tableFullName}`;
+                    resp[0].elements = await db.makeQuery(selectElementsQ);
                 }
 
                 res.status(200);

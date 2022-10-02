@@ -361,7 +361,7 @@ paths:
                 hasAccess: false
                 message: No data found
                 result: []
-  /userDatabase/{tableName}?includingElements=true:
+  /userDatabase/{tableName}?owner=username&includingElements=true:
     get:
       summary: Get specified table data
       parameters:
@@ -370,6 +370,17 @@ paths:
           schema:
             type: boolean
           description: Flag for defining are table elements needed in the response (=true) or not without flag
+        - in: query
+          name: owner
+          schema:
+            type: string
+            required: true
+          description: table owner username
+        - in: query
+          name: includingElements
+          schema:
+            type: boolean
+          description: Flag for defining does table elements needed in the response
       responses:
         200:
           description: Tables were found

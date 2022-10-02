@@ -1,5 +1,4 @@
 const bcrypt = require("bcryptjs");
-const axios = require('axios').default;
 
 const db = require("../util/DB");
 const loginController = require("../controller/login");
