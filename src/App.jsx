@@ -46,12 +46,12 @@ function App() {
                   <Route path="/" element={loginAccess || cookies.jwt != null ? <Navigate replace to="/profile" /> : <LoginRegisterPage setLoginAccess={setLoginAccess}/>} />
 
                   <Route path="/profile" element={loginAccess || cookies.jwt != null ?   <ProfilePage setTableInfoName={setTableInfoName} setTableInfoOwner={setTableInfoOwner}/> :<Navigate replace to="/"/>} />
-                  <Route path="/newTable" element={<NewTableForm/>} />
-                  <Route path="/tableInfo" element={<TableInfo name={tableInfoName} owner={tableInfoOwner} />} />
+                  <Route path="/newTable" element={loginAccess || cookies.jwt != null ?<NewTableForm/> : <Navigate replace to='/'/>}  />
+                  <Route path="/tableInfo" element={loginAccess || cookies.jwt != null ? <TableInfo name={tableInfoName} owner={tableInfoOwner} /> : <Navigate replace to='/' /> } />
 
-                  <Route path="/hub" element={<HubPage/>} />
+                  <Route path="/hub" element={loginAccess || cookies.jwt != null ?<HubPage/> : <Navigate replace to='/'/>} />
 
-                  <Route path="/controlAccess" element={<ControlAccessPage/>} />
+                  <Route path="/controlAccess" element={loginAccess || cookies.jwt != null ?<ControlAccessPage/>: <Navigate replace to='/'/> } />
 
                   <Route path="/settings" element={ loginAccess || cookies.jwt != null ? <SettingsPage/> : <Navigate replace to="/" />} />
 
