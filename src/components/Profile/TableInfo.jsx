@@ -80,6 +80,8 @@ function TableInfo(props) {
                     <UpdateTable
                         updateMode={updateMode}
                         setUpdateMode={setUpdateMode}
+                        tableName={tableName}
+                        tableOwner={tableOwner}
                     />
                 </div>
             }

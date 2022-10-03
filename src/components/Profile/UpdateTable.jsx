@@ -22,10 +22,12 @@ const UpdateTable = ({tableName,tableOwner,updateMode,setUpdateMode}) => {
             credentials: 'include'
         }
 
+        console.log(tableName,tableOwner)
+
         const resp = await fetch(`${apiBasePath}/userDatabase/${tableName}?owner=${tableOwner}`, reqOptions);
         const respJson = await resp.json();
         setUpdatableTable(respJson.result);
-        console.log(respJson.result);
+        console.log(respJson);
 
     }
 
