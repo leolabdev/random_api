@@ -2,24 +2,43 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import {FormText} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 
 const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
 
 const HubTableModal = ({table ,show , handleClose}) => {
 
-    console.log(table)
+    // console.log(table)
 
     const [accessMessage,setAccessMessage] = useState('');
 
     const [requestResult,setRequestResult] = useState('');
 
+    const [hubTable,setHubTable] = useState({
+
+    });
+
+    const fetchHubTable = async (e)=> {
+        const reqOptions = {
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            method: 'GET',
+            credentials: 'include'
+        }
+        const resp = await fetch(`${apiBasePath}/userDatabase/${table.name}?owner=${table.username}`, reqOptions);
+
+        const respJson = await resp.json();
+        setHubTable(respJson.result);
+        console.log(respJson)
+    }
+
     const sendAccessRequest = async (e) => {
         e.preventDefault();
         const reqData = {
-            tableName: table.name,
-            receiver: table.username,
+            tableName: hubTable.name,
+            receiver: hubTable.username,
             message: accessMessage,
         }
         const reqOptions = {
@@ -41,8 +60,8 @@ const HubTableModal = ({table ,show , handleClose}) => {
     const addToOwnCollectionRequest = async (e) => {
         e.preventDefault();
         const reqData = {
-            tableName: table.name,
-            username: table.username,
+            tableName: hubTable.name,
+            username: hubTable.username,
         }
         const reqOptions = {
             headers:{
@@ -57,33 +76,40 @@ const HubTableModal = ({table ,show , handleClose}) => {
         const respJson = await resp.json();
 
         setRequestResult(respJson.message)
-        alert(respJson.message)
+        // alert(respJson.message)
     }
 
+    useEffect(()=>{
+        fetchHubTable();
+    },[show])
 
-
-
+    useEffect(()=>{
+        setRequestResult('')
+    },[show])
 
     return (
         <div>
             <Modal show={show} onHide={handleClose}  size="lg"
                    aria-labelledby="contained-modal-title-vcenter"
                    centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>{table.name}</Modal.Title>
+                <Modal.Header closeButton style={hubTable.accessType != 1 ?{backgroundColor:'lightgreen'} : {backgroundColor:'#ffd580'}}>
+                    <Modal.Title>{hubTable.name}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <FormText>Desctiption: {table.description}</FormText>
+                    <FormText>Description: {hubTable.description}</FormText>
                     <br/>
-                    Owner : {table.username}
+                    Owner : {hubTable.username}
+
 
 
                     {
-                        table.accessType &&
+                        hubTable.accessType == 1 ?
                         <Form.Group className="mb-3" controlId="AccessMessage">
                             <Form.Label>Message:</Form.Label>
                             <Form.Control type="text" placeholder="Enter message" value={accessMessage} onChange={(e) => { setAccessMessage(e.target.value); }}/>
                         </Form.Group>
+                            :
+                            <span></span>
                     }
 
 
@@ -95,7 +121,7 @@ const HubTableModal = ({table ,show , handleClose}) => {
                     </Button>
 
                     {
-                        table.accessType == 1 ? <Button className='accessButton' onClick={sendAccessRequest} variant="success">Send Access Request</Button>
+                        hubTable.accessType == 1 ? <Button className='accessButton' onClick={sendAccessRequest} variant="success">Send Access Request</Button>
                             : <Button className='addToOwnButton' onClick={addToOwnCollectionRequest} variant="success">Add to own collection</Button>
                     }
                 </Modal.Footer>
