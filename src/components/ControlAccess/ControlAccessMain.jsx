@@ -7,6 +7,7 @@ const ControlAccessMain = () => {
     return (
         <div>
         <br/>
+            <h3>Messages</h3>
             <Messages/>
 
 
