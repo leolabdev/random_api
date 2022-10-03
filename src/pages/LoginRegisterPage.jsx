@@ -1,6 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import LoginRegisterModal from "../components/LoginRegisterComponents/LoginRegisterModal";
 
 function LoginRegisterPage(props) {
@@ -21,6 +21,7 @@ function LoginRegisterPage(props) {
     const changeAuthMode = () => {
         setAuthMode(authMode === "signin" ? "signup" : "signin")
     }
+
 
     const [modalShow, setModalShow] = useState(true);
 
