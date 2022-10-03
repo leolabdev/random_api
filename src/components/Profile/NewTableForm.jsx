@@ -13,7 +13,7 @@ function NewTableForm() {
 
     const [tableName, setTableName] = useState('');
     const [tableDescription, setTableDescription] = useState('');
-    const [tableElements, setTableElements] = useState([]);
+    const [tableElements, setTableElements] = useState('');
     const [accessType , setAccessType] = useState("0");
 
     const [postResult , setPostResult] = useState('');
