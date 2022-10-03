@@ -1,70 +1,144 @@
-# Getting Started with Create React App
+# Random API
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## About project
 
-## Available Scripts
+In daily programming we often need some placeholder data. Such cases are for example HTML form to which we need to add examples for user or may be we need to find a name for a bot in a game. Whatever the case might be the Random API is a solution for all such headache.
 
-In the project directory, you can run:
+Random API lets you add any kind of data to an API and use it later as you wish. For example you often need to use any random firstname-lastname pair. All you need to do is simply create a SQL table with firstnames, create a table with lastnames and use it via handy API requests. All of that can be via great UI.
 
-### `npm start`
+Below you can see detailed instractions of how to get started and overall documentation of the project in case you wish to modify it. I hope you enjoy use of that piece of software.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Getting started
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. Create a database
 
-### `npm test`
+In the root folder you find DBScript.sql file open it and copy all of the content.
+Open your SQL database in the terminal and paste the content of the file.
+When it is done you have a database.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2. Configure .env file
 
-### `npm run build`
+In the root folder you find .env file
+Open it and change values if needed:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+| Field name            | Description                                                                                                             |
+|-----------------------|-------------------------------------------------------------------------------------------------------------------------|
+| DATABASE_NAME         | name of your database, random_api is default                                                                            |
+| DATABASE_USER         | username of your SQL database                                                                                           |
+| DATABASE_PASSWORD     | password for the username                                                                                               |
+| SERVER_HOST           | hostname, localhost is default                                                                                          |
+| SERVER_PORT           | port number, where you wish to run API                                                                                  |
+| JWT_SECRET            | encryption word for profile passwords, may be any word                                                                  |
+| JWT_DATABASE_SECRET   | encryption word for API access keys, may be any word                                                                    |
+| JWT_EXPIRES_IN        | time, after you will be logget out from your profile = cookie for access to your profile expires. Example 30d = 30 days |
+| JWT_COOKIE_EXPIRES    | time, after your API access token expires. Example 30 = 30 days                                                         |
+| CORS_ORIGIN           | base URL of your application = where your application (UI) is running, http://localhost:3000 is default                 |
+| REACT_APP_SERVER_HOST | hostname should be the same as SERVER_HOST, localhost is default (needed for react only)                                |
+| REACT_APP_SERVER_PORT | port number should be the same as SERVER_PORT (needed for react only)                                                   |
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. Install npm packeges
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+In the root folder(in terminal) run: npm install
 
-### `npm run eject`
+4. Start server
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+From the backend folder(in terminal) run: node server.js
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+5. Start frontend:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+From root folder(in terminal) run: npm start
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+6. Open app in the browser, http://localhost:3000 is default address
 
-## Learn More
+## API use
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+On the start you have no tables created from which you may fetch your random values. First thing you may want to do is to create some. It can be done from your profile page.
+After you have some tables created you may fetch them values by making GET request to the address http://{SERVER_HOST}:{SERVER_PORT}/rand/{your_username}/{your_tablename}. As a query parameters you need at least token={your_API_access_token}, as option you may use count={elements_count_needed}. Example:
+http://localhost:8080/mike/animals?token=sjvjjdvnjfnbjvj34838hvjbdfjv&count=12
+Please note, that in the application is a possibility to manage access to your tables, it may be:
+public = everybody may access and use it
+by request = table may be used only by table owner or by users to which table owner gave access, but is visible in the hub
+private = same as by request, by it is not visible in the hub
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+If the table has not public access type and you are not the owner(=table creator), you may not use it before you get a permission.
 
-### Code Splitting
+It can be useful if you have multiple users of the API, so it is not a bug it is feature.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Database structure
 
-### Analyzing the Bundle Size
+TODO: add DB image
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## API description
 
-### Making a Progressive Web App
+Whole and detailed API description you may find in swagger.yml file, but here is a short description of all paths:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+1. Paths description:
 
-### Advanced Configuration
+| Action                                     | Path                                           | Method |
+|--------------------------------------------|------------------------------------------------|--------|
+| Create a new JWT for API access            | jwt                                            | POST   |
+| Get all user's JWTs for API access         | jwt                                            | GET    |
+| Delete a user's JWT for API access         | jwt                                            | DELETE |
+| .                                          | .                                              | .      |
+| Login to user profile                      | login                                          | POST   |
+| Logout from user profile                   | login/logout                                   | GET    |
+| .                                          | .                                              | .      |
+| Register a new user                        | register                                       | POST   |
+| Delete a user profile                      | register                                       | DELETE |
+| .                                          | .                                              | .      |
+| Add access for user to a table*            | userAllowed                                    | POST   |
+| Get all tables to which user has an access | userAllowed                                    | GET    |
+| Delete user access to the table**          | userAllowed                                    | DELETE |
+| .                                          | .                                              | .      |
+| Add a new user table                       | userDatabase                                   | POST   |
+| Get all user tables data***                | userDatabase                                   | GET    |
+| Get concrete user table data***            | userDatabase/{tableName}?owner={ownerUsername} | GET    |
+| Update user table data or its items        | userDatabase                                   | PUT    |
+| Delete user table*                         | userDatabase                                   | DELETE |
+| .                                          | .                                              | .      |
+| Create table access request                | accessRequest                                  | POST   |
+| Get all table access requests              | accessRequest                                  | GET    |
+| Delete a table access request              | accessRequest                                  | DELETE |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+*Can be done only by the table owner
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+**Can be done only by the table owner or by user from which access will be deleted
 
-### `npm run build` fails to minify
+***Tables, which only can be shown to the user = with public or by request access types
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+2. Request and response examples:
+
+ | Path                                           | Method | Request object example(body)                                                                                                                      | Response object example(json())                                                                                                                                                                                                                                                                                                               | 
+|------------------------------------------------|--------|---------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+ | jwt                                            | POST   | no need                                                                                                                                           | {<br/> "isSuccess": true,<br/> "message": "Data has been added" <br/>}                                                                                                                                                                                                                                                                        |
+ | jwt                                            | GET    | no need                                                                                                                                           | {<br/> "isSuccess": true,<br/> "message": "Data has been found",<br/> "result": [<br/> { "token": "{token number 1}" },<br/> { "token": "{token number 2}" },<br/> { "token": "{token number 3}" } <br/>] }                                                                                                                                   |
+| jwt                                            | DELETE | {<br/> "token": "{token to be deleted}"<br/>}                                                                                                     | {<br/> "isSuccess": true,<br/> "message": "Data has been deleted" <br/>}                                                                                                                                                                                                                                                                      |
+| .                                              | .      | .                                                                                                                                                 | .                                                                                                                                                                                                                                                                                                                                             |
+ | login                                          | POST   | {<br/>"username": "mike",<br/> "password": "mike" <br/>}                                                                                          | {<br/> "hasAccess": true,<br/> "message": "Logged in successfully" <br/>}                                                                                                                                                                                                                                                                     |
+ | login/logout                                   | GET    | No need                                                                                                                                           | {<br/> isSuccess: true,<br/> message: "Logged out successfully" <br/>}                                                                                                                                                                                                                                                                        |
+ | .                                              | .      | .                                                                                                                                                 | .                                                                                                                                                                                                                                                                                                                                             |
+ | register                                       | POST   | {<br/>"username": "test",<br/> "password": "test" <br/>}                                                                                          | {<br/> "result": "Username was registered" <br/>}                                                                                                                                                                                                                                                                                             |
+ | register                                       | DELETE | {<br/>"username": "test",<br/> "password": "test" <br/>}                                                                                          | {<br/> "isSuccess": true,<br/> "message": "User has been deleted" <br/>}                                                                                                                                                                                                                                                                      |
+ | .                                              | .      | .                                                                                                                                                 | .                                                                                                                                                                                                                                                                                                                                             |
+ | userAllowed                                    | POST   | {<br/>"name": "animals",<br/> "username": "test"<br/>}                                                                                            | {<br/> "isSuccess": true,<br/> "message": "Data has been added" <br/>}                                                                                                                                                                                                                                                                        |
+ | userAllowed                                    | GET    | no need                                                                                                                                           | {<br/> "isSuccess": true,<br/> "message": "Data has been found",<br/> "result": [<br/> {<br/> "username": "mike",<br/> "name": "animals" <br/>} ] }                                                                                                                                                                                           |
+ | userAllowed                                    | DELETE | {<br/>"name": "animals",<br/> "username": "test"<br/>}                                                                                            | {<br/> "isSuccess": true,<br/> "message": "Data has been deleted" <br/>}                                                                                                                                                                                                                                                                      |
+ | .                                              | .      | .                                                                                                                                                 | .                                                                                                                                                                                                                                                                                                                                             |
+ | userDatabase                                   | POST   | {<br/> "name": "cars",<br/> "description": "Description bla bla bla",<br/> "accessType": "0",<br/> "elements": [<br/>"Volvo", "BMW", "VW"<br/>] } | {<br/> "isSuccess": true,<br/> "message": "Data has been added" <br/>}                                                                                                                                                                                                                                                                        |
+ | userDatabase?own=true<br/> or<br/>userDatabase | GET    | no need                                                                                                                                           | {<br/> "isSuccess": true,<br/> "message": "Data has been found",<br/> "result": [<br/> { "id": 8, "username": "mike", "name": "animals", "description": "Here is some description of the table ", "accessType": 0 },<br/> { "id": 9, "username": "mike", "name": "cars", "description": "Description bla bla bla", "accessType": 0 } <br/>] } |
+ | userDatabase/cars?owner=mike                   | GET    | no need                                                                                                                                           | {<br/> "isSuccess": true,<br/> "message": "Data has been found",<br/> "result": {<br/> "id": 9, "username": "mike", "name": "cars", "description": "Description bla bla bla", "accessType": 0, "userCount": 1 <br/>} }                                                                                                                        |
+ | userDatabase                                   | PUT    | {<br/> "name": "cars",<br/> "description": "Changed description",<br/> "accessType": "1" <br/>}                                                   | {<br/> "isSuccess": true,<br/> "message": "Data has been updated" <br/>}                                                                                                                                                                                                                                                                      |
+ | userDatabase                                   | DELETE | {<br/> "name": "cars" <br/>}                                                                                                                      | {<br/> "isSuccess": true,<br/> "message": "Data has been deleted" <br/>}                                                                                                                                                                                                                                                                      |
+ | .                                              | .      | .                                                                                                                                                 | .                                                                                                                                                                                                                                                                                                                                             |
+ | accessRequest                                  | POST   | {<br/>"receiver": "mike",<br/> "tableName": "myTable",<br/> "message": "Give me access please"<br/>}                                              | {<br/> "isSuccess": true,<br/> "message": "Data has been added" <br/>}                                                                                                                                                                                                                                                                        |
+ | accessRequest                                  | GET    | no need                                                                                                                                           | {<br/> "isSuccess": true,<br/> "message": "Data has been found",<br/> "result": [<br/> { "id": 6, "sender": "test", "receiver": "mike", "tableName": "animals", "message": "please let me access" },<br/> { "id": 7, "sender": "test", "receiver": "mike", "tableName": "cars", "message": null }<br/> ] }                                    |
+ | accessRequest                                  | DELETE | { <br/>"id": 4 <br/>}                                                                                                                             | {<br/> "isSuccess": true,<br/> "message": "Data has been deleted" <br/>}                                                                                                                                                                                                                                                                      |
+
+
+ ### Access types explanation
+ 0 - public, everybody can see and use the table
+  
+ 1 - by request, everybody can see, but can use only by table owner promission
+ 
+ 2 - private, nobody can access and see the table
