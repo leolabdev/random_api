@@ -37,16 +37,70 @@ const Messages = () => {
     }
 
 
+    const findMessage = id => messages.find(({id})=> id === id);
 
-    const declineAccess = (id) => {
-        alert("plz implement decline")
-        setMessages(current => current.filter(message => message.id != id))
+    const declineAccess = async (id) => {
+        // alert("plz implement decline")
+
+        const reqObj = {
+            id: id,
+        };
+
+        const reqOptions = {
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            method: "DELETE",
+            body: JSON.stringify(reqObj),
+            credentials: 'include'
+        }
+
+        const resp = await fetch(`${apiBasePath}/accessRequest`, reqOptions);
+        const respJson = await resp.json();
+        const respResult = respJson.isSuccess;
+        const respMessage = respJson.message;
+
+        if(respResult){ setMessages(current => current.filter(message => message.id != id))}
+
+        alert(respMessage)
+
     }
 
-    const confirmAccess = (id) => {
-        alert("plz implement confirm")
-        setMessages(current => current.filter(message => message.id != id))
+    const confirmAccess = async (e,...params) => {
+        // alert("plz implement confirm")
+
+         // e.preventDefault();
+
+        const message = findMessage(params.id);
+
+        console.log(message)
+
+        const reqData = {
+            username: message.sender,
+            name: message.tableName,
+        }
+        const reqOptions = {
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify({...reqData})
+        }
+
+        const resp = await fetch(`${apiBasePath}/userDatabase`, reqOptions);
+        const respJson = await resp.json();
+
+        console.log(reqData);
+        // setPostResult(respJson.message)
+
+        if(respJson.isSuccess) {
+            setMessages(current => current.filter(message => message.id != params.id));
+        }
+        alert(respJson.message);
     }
+
+
 
 
     return (
@@ -58,8 +112,12 @@ const Messages = () => {
 
                     <ListGroup>
                        <ListGroupItem>
-                           id : {m.id} , tableName : {m.tableName}, sender: {m.sender}, message: {m.message}
-                           <br/><br/>
+                           <ul>
+                               <li> id : {m.id} </li>
+                               <li>tableName : {m.tableName}</li>
+                               <li>sender: {m.sender}</li>
+                               <li>message: {m.message}</li>
+                           </ul>
                            <div className="mb-2">
                                <Button variant="success" onClick={() =>confirmAccess(m.id)}>Confirm</Button>{' '}
                                <Button variant="danger" onClick={() => declineAccess(m.id)}>Decline</Button>
