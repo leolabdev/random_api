@@ -1,3 +1,12 @@
+/**
+ * Convert string to string[]
+ * @param string
+ * @returns {null|*[]}
+ * @example
+ *  convertStringToArr("John,Petr,Lauri")
+ *  return ['John','Petr',''Lauri]
+ */
+
 export const convertStringToArr = (string) => {
     if(string != null){
         let stringArrRaw = [...string];
