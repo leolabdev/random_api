@@ -40,6 +40,9 @@ const LoginRegisterModal = (props) => {
                                     event.preventDefault();
                                     props.setUsernameLogin(event.target.value);
                                 }}/>
+                                <Form.Text className="text-muted">
+                                    {props.loginObjectValidator.loginV}
+                                </Form.Text>
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -48,6 +51,9 @@ const LoginRegisterModal = (props) => {
                                     event.preventDefault();
                                     props.setPasswordLogin(event.target.value);
                                 }}/>
+                                <Form.Text className="text-muted">
+                                    {props.loginObjectValidator.passV}
+                                </Form.Text>
                             </Form.Group>
                             <Form.Text className="text-muted">
                                 {props.statusLogin}
@@ -87,6 +93,9 @@ const LoginRegisterModal = (props) => {
                                     event.preventDefault();
                                     props.setUsernameRegister(event.target.value);
                                 }}/>
+                                <Form.Text className="text-muted">
+                                    {props.registerObjectValidator.loginV}
+                                </Form.Text>
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -95,6 +104,9 @@ const LoginRegisterModal = (props) => {
                                     event.preventDefault();
                                     props.setPasswordRegister(event.target.value);
                                 }}/>
+                                <Form.Text className="text-muted">
+                                    {props.registerObjectValidator.passV}
+                                </Form.Text>
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formBasicPassword">
                                 <Form.Label>Password again</Form.Label>
@@ -102,6 +114,9 @@ const LoginRegisterModal = (props) => {
                                     event.preventDefault();
                                     props.setPasswordAgainRegister(event.target.value);
                                 }}/>
+                                <Form.Text className="text-muted">
+                                    {props.registerObjectValidator.passAgV}
+                                </Form.Text>
                             </Form.Group>
                             <Form.Text className="text-muted">
                                 {props.statusRegister}
