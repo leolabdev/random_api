@@ -18,28 +18,39 @@ function NewTableForm() {
 
     const [postResult , setPostResult] = useState('');
 
+    const [validated, setValidated] = useState(false);
+
     const createNewTable = async (e) => {
+        const form = e.currentTarget;
+
         e.preventDefault();
-        const reqData = {
-            name: tableName,
-            description: tableDescription,
-            accessType: accessType,
-            elements: convertStringToArr(tableElements)
+        // e.stopPropagation();
+
+        if (form.checkValidity() === false) {
+            e.preventDefault();
+            e.stopPropagation();
         }
-        const reqOptions = {
-            headers:{
-                'Content-Type': 'application/json'
-            },
-            method: 'POST',
-            credentials: 'include',
-            body: JSON.stringify({...reqData})
+        else{
+            const reqData = {
+                name: tableName,
+                description: tableDescription,
+                accessType: accessType,
+                elements: convertStringToArr(tableElements)
+            }
+            const reqOptions = {
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                method: 'POST',
+                credentials: 'include',
+                body: JSON.stringify({...reqData})
+            }
+
+            const resp = await fetch(`${apiBasePath}/userDatabase`, reqOptions);
+            const respJson = await resp.json();
+            setPostResult(respJson.message)
         }
-
-        const resp = await fetch(`${apiBasePath}/userDatabase`, reqOptions);
-        const respJson = await resp.json();
-
-        setPostResult(respJson.message)
-
+        setValidated(true);
     }
 
 
@@ -55,20 +66,29 @@ function NewTableForm() {
             <br/><br/>
             <h3>Create new table</h3>
 
-            <Form>
+            <Form noValidate validated={validated} onSubmit={createNewTable}>
                 <Form.Group className="mb-3" controlId="tableName">
                     <Form.Label>Table name </Form.Label>
-                    <Form.Control type="text" placeholder="Enter table name" onChange={(e) => { setTableName(e.target.value); }}/>
+                    <Form.Control type="text" placeholder="Enter table name" required onChange={(e) => { setTableName(e.target.value); }}/>
+                    <Form.Control.Feedback type="invalid">
+                        Please enter table name
+                    </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="tableDescription">
                     <Form.Label>Description </Form.Label>
-                    <Form.Control as="textarea" placeholder="Enter table description" onChange={(e) => { setTableDescription(e.target.value); }}/>
+                    <Form.Control as="textarea" placeholder="Enter table description" required onChange={(e) => { setTableDescription(e.target.value); }}/>
+                    <Form.Control.Feedback type="invalid">
+                        Please enter table description
+                    </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="tableElements">
                     <Form.Label>Table elements </Form.Label>
-                    <Form.Control as="textarea" placeholder="Enter table elements" onChange={(e) => { setTableElements(e.target.value); }}/>
+                    <Form.Control as="textarea" placeholder="Enter table elements" required onChange={(e) => { setTableElements(e.target.value); }}/>
+                    <Form.Control.Feedback type="invalid">
+                        Please enter table elements
+                    </Form.Control.Feedback>
                     <Form.Text className="text-muted">
                         Type elements separated by comma. Example: cat, dog, turtle
                     </Form.Text>
@@ -76,14 +96,14 @@ function NewTableForm() {
 
                 <Form.Group className="mb-3" controlId="tableElements">
                     <Form.Label>Access type </Form.Label>
-                <Form.Select tclassName="mb-3" aria-label="Default select example" value={accessType} onChange={(e)=> setAccessType(e.target.value)}>
+                <Form.Select tclassName="mb-3" aria-label="Default select example" required value={accessType} onChange={(e)=> setAccessType(e.target.value)}>
                     <option value="0">Public</option>
                     <option value="1">Access required</option>
                     <option value="2">Private</option>
                 </Form.Select>
                 </Form.Group>
 
-                <Button variant="primary" type="submit" onClick={createNewTable}>
+                <Button variant="primary" type="submit">
                     Create table
                 </Button>
                 <br/>
