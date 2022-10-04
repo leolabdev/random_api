@@ -62,7 +62,7 @@ function NewTableForm() {
             <TableAccessDescription/>
             <br/>
 
-            <button onClick={() => navigate(-1)}>Go back</button>
+            <button onClick={() => navigate('/profile')}>Go back</button>
             <br/><br/>
             <h3>Create new table</h3>
 

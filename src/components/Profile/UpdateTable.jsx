@@ -14,27 +14,41 @@ const UpdateTable = ({table, setUpdateMode}) => {
     const [updateRequestResult,setUpdateRequestResult] = useState('')
 
 
-    const updateTable = async (event) => {
-        event.preventDefault()
-        const reqData = {
-            name: updatableTable.name,
-            description: updatableTable.description,
-            accessType: updatableTable.accessType,
-            elements: convertStringToArr(elements)
-        }
-        const reqOptions = {
-            headers:{
-                'Content-Type': 'application/json'
-            },
-            method: 'PUT',
-            credentials: 'include',
-            body: JSON.stringify({...reqData})
-        }
+    const [validated, setValidated] = useState(false);
 
-        const resp = await fetch(`${apiBasePath}/userDatabas`, reqOptions);
-        const respJson = await resp.json();
-        setUpdateRequestResult(respJson.message)
-        alert(respJson);
+
+    const updateTable = async (event) => {
+        const form = event.currentTarget;
+
+        event.preventDefault();
+
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        else{
+            event.preventDefault()
+            const reqData = {
+                name: updatableTable.name,
+                description: updatableTable.description,
+                accessType: updatableTable.accessType,
+                elements: convertStringToArr(elements)
+            }
+            const reqOptions = {
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                method: 'PUT',
+                credentials: 'include',
+                body: JSON.stringify({...reqData})
+            }
+
+            const resp = await fetch(`${apiBasePath}/userDatabas`, reqOptions);
+            const respJson = await resp.json();
+            setUpdateRequestResult(respJson.message)
+            alert(respJson);
+        }
+        setValidated(true);
     }
 
     console.log("ourTable",table);
@@ -50,17 +64,17 @@ const UpdateTable = ({table, setUpdateMode}) => {
 
             <h3>Update Table</h3>
 
-            <Form>
+            <Form noValidate validated={validated} onSubmit={updateTable}>
                 <Form.Group className="mb-3" controlId="tableName">
                     <Form.Label>Table name </Form.Label>
                     <Form.Control disabled type="text" placeholder="Enter table name" value={updatableTable.name}
-
                     />
+
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="tableDescription">
                     <Form.Label>Description </Form.Label>
-                    <Form.Control as="textarea" placeholder="Enter table description" value={updatableTable.description}
+                    <Form.Control as="textarea" required placeholder="Enter table description" value={updatableTable.description}
                                   onChange={(e)=>{
                                       setUpdatableTable(current => {
                                           let description = {...current.description};
@@ -68,16 +82,21 @@ const UpdateTable = ({table, setUpdateMode}) => {
                                           return {...current,description}
                                       })
                                   }}
-
                     />
+                    <Form.Control.Feedback type="invalid">
+                        Please enter table description
+                    </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="tableElements">
                     <Form.Label>Table elements </Form.Label>
-                    <Form.Control as="textarea" placeholder="Enter table elements"
+                    <Form.Control as="textarea"  required placeholder="Enter table elements"
                                   value={elements}
                                   onChange={(e)=>setElements(e.target.value)}
                     />
+                    <Form.Control.Feedback type="invalid">
+                        Please enter table elements
+                    </Form.Control.Feedback>
                     <Form.Text className="text-muted">
                         Type elements separated by comma. Example: cat, dog, turtle
                     </Form.Text>
@@ -105,7 +124,7 @@ const UpdateTable = ({table, setUpdateMode}) => {
                         Cancel
                     </Button>
 
-                    <Button variant="success" type="submit" onClick={()=>updateTable()}>
+                    <Button variant="success" type="submit">
                         Update table
                     </Button>
                 </div>
