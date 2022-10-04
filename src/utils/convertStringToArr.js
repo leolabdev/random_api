@@ -4,7 +4,7 @@
  * @returns {null|*[]}
  * @example
  *  convertStringToArr("John,Petr,Lauri")
- *  return ['John','Petr',''Lauri]
+ *  return ['John','Petr','Lauri']
  */
 
 export const convertStringToArr = (string) => {
