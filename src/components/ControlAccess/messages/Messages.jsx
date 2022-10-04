@@ -2,6 +2,12 @@ import {ListGroup, ListGroupItem} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import {useEffect, useState} from "react";
 
+
+/**
+ * Messages for giving access by request of an user
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const Messages = () => {
 
     const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
@@ -17,6 +23,9 @@ const Messages = () => {
 ]);
 
 
+    /**
+     * Here we get them from the server
+     */
     useEffect(  () => {
         fetchAccessRequests();
     }, []);
@@ -37,8 +46,19 @@ const Messages = () => {
     }
 
 
+    /**
+     * function gives us a certain message from array of the messages
+     * @param id
+     * @returns {object} message
+     */
     const findMessage = id => messages.find(({id})=> id === id);
 
+
+    /**
+     * By this function we decline an user's request for the access
+     * @param id
+     * @returns {Promise<void>}
+     */
     const declineAccess = async (id) => {
         // alert("plz implement decline")
 
@@ -66,12 +86,18 @@ const Messages = () => {
 
     }
 
-    const confirmAccess = async (e,...params) => {
+    /**
+     * Function for giving access to the required table
+     * @param e
+     * @param id{number}
+     * @returns {Promise<void>}
+     */
+    const confirmAccess = async (e,id) => {
         // alert("plz implement confirm")
 
          // e.preventDefault();
 
-        const message = findMessage(params.id);
+        const message = findMessage(id);
 
         console.log(message)
 
@@ -95,7 +121,7 @@ const Messages = () => {
         // setPostResult(respJson.message)
 
         if(respJson.isSuccess) {
-            setMessages(current => current.filter(message => message.id != params.id));
+            setMessages(current => current.filter(message => message.id != id));
         }
         alert(respJson.message);
     }

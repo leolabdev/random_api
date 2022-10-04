@@ -7,6 +7,11 @@ import {convertStringToArr} from "../../utils/convertStringToArr";
 
 const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
 
+/**
+ * Form for creating new table
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function NewTableForm() {
 
     const navigate = useNavigate();
@@ -20,6 +25,11 @@ function NewTableForm() {
 
     const [validated, setValidated] = useState(false);
 
+    /**
+     * Request for creating new table
+     * @param e
+     * @returns {Promise<void>}
+     */
     const createNewTable = async (e) => {
         const form = e.currentTarget;
 

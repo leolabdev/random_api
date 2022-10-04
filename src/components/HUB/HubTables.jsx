@@ -2,6 +2,12 @@ import {Card} from "react-bootstrap";
 import React, {useState} from "react";
 import HubTableModal from "./HubTableModal";
 
+/**
+ * Component for displaying hub tables , also here we handle modal windows of an certain hub table
+ * @param hubTables
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const HubTables = ({hubTables}) => {
 
     const [show, setShow] = useState(false);

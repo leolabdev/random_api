@@ -1,3 +1,8 @@
+/**
+ * Ui component which describes the accesses' colors
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const TableAccessDescription = () => {
     return (
         <div  className='d-flex justify-content-left gap-3'

@@ -1,6 +1,11 @@
 import {useNavigate} from "react-router-dom";
 
-function Error(props) {
+/**
+ * Error page
+ * @returns {JSX.Element}
+ * @constructor
+ */
+function Error() {
 
     const navigate = useNavigate();
     return (

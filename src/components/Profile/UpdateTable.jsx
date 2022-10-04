@@ -3,6 +3,13 @@ import {useEffect, useState} from "react";
 import Form from "react-bootstrap/Form";
 import {convertStringToArr} from "../../utils/convertStringToArr";
 
+/**
+ * Component for updating own tables
+ * @param table
+ * @param setUpdateMode
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const UpdateTable = ({table, setUpdateMode}) => {
 
     const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
@@ -17,6 +24,11 @@ const UpdateTable = ({table, setUpdateMode}) => {
     const [validated, setValidated] = useState(false);
 
 
+    /**
+     * update tables request
+     * @param event
+     * @returns {Promise<void>}
+     */
     const updateTable = async (event) => {
         const form = event.currentTarget;
 
@@ -53,10 +65,6 @@ const UpdateTable = ({table, setUpdateMode}) => {
 
     console.log("ourTable",table);
 
-
-    // useEffect(()=>{
-    //     fetchUpdatableTable();
-    // },[])
 
     return (
         <div>

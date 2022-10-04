@@ -4,6 +4,12 @@ import UserHasAccessTables from "./UserHasAccessTables";
 import React from "react";
 import TableAccessDescription from "./TableAccessDescription";
 
+/**
+ * Main component of the profile page
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const ProfileMain = (props) => {
     return (
         <div id="container">

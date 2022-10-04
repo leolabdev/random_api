@@ -4,6 +4,12 @@ import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import {useCookies} from "react-cookie";
 
+/**
+ * Component for displaying user's own tables
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function Tables(props) {
     const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
 
@@ -29,6 +35,10 @@ function Tables(props) {
         fetchUserTables();
     }, []);
 
+    /**
+     * function fetches all user's own tables
+     * @returns {Promise<void>}
+     */
     const fetchUserTables = async () => {
         const reqOptions = {
             headers:{

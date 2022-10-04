@@ -1,11 +1,18 @@
 
 import ProfileMain from "../components/Profile/ProfileMain";
 
-function ProfilePage(props) {
+/**
+ * Profile page
+ * @param setTableInfoName
+ * @param setTableInfoOwner
+ * @returns {JSX.Element}
+ * @constructor
+ */
+function ProfilePage({setTableInfoName,setTableInfoOwner}) {
     return (
 
         <div>
-            <ProfileMain setTableInfoName={props.setTableInfoName} setTableInfoOwner={props.setTableInfoOwner}/>
+            <ProfileMain setTableInfoName={setTableInfoName} setTableInfoOwner={setTableInfoOwner}/>
         </div>
     );
 }

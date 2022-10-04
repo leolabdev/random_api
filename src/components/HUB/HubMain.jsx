@@ -3,11 +3,20 @@ import HubSearch from "./HubSearch";
 import  './Hub.css';
 import HubTables from "./HubTables";
 
-
+/**
+ * It is the Main jsx component of the Hub section
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const HubMain = () => {
     const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
     const [hubTables,setHubTables] = useState([{}])
 
+
+    /**
+     * this function gets from the server all hub tables
+     * @returns {Promise<void>}
+     */
     const fetchHubTables = async () => {
         const reqOptions = {
             headers:{

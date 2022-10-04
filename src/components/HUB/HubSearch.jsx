@@ -2,9 +2,15 @@ import React, {useState} from 'react';
 import {Card, Container} from "react-bootstrap";
 import HubTables from "./HubTables";
 
-function HubSearch(props) {
+/**
+ * Component for searching a certain table from hub
+ * @param hubTables
+ * @returns {JSX.Element}
+ * @constructor
+ */
+function HubSearch({hubTables}) {
 
-    const {hubTables} = props
+    // const {hubTables} = props
     const [tableSearchValue, setTableSearchValue] = useState('');
     const [matchedTables, setMatchedTables] = useState([{}]);
 

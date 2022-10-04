@@ -8,6 +8,12 @@ import {Button, ListGroup} from "react-bootstrap";
 
 const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
 
+/**
+ * Component for showing the certain table's info
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function TableInfo(props) {
 
     const navigate = useNavigate();
@@ -20,6 +26,11 @@ function TableInfo(props) {
         fetchTableData();
     },[]);
 
+    /**
+     * Function fetch the certain table data from the server
+     * @param e
+     * @returns {Promise<void>}
+     */
     const fetchTableData = async (e) => {
         // e.stopPropagation();
         const reqOptions = {

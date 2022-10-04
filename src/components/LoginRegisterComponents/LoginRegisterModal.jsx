@@ -3,8 +3,15 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-
+/**
+ * Modal component for sign in/sign up
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const LoginRegisterModal = (props) => {
+
+
 
     let [authMode, setAuthMode] = useState("signin")
 

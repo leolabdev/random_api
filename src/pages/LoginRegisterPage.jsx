@@ -3,6 +3,12 @@ import Form from 'react-bootstrap/Form';
 import {useEffect, useState} from "react";
 import LoginRegisterModal from "../components/LoginRegisterComponents/LoginRegisterModal";
 
+/**
+ * Page for handling signin/signup
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function LoginRegisterPage(props) {
     const [usernameLogin, setUsernameLogin] = useState('');
     const [passwordLogin, setPasswordLogin] = useState('');
@@ -42,7 +48,11 @@ function LoginRegisterPage(props) {
     const [modalShow, setModalShow] = useState(true);
 
 
-
+    /**
+     * Login user request , we have an jwt in cookies
+     * @param event
+     * @returns {Promise<void>}
+     */
     const loginUser = async (event) => {
 
 
@@ -94,10 +104,11 @@ function LoginRegisterPage(props) {
     }
 
 
-
-
-
-
+    /**
+     * register an new user request
+     * @param event
+     * @returns {Promise<void>}
+     */
     const registerUser = async (event) => {
 
         if(usernameRegister !== ''){

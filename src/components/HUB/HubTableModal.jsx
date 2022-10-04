@@ -7,6 +7,16 @@ import React, {useEffect, useState} from "react";
 
 const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
 
+/**
+ * Modal window for seeing the extra information about the table ,
+ * and also it gives possibility add this table to the own collection'
+ * (add directly if allowed or send request)
+ * @param table
+ * @param show
+ * @param handleClose
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const HubTableModal = ({table ,show , handleClose}) => {
 
     // console.log(table)
@@ -19,6 +29,11 @@ const HubTableModal = ({table ,show , handleClose}) => {
 
     });
 
+    /**
+     * Here we get from the server the table
+     * @param e event
+     * @returns {Promise<void>}
+     */
     const fetchHubTable = async (e)=> {
         const reqOptions = {
             headers:{
@@ -34,6 +49,11 @@ const HubTableModal = ({table ,show , handleClose}) => {
         console.log(respJson)
     }
 
+    /**
+     * This function send the access request to the table's owner for adding the table to the own collection
+     * @param e
+     * @returns {Promise<void>}
+     */
     const sendAccessRequest = async (e) => {
         e.preventDefault();
         const reqData = {
@@ -57,6 +77,11 @@ const HubTableModal = ({table ,show , handleClose}) => {
 
     }
 
+    /**
+     * This function send the request for adding the table to the own collection
+     * @param e
+     * @returns {Promise<void>}
+     */
     const addToOwnCollectionRequest = async (e) => {
         e.preventDefault();
         const reqData = {
