@@ -92,14 +92,12 @@ const Messages = () => {
      * @param id{number}
      * @returns {Promise<void>}
      */
-    const confirmAccess = async (e,id) => {
+    const confirmAccess = async (id) => {
         // alert("plz implement confirm")
 
          // e.preventDefault();
 
         const message = findMessage(id);
-
-        console.log(message)
 
         const reqData = {
             username: message.sender,
@@ -114,19 +112,27 @@ const Messages = () => {
             body: JSON.stringify({...reqData})
         }
 
-        const resp = await fetch(`${apiBasePath}/userDatabase`, reqOptions);
+        const resp = await fetch(`${apiBasePath}/userAllowed`, reqOptions);
         const respJson = await resp.json();
-
-        console.log(reqData);
         // setPostResult(respJson.message)
 
-        if(respJson.isSuccess) {
-            setMessages(current => current.filter(message => message.id != id));
+        if(respJson.isSuccess){
+            const reqObj = {
+                id: id
+            };
+
+            const reqOptions = {
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                method: "DELETE",
+                body: JSON.stringify(reqObj),
+                credentials: 'include'
+            }
+
+            await fetch(`${apiBasePath}/accessRequest`, reqOptions);
         }
-        alert(respJson.message);
     }
-
-
 
 
     return (

@@ -2,6 +2,8 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import React, { useState, useEffect } from 'react';
 
+//TODO: add delete token button
+
 /**
  * Component for displaying users tokens, which are needed for getting a data from the server
  * @returns {JSX.Element}

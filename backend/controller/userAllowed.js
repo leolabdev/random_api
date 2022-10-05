@@ -34,6 +34,7 @@ exports.addUserAccess = async (req, res, next) => {
                         } else {
                             res.status(500);
                             res.isSuccess = false;
+                            res.msg = 'Request already sent';
                         }
                     }
 

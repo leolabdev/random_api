@@ -3,7 +3,9 @@ import Form from "react-bootstrap/Form";
 import {FormText} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import React, {useEffect, useState} from "react";
+import {useCookies} from "react-cookie";
 
+//TODO: show messages in red color and example of API request: http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}/rand/{username}/{tableName}?token={your_token}&count=10
 
 const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
 
@@ -25,9 +27,9 @@ const HubTableModal = ({table ,show , handleClose}) => {
 
     const [requestResult,setRequestResult] = useState('');
 
-    const [hubTable,setHubTable] = useState({
+    const [hubTable,setHubTable] = useState({});
 
-    });
+    const [cookie] = useCookies();
 
     /**
      * Here we get from the server the table
@@ -42,11 +44,10 @@ const HubTableModal = ({table ,show , handleClose}) => {
             method: 'GET',
             credentials: 'include'
         }
-        const resp = await fetch(`${apiBasePath}/userDatabase/${table.name}?owner=${table.username}`, reqOptions);
+        const resp = await fetch(`${apiBasePath}/userDatabase/${table.name}?owner=${table.username}&includingElements=true`, reqOptions);
 
         const respJson = await resp.json();
         setHubTable(respJson.result);
-        console.log(respJson)
     }
 
     /**
@@ -78,15 +79,15 @@ const HubTableModal = ({table ,show , handleClose}) => {
     }
 
     /**
-     * This function send the request for adding the table to the own collection
+     * This function sends the request for adding the table to the own collection
      * @param e
      * @returns {Promise<void>}
      */
     const addToOwnCollectionRequest = async (e) => {
         e.preventDefault();
         const reqData = {
-            tableName: hubTable.name,
-            username: hubTable.username,
+            name: hubTable.name,
+            username: cookie.username,
         }
         const reqOptions = {
             headers:{
@@ -101,9 +102,13 @@ const HubTableModal = ({table ,show , handleClose}) => {
         const respJson = await resp.json();
 
         setRequestResult(respJson.message)
+
+        console.log(respJson);
+
         // alert(respJson.message)
     }
 
+    //TODO: disable fetching on page loading
     useEffect(()=>{
         fetchHubTable();
     },[show])
@@ -124,7 +129,8 @@ const HubTableModal = ({table ,show , handleClose}) => {
                     <FormText>Description: {hubTable.description}</FormText>
                     <br/>
                     Owner : {hubTable.username}
-
+                    <br/>
+                    Elements : {JSON.stringify(hubTable.elements)}
 
 
                     {

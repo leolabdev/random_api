@@ -55,7 +55,7 @@ const UpdateTable = ({table, setUpdateMode}) => {
                 body: JSON.stringify({...reqData})
             }
 
-            const resp = await fetch(`${apiBasePath}/userDatabas`, reqOptions);
+            const resp = await fetch(`${apiBasePath}/userDatabase`, reqOptions);
             const respJson = await resp.json();
             setUpdateRequestResult(respJson.message)
             alert(respJson);

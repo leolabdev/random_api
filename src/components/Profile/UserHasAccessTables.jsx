@@ -11,7 +11,7 @@ const UserHasAccessTables = () => {
 
     const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
 
-    const [userHasAccessTables, setUserHasAccessTables] = useState([{}]);
+    const [userHasAccessTables, setUserHasAccessTables] = useState([]);
 
     useEffect(() => {
         fetchUserHasAccessTables();
@@ -29,6 +29,7 @@ const UserHasAccessTables = () => {
         const resp = await fetch(`${apiBasePath}/userAllowed`, reqOptions);
         const respJson = await resp.json();
         setUserHasAccessTables(respJson.result);
+        console.log(respJson);
     }
 
 
