@@ -83,7 +83,7 @@ exports.getTables = async (req, res, next) => {
 
         let resp;
         if(isOwnTables === 'true'){
-            const selectTokenQ = `SELECT * FROM UserDatabase WHERE (username=?)`;
+            const selectTokenQ = `SELECT * FROM UserDatabase WHERE username=?`;
             resp = await db.makeQuery(selectTokenQ, currentUsername);
         }else{
             const selectTokenQ = `SELECT * FROM UserDatabase WHERE (accessType=0 OR accessType=1) AND username!=?`;

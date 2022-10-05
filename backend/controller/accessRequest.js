@@ -39,6 +39,10 @@ exports.createAccessRequest = async (req, res, next) => {
                             res.status(200);
                             res.isSuccess = true;
                         }
+                    } else{
+                        res.status(500);
+                        res.isSuccess = false;
+                        res.msg = 'Request already sent';
                     }
                 } else {
                     res.status(500);

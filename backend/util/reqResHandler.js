@@ -33,9 +33,10 @@ exports.handlePostResp = (req, res) => {
             message: "Data has been added"
         });
     } else{
+        const message = res.msg != null ? res.msg : "Problems with adding data";
         res.json({
             isSuccess: false,
-            message: "Problems with adding data"
+            message: message
         });
     }
 
