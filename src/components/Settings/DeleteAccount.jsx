@@ -5,6 +5,11 @@ import Modal from 'react-bootstrap/Modal';
 import {useNavigate} from "react-router-dom";
 import Form from "react-bootstrap/Form";
 
+/**
+ * Delete account component
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const DeleteAccount = () => {
 
     const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
@@ -21,6 +26,11 @@ const DeleteAccount = () => {
 
     const [errorMessage, setErrorMessage] = useState('')
 
+    /**
+     * Delete account request
+     * @param event
+     * @returns {Promise<void>}
+     */
     const handleDeletingAccount = async (event) => {
 
         event.preventDefault();

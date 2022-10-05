@@ -2,6 +2,11 @@ import React, {useEffect, useState} from "react";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 
+/**
+ * Component for displaying tables to which an user has the access
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const UserHasAccessTables = () => {
 
     const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
@@ -39,7 +44,7 @@ const UserHasAccessTables = () => {
                 {
                     (userHasAccessTables[0] != null)  ?
                     userHasAccessTables.map((item, i)=>{
-                        return <ListGroup.Item  as='li' style={{cursor:'pointer' ,backgroundColor :'#FFB6C1'}} className=' w-50' key={item.id} onClick={()=>{ alert("hello")} }>{item.name} </ListGroup.Item>
+                        return <ListGroup.Item  as='li' style={{cursor:'pointer' ,backgroundColor :'#FFB6C1'}} className=' w-50' key={i} onClick={()=>{ alert("hello")} }>{item.name} </ListGroup.Item>
                     })
                         :
                         <span></span>

@@ -3,7 +3,12 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import {useNavigate} from "react-router-dom";
 
-
+/**
+ *Delete table component
+ * @param {string}tableName
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const DeleteTable = ({tableName}) => {
 
     const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
@@ -18,6 +23,11 @@ const DeleteTable = ({tableName}) => {
 
     const [errorMessage, setErrorMessage] = useState('')
 
+    /**
+     * Request for deleting a table
+     * @param event
+     * @returns {Promise<void>}
+     */
     const handleDeletingTable = async (event) => {
 
         event.preventDefault();

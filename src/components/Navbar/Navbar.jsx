@@ -6,7 +6,12 @@ import { ReactComponent as ProfileSvg } from '../../img/profile.svg';
 import {useState} from "react";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 
-
+/**
+ * Navbar menu component for moving around the application
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function NavbarComponent(props) {
 
 

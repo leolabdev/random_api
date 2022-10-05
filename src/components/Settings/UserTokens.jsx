@@ -2,6 +2,11 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import React, { useState, useEffect } from 'react';
 
+/**
+ * Component for displaying users tokens, which are needed for getting a data from the server
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function UserTokens() {
     const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
 
@@ -24,6 +29,10 @@ function UserTokens() {
         fetchUserTokens();
     }, []);
 
+    /**
+     * fetch users' tokens request
+     * @returns {Promise<void>}
+     */
     const fetchUserTokens = async () => {
         const reqOptions = {
             headers:{

@@ -1,8 +1,14 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import LoginRegisterModal from "../components/LoginRegisterComponents/LoginRegisterModal";
 
+/**
+ * Page for handling signin/signup
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function LoginRegisterPage(props) {
     const [usernameLogin, setUsernameLogin] = useState('');
     const [passwordLogin, setPasswordLogin] = useState('');
@@ -16,51 +22,55 @@ function LoginRegisterPage(props) {
 
     const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
 
-    let [authMode, setAuthMode] = useState("signin")
+    let [authMode, setAuthMode] = useState("signin");
+
+    // const loginObjectValidator = {
+    //
+    // }
+
+    let [loginObjectValidator,setLoginObjectValidator] = useState({
+        loginV: '',
+        passV: ''
+    }) ;
+
+    const [registerObjectValidator,setRegisterObjectValidator] = useState({
+        loginV: '',
+        passV: '',
+        passAgV: ''
+    });
+
 
     const changeAuthMode = () => {
         setAuthMode(authMode === "signin" ? "signup" : "signin")
     }
 
+
     const [modalShow, setModalShow] = useState(true);
 
+
+    /**
+     * Login user request , we have an jwt in cookies
+     * @param event
+     * @returns {Promise<void>}
+     */
     const loginUser = async (event) => {
-        event.preventDefault();
 
-        const reqObj = {
-            username: usernameLogin,
-            password: passwordLogin
-        };
 
-        const reqOptions = {
-            headers:{
-                'Content-Type': 'application/json'
-            },
-            method: "POST",
-            body: JSON.stringify(reqObj),
-            credentials: 'include'
+        if(usernameLogin !== ''){
+            setLoginObjectValidator(prev => ({...prev,loginV:''}))
+        }
+        if(passwordLogin !==''){
+            setLoginObjectValidator(prev => ({...prev,passV:''}))
         }
 
-        const resp = await fetch(`${apiBasePath}/login`, reqOptions);
-        const respJson = await resp.json();
-        const respResult = respJson.hasAccess;
-        const respMessage = respJson.message;
-        setStatusLogin(respMessage);
-        props.setLoginAccess(respResult);
-
-        setUsernameLogin("");
-        setPasswordLogin("");
-    }
-
-    const registerUser = async (event) => {
-        event.preventDefault();
+        if(usernameLogin!== "" && passwordLogin !== ""){
 
 
-        if(passwordAgainRegister === passwordRegister){
+            event.preventDefault();
 
             const reqObj = {
-                username: usernameRegister,
-                password: passwordRegister
+                username: usernameLogin,
+                password: passwordLogin
             };
 
             const reqOptions = {
@@ -68,24 +78,101 @@ function LoginRegisterPage(props) {
                     'Content-Type': 'application/json'
                 },
                 method: "POST",
-                body: JSON.stringify(reqObj)
+                body: JSON.stringify(reqObj),
+                credentials: 'include'
             }
 
-            const resp = await fetch(`${apiBasePath}/register`, reqOptions);
+            const resp = await fetch(`${apiBasePath}/login`, reqOptions);
             const respJson = await resp.json();
-            const respResult = respJson.result;
-            setStatusRegister(respResult);
+            const respResult = respJson.hasAccess;
+            const respMessage = respJson.message;
+            setStatusLogin(respMessage);
+            props.setLoginAccess(respResult);
 
+            // setUsernameLogin("");
+            // setPasswordLogin("");
         }
         else{
-            setStatusRegister("Passwords are not same, please try again");
+            if(usernameLogin === ''){
+                setLoginObjectValidator(prev => ({...prev,loginV:'Should not be empty!'}))
+            }
+            if(passwordLogin ===''){
+                setLoginObjectValidator(prev => ({...prev,passV:'Should not be empty!'}))
+            }
+
+        }
+    }
+
+
+    /**
+     * register an new user request
+     * @param event
+     * @returns {Promise<void>}
+     */
+    const registerUser = async (event) => {
+
+        if(usernameRegister !== ''){
+            setRegisterObjectValidator(prev => ({...prev,loginV:''}))
+        }
+        if(passwordRegister !==''){
+            setRegisterObjectValidator(prev => ({...prev,passV:''}))
+        }
+        if(passwordAgainRegister !==''){
+            setRegisterObjectValidator(prev => ({...prev,passAgV:''}))
         }
 
-        setUsernameRegister('');
-        setPasswordRegister('');
-        setPasswordAgainRegister('');
+        if(usernameRegister!== '' && passwordRegister !== '' && passwordAgainRegister !== ''){
+            event.preventDefault();
 
-    }
+
+            if(passwordAgainRegister === passwordRegister){
+
+                const reqObj = {
+                    username: usernameRegister,
+                    password: passwordRegister
+                };
+
+                const reqOptions = {
+                    headers:{
+                        'Content-Type': 'application/json'
+                    },
+                    method: "POST",
+                    body: JSON.stringify(reqObj)
+                }
+
+                const resp = await fetch(`${apiBasePath}/register`, reqOptions);
+                const respJson = await resp.json();
+                const respResult = respJson.result;
+                setStatusRegister(respResult);
+
+            }
+            else{
+                setStatusRegister("Passwords are not same, please try again");
+            }
+
+            // setUsernameRegister('');
+            // setPasswordRegister('');
+            // setPasswordAgainRegister('');
+
+        }
+        else {
+            if(usernameRegister === ''){
+                setRegisterObjectValidator(prev => ({...prev,loginV:'Should not be empty!'}))
+            }
+            if(passwordRegister ===''){
+                setRegisterObjectValidator(prev => ({...prev,passV:'Should not be empty!'}))
+            }
+            if(passwordAgainRegister ===''){
+                setRegisterObjectValidator(prev => ({...prev,passAgV:'Should not be empty!'}))
+            }
+        }
+
+
+        }
+
+
+
+
 
     return (
             <div>
@@ -105,6 +192,9 @@ function LoginRegisterPage(props) {
 
                     statusLogin={statusLogin}
                     statusRegister={statusRegister}
+
+                    loginObjectValidator={loginObjectValidator}
+                    registerObjectValidator={registerObjectValidator}
 
                 />
             </div>
