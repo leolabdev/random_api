@@ -88,6 +88,7 @@ function LoginRegisterPage(props) {
             const respMessage = respJson.message;
             setStatusLogin(respMessage);
             props.setLoginAccess(respResult);
+            window.location.reload();
 
             // setUsernameLogin("");
             // setPasswordLogin("");

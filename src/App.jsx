@@ -38,11 +38,12 @@ function App() {
           }
       }, [cookies]);
 
+
   return (
       <div className="App" id="container">
 
           <BrowserRouter>
-              <NavbarComponent loginAccess={loginAccess}/>
+              <NavbarComponent  loginAccess={loginAccess}/>
               <Container>
               <Routes>
                   <Route path="/" element={loginAccess || cookies.jwt != null ? <Navigate replace to="/profile" /> : <LoginRegisterPage setLoginAccess={setLoginAccess}/>} />

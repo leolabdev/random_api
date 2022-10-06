@@ -3,8 +3,9 @@ import {useNavigate} from "react-router-dom";
 
 import './Navbar.css'
 import { ReactComponent as ProfileSvg } from '../../img/profile.svg';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
+import {useCookies} from "react-cookie";
 
 /**
  * Navbar menu component for moving around the application
@@ -13,6 +14,9 @@ import useWindowDimensions from "../../hooks/useWindowDimensions";
  * @constructor
  */
 function NavbarComponent(props) {
+
+    const [cookies] = useCookies(['cookie-name']);
+
 
 
     const {width} = useWindowDimensions();
@@ -54,6 +58,7 @@ function NavbarComponent(props) {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
+                        {width < 991 && <Nav.Link onClick={()=>navigate('/')}>{cookies?.username}</Nav.Link>}
                         <Nav.Link  onClick={()=> navigate('/hub')}>HUB</Nav.Link>
                         <Nav.Link onClick={()=> navigate('/about')}>About</Nav.Link>
                     </Nav>
@@ -67,14 +72,20 @@ function NavbarComponent(props) {
                                 <NavDropdown title={
                                     (width > 991)
                                         ?
-                                    <ProfileSvg
-                                    onMouseEnter={()=>{
-                                        setHover(true);}}
-                                    onMouseLeave={()=>{
-                                        setHover(false);
-                                    }}
-                                    style={{width : '33px' }}
-                                    fill = {hover ? '#E0E0E0' : 'white'} stroke={hover ? '#E0E0E0' : 'white'}  />
+                                        <div className='d-flex flex-wrap gap-2'
+                                             onMouseEnter={()=>{
+                                                 setHover(true);}}
+                                             onMouseLeave={()=>{
+                                                 setHover(false);
+                                             }}
+                                        >
+                                            <span className='mt-1' style={hover ? {color : '#E0E0E0'} :{color:'white' } }>{cookies?.username}</span>
+                                            <ProfileSvg
+
+                                                style={{width : '33px' }}
+                                                fill = {hover ? '#E0E0E0' : 'white'} stroke={hover ? '#E0E0E0' : 'white'}  />
+                                        </div>
+
                                 :
                                         <span className='menu_text' style={{fontWeight : '700'}}>Menu  </span>
                                 }>
