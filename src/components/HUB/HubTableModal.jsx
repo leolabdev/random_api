@@ -25,7 +25,9 @@ const HubTableModal = ({table ,show , handleClose}) => {
 
     const [accessMessage,setAccessMessage] = useState('');
 
-    const [requestResult,setRequestResult] = useState('');
+    const [requestMessage,setRequestMessage] = useState('');
+
+    const [requestResult,setRequestResult] = useState(true);
 
     const [hubTable,setHubTable] = useState({});
 
@@ -74,7 +76,9 @@ const HubTableModal = ({table ,show , handleClose}) => {
         const resp = await fetch(`${apiBasePath}/accessRequest`, reqOptions);
         const respJson = await resp.json();
 
-        setRequestResult(respJson.message)
+        setRequestMessage(respJson.message);
+
+        setRequestResult(respJson.isSuccess);
 
     }
 
@@ -101,11 +105,12 @@ const HubTableModal = ({table ,show , handleClose}) => {
         const resp = await fetch(`${apiBasePath}/userAllowed`, reqOptions);
         const respJson = await resp.json();
 
-        setRequestResult(respJson.message)
+        setRequestMessage(respJson.message);
+
+        setRequestResult(respJson.isSuccess);
 
         console.log(respJson);
 
-        // alert(respJson.message)
     }
 
 
@@ -116,7 +121,7 @@ const HubTableModal = ({table ,show , handleClose}) => {
     },[show])
 
     useEffect(()=>{
-        setRequestResult('')
+        setRequestMessage('')
     },[show])
 
     return (
@@ -141,8 +146,6 @@ const HubTableModal = ({table ,show , handleClose}) => {
                         </ul>
                     </div>
 
-                    {/*Elements : {JSON.stringify(hubTable.elements)}*/}
-
 
                     {
                         hubTable.accessType == 1 ?
@@ -155,7 +158,7 @@ const HubTableModal = ({table ,show , handleClose}) => {
                     }
 
 
-                    {requestResult && <div>{requestResult}</div>}
+                    {requestMessage && <div style={requestResult === false && {color: 'red'}}>{requestMessage}</div>}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="primary" onClick={handleClose}>
