@@ -26,8 +26,10 @@ function TableInfo(props) {
     const [updateMode,setUpdateMode] = useState(false);
 
     useEffect(() => {
-        fetchTableData();
-    },[]);
+        if(!updateMode){
+            fetchTableData();
+        }
+    },[updateMode]);
 
     /**
      * Function fetch the certain table data from the server
