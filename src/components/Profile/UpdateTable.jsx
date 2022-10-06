@@ -16,7 +16,10 @@ const UpdateTable = ({table, setUpdateMode}) => {
 
     const [updatableTable,setUpdatableTable] = useState({...table});
 
-    const [elements,setElements] = useState(table.elements.map(el => el['value']).join(', '));
+    const oldElements = table.elements.map(el => el['value']).join(', ')
+
+    // const [elements,setElements] = useState(oldElements);
+    const [elements,setElements] = useState(JSON.parse(JSON.stringify(oldElements)));
 
     const [updateRequestResult,setUpdateRequestResult] = useState('')
 
@@ -42,10 +45,25 @@ const UpdateTable = ({table, setUpdateMode}) => {
             event.preventDefault()
             const reqData = {
                 name: updatableTable.name,
-                description: updatableTable.description,
-                accessType: updatableTable.accessType,
-                elements: convertStringToArr(elements)
             }
+            if (JSON.stringify(table.description) !== JSON.stringify(updatableTable.description)){
+                reqData.description = updatableTable.description;
+            }
+            if (JSON.stringify(table.accessType) !== JSON.stringify(updatableTable.accessType)){
+                reqData.accessType = updatableTable.accessType;
+            }
+
+            //TODO server doesnt give update elements
+            console.log(oldElements);
+            console.log(elements);
+
+            if (JSON.stringify(oldElements) !== JSON.stringify(elements)){
+                reqData.elements = convertStringToArr(elements);
+            }
+
+            console.log(reqData)
+
+
             const reqOptions = {
                 headers:{
                     'Content-Type': 'application/json'
@@ -55,10 +73,16 @@ const UpdateTable = ({table, setUpdateMode}) => {
                 body: JSON.stringify({...reqData})
             }
 
-            const resp = await fetch(`${apiBasePath}/userDatabase`, reqOptions);
-            const respJson = await resp.json();
-            setUpdateRequestResult(respJson.message)
-            alert(respJson);
+            if(reqData.description || reqData.accessType || reqData.elements){
+                const resp = await fetch(`${apiBasePath}/userDatabase`, reqOptions);
+                const respJson = await resp.json();
+                setUpdateRequestResult(respJson.message)
+            }
+            else{
+                alert("nothing to update");
+            }
+
+            // alert(respJson);
         }
         setValidated(true);
     }
