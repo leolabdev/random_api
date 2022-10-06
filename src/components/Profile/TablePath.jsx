@@ -18,7 +18,7 @@ const TablePath = ({username,tableName}) => {
     return (
         <div>
             <h3>API path</h3>
-            <ListGroupItem>{defaultPath}</ListGroupItem>
+                <ListGroupItem style={{overflowX:'auto', whiteSpace:'nowrap'}}>{defaultPath}</ListGroupItem>
             <CopyTextButton value={defaultPath}/>
         </div>
     );
