@@ -34,7 +34,7 @@ const DeleteUserHasAccessTable = ({tableName}) => {
         }
 
         //TODO how to delete this table?
-        // const resp = await fetch(`${apiBasePath}/userDatabase`, reqOptions);
+        const resp = await fetch(`${apiBasePath}/userDatabase`, reqOptions);
         const respJson = await resp.json();
         const respResult = respJson.isSuccess;
         const respMessage = respJson.message;
