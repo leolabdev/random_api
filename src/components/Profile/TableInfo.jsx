@@ -71,7 +71,7 @@ function TableInfo(props) {
                 <div style={{maxWidth:'100%'}}>
                     <ListGroup style={table?.accessType == "0"
                         ?
-                        {backgroundColor: '#90EE90',padding : '20px 0px 20px 20px'}
+                        {backgroundColor: '#90EE90',padding : '20px 20px 20px 20px'}
                         :
                         table.accessType == "1"
                             ? {backgroundColor: '#FFD580',padding : '20px' }

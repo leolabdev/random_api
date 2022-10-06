@@ -54,7 +54,7 @@ const UserHasAccessTableInfo = ({tableName,tableOwner}) => {
              <div><button onClick={() => navigate('/profile')}>Go back</button><br/><br/></div>
 
         <div style={{maxWidth:'100%'}}>
-            <ListGroup style={{backgroundColor: '#FFB6C1'}}>
+            <ListGroup style={{backgroundColor: '#FFB6C1',padding:'20px'}}>
 
                 <h3>Table information</h3>
 
