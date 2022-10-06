@@ -25,10 +25,9 @@ const HubTables = ({hubTables}) => {
     return (
         <div className="container d-flex flex-wrap justify-content-center">
             {hubTables.map((hubT,id) => (
-                <div>
+                <div key={hubT.id ? hubT.id : id}>
                     <Card
                         onClick={() => handleShow(hubT)}
-                        key={hubT.id ? hubT.id : id}
                         style={{ width: "20rem", margin: "2rem", textAlign: "center",cursor:'pointer' }}
                     >
                         <Card.Body style = {hubT.accessType == "0" ?  {backgroundColor: '#90EE90'} : hubT.accessType == "1" ? {backgroundColor: '#FFD580' } : {backgroundColor: '#ADD8E6'}}>
