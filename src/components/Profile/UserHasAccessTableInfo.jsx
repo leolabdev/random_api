@@ -1,7 +1,6 @@
-import {useNavigate, useSearchParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {Button, ListGroup} from "react-bootstrap";
-import DeleteTable from "./DeleteTable";
+import {ListGroup} from "react-bootstrap";
 import TableAccessDescription from "./TableAccessDescription";
 import TablePath from "./TablePath";
 
