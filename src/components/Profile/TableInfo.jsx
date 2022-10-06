@@ -3,8 +3,10 @@ import {useNavigate} from "react-router-dom";
 import TableAccessDescription from "./TableAccessDescription";
 import DeleteTable from "./DeleteTable";
 import UpdateTable from "./UpdateTable";
-import {Button, ListGroup} from "react-bootstrap";
+import {Button, ListGroup, ListGroupItem} from "react-bootstrap";
+import TablePath from "./TablePath";
 
+// const http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}/rand/{username}/{tableName}?token={your_token}&count=10
 
 
 const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
@@ -92,8 +94,10 @@ function TableInfo(props) {
                             </ul>
                         </div>
 
-                    <h3>Update Table</h3>
-                    <Button style={{maxWidth:'80px'}} onClick={()=>setUpdateMode(!updateMode)}>Update</Button>
+                        <TablePath tableName={table.name} username={table.username} />
+                        <br/>
+                        <h3>Update Table</h3>
+                        <Button style={{maxWidth:'80px'}} onClick={()=>setUpdateMode(!updateMode)}>Update</Button>
 
                     <br/>
 

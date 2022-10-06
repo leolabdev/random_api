@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
+import {createSearchParams, useNavigate} from "react-router-dom";
 
 /**
  * Component for displaying tables to which an user has the access
@@ -8,6 +9,7 @@ import ListGroup from "react-bootstrap/ListGroup";
  * @constructor
  */
 const UserHasAccessTables = () => {
+    const navigate = useNavigate();
 
     const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
 
@@ -45,7 +47,19 @@ const UserHasAccessTables = () => {
                 {
                     (userHasAccessTables[0] != null)  ?
                     userHasAccessTables.map((item, i)=>{
-                        return <ListGroup.Item  as='li' style={{cursor:'pointer' ,backgroundColor :'#FFB6C1'}} className=' w-50' key={i} onClick={()=>{ alert("hello")} }>{item.name} </ListGroup.Item>
+                        return <ListGroup.Item
+                            as='li'
+                            style={{cursor:'pointer' ,backgroundColor :'#FFB6C1'}}
+                            className=' w-50' key={i}
+                            onClick={ () => {
+                               navigate({
+                                   pathname: "/accessedTableInfo",
+                                   search: `?${createSearchParams({tableName: item.name , tableOwner : item.username})}`,
+                                   // search: `?${createSearchParams(tableName: '')}`,
+                               })
+                            }
+
+                            }>{item.name} </ListGroup.Item>
                     })
                         :
                         <span></span>
