@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {ListGroup} from "react-bootstrap";
 import TableAccessDescription from "./TableAccessDescription";
 import TablePath from "./TablePath";
+import DeleteUserHasAccessTable from "./DeleteUserHasAccessTable";
 
 /**
  * The information about the certain table where an user has access
@@ -76,6 +77,7 @@ const UserHasAccessTableInfo = ({tableName,tableOwner}) => {
                 </div>
                 <TablePath tableName={table.name} username={table.username} />
                 <br/>
+                <DeleteUserHasAccessTable tableName={table.name}/>
             </ListGroup>
         </div>
 
