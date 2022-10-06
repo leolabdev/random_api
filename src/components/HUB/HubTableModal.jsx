@@ -108,9 +108,11 @@ const HubTableModal = ({table ,show , handleClose}) => {
         // alert(respJson.message)
     }
 
-    //TODO: disable fetching on page loading
+
     useEffect(()=>{
-        fetchHubTable();
+        if(show){
+            fetchHubTable();
+        }
     },[show])
 
     useEffect(()=>{
