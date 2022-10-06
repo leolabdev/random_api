@@ -13,14 +13,7 @@ const Messages = () => {
     const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
 
 
-    let [messages,setMessages] = useState([
-        // { id: 7, sender: "test", receiver: "mike", tableName: "cars", message: null },
-        // {id : 1, username : "petya" , message : "hello i am petya" },
-        // {id : 2, username : "vasya" , message : "hello i am vasya" },
-        // {id : 3, username : "misha" , message : "hello i am misha" },
-        // {id : 4, username : "leo" , message : "hello i am leo" },
-        // {id : 5, username : "andrew" , message : "hello i am andrew" }]);
-]);
+    let [messages,setMessages] = useState([]);
 
 
     /**
@@ -93,9 +86,6 @@ const Messages = () => {
      * @returns {Promise<void>}
      */
     const confirmAccess = async (id) => {
-        // alert("plz implement confirm")
-
-         // e.preventDefault();
 
         const message = findMessage(id);
 

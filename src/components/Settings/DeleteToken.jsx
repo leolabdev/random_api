@@ -25,6 +25,7 @@ const DeleteToken = ({token}) => {
         const respJson = await resp.json();
         const respResult = respJson.isSuccess;
         const respMessage = respJson.message;
+        if(!respResult){alert(respMessage)};
     }
 
     return (
