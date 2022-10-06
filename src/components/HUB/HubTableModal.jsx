@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import React, {useEffect, useState} from "react";
 import {useCookies} from "react-cookie";
 
-//TODO:  and example of API request: http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}/rand/{username}/{tableName}?token={your_token}&count=10
+//TODO:and example of API request: http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}/rand/{username}/{tableName}?token={your_token}&count=10
 
 const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
 
@@ -138,7 +138,7 @@ const HubTableModal = ({table ,show , handleClose}) => {
                     Owner : {hubTable.username}
                     <br/>
                     <span>Elements:</span>
-                    <div style={{maxHeight: '150px',overflow : 'auto'}}>
+                    <div style={{maxHeight: '150px',overflow : 'auto',marginTop: '0.3rem'}}>
                         <ul>
                         {hubTable?.elements?.map(element=>(
                                <li key={element.id}>{element.value}</li>
@@ -158,7 +158,7 @@ const HubTableModal = ({table ,show , handleClose}) => {
                     }
 
 
-                    {requestMessage && <div style={requestResult === false && {color: 'red'}}>{requestMessage}</div>}
+                    {requestMessage.length != '' ? <div style={requestResult === false ? {color: 'red'} : {color:''}}>{requestMessage}</div> : <span></span>}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="primary" onClick={handleClose}>
