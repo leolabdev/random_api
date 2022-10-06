@@ -132,7 +132,16 @@ const HubTableModal = ({table ,show , handleClose}) => {
                     <br/>
                     Owner : {hubTable.username}
                     <br/>
-                    Elements : {JSON.stringify(hubTable.elements)}
+                    <span>Elements:</span>
+                    <div style={{maxHeight: '150px',overflow : 'auto'}}>
+                        <ul>
+                        {hubTable?.elements?.map(element=>(
+                               <li key={element.id}>{element.value}</li>
+                        ) )}
+                        </ul>
+                    </div>
+
+                    {/*Elements : {JSON.stringify(hubTable.elements)}*/}
 
 
                     {
