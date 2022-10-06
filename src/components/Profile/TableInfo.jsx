@@ -4,8 +4,8 @@ import TableAccessDescription from "./TableAccessDescription";
 import DeleteTable from "./DeleteTable";
 import UpdateTable from "./UpdateTable";
 import {Button, ListGroup} from "react-bootstrap";
-// import DeleteTable from "./deleteTable";
-import './TableInfo.css'
+
+
 
 const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
 
