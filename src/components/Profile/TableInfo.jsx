@@ -45,12 +45,15 @@ function TableInfo(props) {
         const respJson = await resp.json();
         const result = respJson.result;
 
-
         setTable(result);
+
+        // if element doesnt have values we cannot use it
+        !props.name && navigate('/');
 
         console.log(result);
 
     }
+
 
     return (
         <div id="tableInfo" style={{}}>
@@ -71,7 +74,7 @@ function TableInfo(props) {
                             ? {backgroundColor: '#FFD580',padding : '20px' }
                             : {backgroundColor: '#ADD8E6',padding : '20px'}}>
 
-                    <h3> table information</h3>
+                    <h3>Table information</h3>
 
                     <h4 >Description</h4>
                     <p>{table.description && table.description}</p>
@@ -82,11 +85,11 @@ function TableInfo(props) {
                         <div className="elements" style={{maxHeight : "200px"}}>
                             <h4>Table Elements</h4>
 
+                            <ul>
                             {table.elements && table.elements.map((element,id) => (
-                                <ul key={id}>
-                                    <li key={id}>{element.value}</li>
-                                </ul>
+                                    <li key={element.id}>{element.value}</li>
                             ))}
+                            </ul>
                         </div>
                     <br/>
                     <h3>Update Table</h3>
