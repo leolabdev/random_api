@@ -81,7 +81,7 @@ function TableInfo(props) {
 
                     <h3>Table information</h3>
 
-                        <h4 >Table name</h4>
+                        <h4 >Name</h4>
                         <p>{table.name && table.name}</p>
 
                         <h4 >Description</h4>

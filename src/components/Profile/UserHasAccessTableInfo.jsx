@@ -58,6 +58,9 @@ const UserHasAccessTableInfo = ({tableName,tableOwner}) => {
 
                 <h3>Table information</h3>
 
+                <h4 >Name</h4>
+                <p>{table.name && table.name}</p>
+
                 <h4 >Description</h4>
                 <p>{table.description && table.description}</p>
 
