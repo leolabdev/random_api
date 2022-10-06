@@ -5,6 +5,7 @@ import DeleteTable from "./DeleteTable";
 import UpdateTable from "./UpdateTable";
 import {Button, ListGroup} from "react-bootstrap";
 // import DeleteTable from "./deleteTable";
+import './TableInfo.css'
 
 const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
 
@@ -82,16 +83,15 @@ function TableInfo(props) {
                     <h4>Owner</h4>
                     <p>{table.username && table.username}</p>
 
-                        <div className="elements" style={{maxHeight : "200px"}}>
-                            <h4>Table Elements</h4>
-
+                        <h4>Table Elements</h4>
+                        <div className="elements" style={{maxHeight : "200px" ,overflow: 'auto'}}>
                             <ul>
                             {table.elements && table.elements.map((element,id) => (
                                     <li key={element.id}>{element.value}</li>
                             ))}
                             </ul>
                         </div>
-                    <br/>
+
                     <h3>Update Table</h3>
                     <Button style={{maxWidth:'80px'}} onClick={()=>setUpdateMode(!updateMode)}>Update</Button>
 
