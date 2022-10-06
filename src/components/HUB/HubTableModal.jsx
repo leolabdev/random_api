@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import React, {useEffect, useState} from "react";
 import {useCookies} from "react-cookie";
 
-//TODO:and example of API request: http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}/rand/{username}/{tableName}?token={your_token}&count=10
+
 
 const apiBasePath = `http://${process.env.REACT_APP_SERVER_HOST}:${process.env.REACT_APP_SERVER_PORT}`;
 
