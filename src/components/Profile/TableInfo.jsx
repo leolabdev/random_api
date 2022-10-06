@@ -79,11 +79,14 @@ function TableInfo(props) {
 
                     <h3>Table information</h3>
 
-                    <h4 >Description</h4>
-                    <p>{table.description && table.description}</p>
+                        <h4 >Table name</h4>
+                        <p>{table.name && table.name}</p>
 
-                    <h4>Owner</h4>
-                    <p>{table.username && table.username}</p>
+                        <h4 >Description</h4>
+                        <p>{table.description && table.description}</p>
+
+                        <h4>Owner</h4>
+                        <p>{table.username && table.username}</p>
 
                         <h4>Table Elements</h4>
                         <div className="elements" style={{maxHeight : "200px" ,overflow: 'auto'}}>
