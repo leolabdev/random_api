@@ -20,6 +20,8 @@ import SettingsPage from "./pages/SettingsPage";
 import AboutPage from "./pages/AboutPage";
 import {Container} from "react-bootstrap";
 import ControlAccessPage from "./pages/ControlAccessPage";
+import UserHasAccessTableInfo from "./components/Profile/UserHasAccessTableInfo";
+import UserHasAccessTableInfoPage from "./pages/UserHasAccessTableInfoPage";
 
 
 
@@ -48,6 +50,8 @@ function App() {
                   <Route path="/profile" element={loginAccess || cookies.jwt != null ?   <ProfilePage setTableInfoName={setTableInfoName} setTableInfoOwner={setTableInfoOwner}/> :<Navigate replace to="/"/>} />
                   <Route path="/newTable" element={loginAccess || cookies.jwt != null ?<NewTableForm/> : <Navigate replace to='/'/>}  />
                   <Route path="/tableInfo" element={loginAccess || cookies.jwt != null ? <TableInfo name={tableInfoName} owner={tableInfoOwner} /> : <Navigate replace to='/' /> } />
+
+                  <Route path="/accessedTableInfo/" element={loginAccess || cookies.jwt != null ? <UserHasAccessTableInfoPage /> : <Navigate replace to='/' /> } />
 
                   <Route path="/hub" element={loginAccess || cookies.jwt != null ?<HubPage/> : <Navigate replace to='/'/>} />
 
