@@ -73,7 +73,7 @@ const Messages = () => {
         const respResult = respJson.isSuccess;
         const respMessage = respJson.message;
 
-        if(respResult){ setMessages(current => current.filter(message => message.id != id))}
+        if(respResult){ setMessages(current => current.filter(message => message.id !== id))}
 
         alert(respMessage)
 
@@ -129,7 +129,7 @@ const Messages = () => {
 
         <div>
             {
-                (messages[0] != undefined) &&
+                (messages[0] !== undefined) &&
                 messages.map((m)=> (
 
                     <ListGroup>
