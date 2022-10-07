@@ -37,12 +37,10 @@ const UserHasAccessTableInfo = ({tableName,tableOwner}) => {
             credentials: 'include'
         }
 
-        //TODO plz implement me
-        const resp = await fetch(`${apiBasePath}/userAllowed/${tableName}?owner=${tableOwner}&includingElements=true`, reqOptions);
+        const resp = await fetch(`${apiBasePath}/userDatabase/${tableName}?owner=${tableOwner}&includingElements=true`, reqOptions);
         const respJson = await resp.json();
         const result = respJson.result;
         setTable(result);
-        console.log(result)
     }
 
     return (

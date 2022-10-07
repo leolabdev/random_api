@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import Button from "react-bootstrap/Button";
+import { useCookies } from 'react-cookie';
 import {useNavigate} from "react-router-dom";
 
 /**
@@ -16,14 +17,17 @@ const DeleteUserHasAccessTable = ({tableName}) => {
 
     const [errorMessage, setErrorMessage] = useState('')
 
+    const [cookies] = useCookies();
+
     const handleDeletingTable = async (event) => {
 
         event.preventDefault();
 
         const reqObj = {
             name: tableName,
+            username: cookies.username
         };
-
+a
         const reqOptions = {
             headers:{
                 'Content-Type': 'application/json'
@@ -33,8 +37,7 @@ const DeleteUserHasAccessTable = ({tableName}) => {
             credentials: 'include'
         }
 
-        //TODO how to delete this table?
-        const resp = await fetch(`${apiBasePath}/userDatabase`, reqOptions);
+        const resp = await fetch(`${apiBasePath}/userAllowed`, reqOptions);
         const respJson = await resp.json();
         const respResult = respJson.isSuccess;
         const respMessage = respJson.message;
@@ -52,7 +55,7 @@ const DeleteUserHasAccessTable = ({tableName}) => {
         <div className='list-group-flush'>
             <div>
                 <h3>Delete Table</h3>
-                <Button variant="danger"  onClick={()=>handleDeletingTable()}>Delete</Button>
+                <Button variant="danger"  onClick={(e)=>handleDeletingTable(e)}>Delete</Button>
                 {errorMessage && <span style={{color:'red'}}>{errorMessage}</span>}
             </div>
         </div>

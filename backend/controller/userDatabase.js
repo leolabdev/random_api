@@ -216,13 +216,13 @@ exports.updateTable = async (req, res, next) => {
 
                     let resp;
                     if (isQueryNeeded) {
-                        insertTokenQ = insertTokenQ.slice(0, insertTokenQ.length - 2);
+                        insertTokenQ = insertTokenQ.slice(0, insertTokenQ.length-2);
                         insertTokenQ += ' WHERE username=? AND name=?';
 
                         resp = await db.makeQuery(insertTokenQ, [username, name]);
                     }
 
-                    if (resp) {
+                    if (resp || (elems != null && elems.length > 0)) {
                         res.status(200);
                         res.isSuccess = true;
                     } else {

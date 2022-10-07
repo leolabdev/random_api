@@ -53,16 +53,9 @@ const UpdateTable = ({table, setUpdateMode}) => {
                 reqData.accessType = updatableTable.accessType;
             }
 
-            //TODO server doesnt give update elements
-            console.log(oldElements);
-            console.log(elements);
-
             if (JSON.stringify(oldElements) !== JSON.stringify(elements)){
                 reqData.elements = convertStringToArr(elements);
             }
-
-            console.log(reqData)
-
 
             const reqOptions = {
                 headers:{
@@ -81,14 +74,9 @@ const UpdateTable = ({table, setUpdateMode}) => {
             else{
                 alert("nothing to update");
             }
-
-            // alert(respJson);
         }
         setValidated(true);
     }
-
-    console.log("ourTable",table);
-
 
     return (
         <div>
