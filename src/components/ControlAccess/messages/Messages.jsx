@@ -135,8 +135,7 @@ const Messages = () => {
                     <ListGroup>
                        <ListGroupItem>
                            <ul>
-                               <li> id : {m.id} </li>
-                               <li>tableName : {m.tableName}</li>
+                               <li>tableName: {m.tableName}</li>
                                <li>sender: {m.sender}</li>
                                <li>message: {m.message}</li>
                            </ul>

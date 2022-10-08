@@ -37,6 +37,7 @@ exports.makeRandomQuery = async (req, res, next) => {
             } else if(username != null && username !== ''){
                 const tableInfoQ = `SELECT id, accessType FROM UserDatabase WHERE username=? AND name=?`;
                 const tableInfoResp = await db.makeQuery(tableInfoQ, [owner, name]);
+                
                 if(tableInfoResp != null && tableInfoResp.length > 0){
                     if(tableInfoResp[0].accessType === 0){
                         hasAccess = true;

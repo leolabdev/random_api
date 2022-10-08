@@ -27,7 +27,7 @@ const DeleteUserHasAccessTable = ({tableName}) => {
             name: tableName,
             username: cookies.username
         };
-a
+
         const reqOptions = {
             headers:{
                 'Content-Type': 'application/json'
