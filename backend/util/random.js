@@ -1,7 +1,11 @@
 const Random = require("random-js").Random;
 const {MersenneTwister19937} = require("random-js");
+const { nativeMath } = require("random-js");
+const { nodeCrypto } = require("random-js");
 
-const random = new Random(MersenneTwister19937.autoSeed());
+const randomMarsenne = new Random(MersenneTwister19937.autoSeed());
+const randomNative = new Random(nativeMath);
+const randomNodeCrypto = new Random(nodeCrypto);
 
 /**
  * The function generates and returns SQL query for fetching rows with specified column values.
@@ -35,7 +39,19 @@ exports.getRandomSQLQuery = (tableName, columnName, isColumnString, columnValues
  * @param elemCount {int} count of integers to be generated
  * @return {null|int[]} array if all the parameters are provided, null if not
  */
-exports.generateRandIntArr = (min, max, elemCount) => {
+exports.generateRandIntArr = (min, max, elemCount, engineName) => {
+  let random;
+  switch(engineName){
+    case 'nativeMath':
+      random = randomNative;
+      break;
+    case 'nodeCrypto':
+      random = randomNodeCrypto;
+      break;
+    default:
+      random = randomMarsenne;
+  }
+
   if(min != null && max != null && min >= 0 && max >= 0 && min < max && elemCount > 0 && elemCount <= 100000000){
     const range = max-min+1;
     const sameArrCount = Math.floor(elemCount/range);

@@ -89,6 +89,7 @@ exports.makeRandomQuery = async (req, res, next) => {
         }
 
         if(hasAccess && !requestLimitExited){
+            const engine = req.query.engine;
             const minIdQ = `SELECT MIN(id) FROM ${tableName}`;
             const maxIdQ = `SELECT MAX(id) FROM ${tableName}`;
 
@@ -99,7 +100,8 @@ exports.makeRandomQuery = async (req, res, next) => {
                 const minId = minIdResp[0]['MIN(id)'];
                 const maxId = maxIdResp[0]['MAX(id)'];
 
-                const randIntArr = random.generateRandIntArr(minId, maxId, count);
+                const randIntArr = random.generateRandIntArr(minId, maxId, count, engine);
+
                 if(randIntArr != null && randIntArr.length > 0){
                     const range = maxId-minId+1;
 
@@ -113,7 +115,10 @@ exports.makeRandomQuery = async (req, res, next) => {
 
                                 const selectElemsResp = await db.makeQuery(selectElemsQ);
                                 if(selectElemsResp != null && selectElemsResp.length > 0){
-                                    result.push(...selectElemsResp);
+                                    const respObj = convertArrToObjId(selectElemsResp);
+                                    for(let i=0; i<selectElemsResp.length; i++){
+                                        result[i] = respObj[randIntArr[i]];
+                                    }
                                 }
                             }
                         }
@@ -146,4 +151,14 @@ exports.makeRandomQuery = async (req, res, next) => {
     }
 
     next();
+}
+
+function convertArrToObjId(arr){
+    const result = {};
+    for(let i=0; i< arr.length; i++){
+        const id = arr[i].id;
+        result[id] = arr[i];
+    }
+
+    return result;
 }
