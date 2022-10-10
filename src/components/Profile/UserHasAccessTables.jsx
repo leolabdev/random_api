@@ -38,7 +38,7 @@ const UserHasAccessTables = () => {
     return (
         <div id="tables">
 
-            <h3>You have access tables:</h3>
+            <h3>Accessible tables:</h3>
 
 
             <br/>
